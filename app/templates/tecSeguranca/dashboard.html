@@ -1,0 +1,158 @@
+{% extends "tecSeguranca/base.html" %}
+{% block content %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styleDashboard.css') }}">
+{% endblock %}
+{% include "header.html" %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="row mb-4 justify-content-evenly">
+            <div class="col-auto">
+                <div class="card">
+                    <div class="icon">
+                        <i class="fa-solid fa-person-walking-arrow-loop-left size"></i>
+                    </div>
+                    <div class="text">
+                        <div class="titulo">
+                            Visitas do Dia
+                        </div>
+                        <div class="valor">
+                            005
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="card">
+                    <div class="icon">
+                        <i class="fa-solid fa-user size"></i>
+                    </div>
+                    <div class="text">
+                        <div class="titulo">
+                            Visitantes
+                        </div>
+                        <div class="valor">
+                            005
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="card-table">
+                <div class="titulo-card-table">
+                    Visitantes na Empresa
+                </div>
+                <table class="table">
+                    <thead class="table-header">
+                        <tr>
+                            <th scope="col">Nome</th>
+                            <th scope="col">CPF</th>
+                            <th scope="col">Entrada</th>
+                            <th scope="col">Visitado</th>
+                            <th scope="col">Saída?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                            <td>@mdo</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                            <td>@fat</td>
+                            <td>@mdo</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td colspan="2">Larry the Bird</td>
+                            <td>@twitter</td>
+                            <td>@mdo</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td colspan="2">Larry the Bird</td>
+                            <td>@twitter</td>
+                            <td>@mdo</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="card-table">
+                <div class="titulo-card-table">
+                    Ultimas Entradas
+                </div>
+                <table class="table">
+                    <thead class="table-header">
+                        <tr>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Entrada</th>
+                            <th scope="col">Saída?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td colspan="2">Larry the Bird</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="card-table">
+                <div class="titulo-card-table">
+                    Chaves não Devolvidas
+                </div>
+                <table class="table">
+                    <thead class="table-header">
+                        <tr>
+                            <th scope="col">Chave</th>
+                            <th scope="col">Retirada</th>
+                            <th scope="col">Responsavel</th>
+                            <th scope="col">Devolução?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>Otto</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                            <td>Otto</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td colspan="2">Larry the Bird</td>
+                            <td>Otto</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+{% endblock %}

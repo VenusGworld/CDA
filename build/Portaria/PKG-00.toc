@@ -1,0 +1,62 @@
+('D:\\VS Code\\Python\\Flask\\Portaria\\build\\Portaria\\Portaria.pkg',
+ {'BINARY': 1,
+  'DATA': 1,
+  'EXECUTABLE': 1,
+  'EXTENSION': 1,
+  'PYMODULE': 1,
+  'PYSOURCE': 1,
+  'PYZ': 0,
+  'SPLASH': 1},
+ [('PYZ-00.pyz',
+   'D:\\VS Code\\Python\\Flask\\Portaria\\build\\Portaria\\PYZ-00.pyz',
+   'PYZ'),
+  ('struct',
+   'D:\\VS '
+   'Code\\Python\\Flask\\Portaria\\build\\Portaria\\localpycs\\struct.pyc',
+   'PYMODULE'),
+  ('pyimod01_archive',
+   'D:\\VS '
+   'Code\\Python\\Flask\\Portaria\\build\\Portaria\\localpycs\\pyimod01_archive.pyc',
+   'PYMODULE'),
+  ('pyimod02_importers',
+   'D:\\VS '
+   'Code\\Python\\Flask\\Portaria\\build\\Portaria\\localpycs\\pyimod02_importers.pyc',
+   'PYMODULE'),
+  ('pyimod03_ctypes',
+   'D:\\VS '
+   'Code\\Python\\Flask\\Portaria\\build\\Portaria\\localpycs\\pyimod03_ctypes.pyc',
+   'PYMODULE'),
+  ('pyimod04_pywin32',
+   'D:\\VS '
+   'Code\\Python\\Flask\\Portaria\\build\\Portaria\\localpycs\\pyimod04_pywin32.pyc',
+   'PYMODULE'),
+  ('pyiboot01_bootstrap',
+   'D:\\VS '
+   'Code\\Python\\Flask\\Portaria\\venv\\Lib\\site-packages\\PyInstaller\\loader\\pyiboot01_bootstrap.py',
+   'PYSOURCE'),
+  ('pyi_rth_inspect',
+   'D:\\VS '
+   'Code\\Python\\Flask\\Portaria\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_inspect.py',
+   'PYSOURCE'),
+  ('pyi_rth_pkgutil',
+   'D:\\VS '
+   'Code\\Python\\Flask\\Portaria\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_pkgutil.py',
+   'PYSOURCE'),
+  ('pyi_rth_multiprocessing',
+   'D:\\VS '
+   'Code\\Python\\Flask\\Portaria\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_multiprocessing.py',
+   'PYSOURCE'),
+  ('pyi_rth_pkgres',
+   'D:\\VS '
+   'Code\\Python\\Flask\\Portaria\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_pkgres.py',
+   'PYSOURCE'),
+  ('Portaria',
+   'D:\\VS Code\\Python\\Flask\\Portaria\\Portaria.py',
+   'PYSOURCE')],
+ True,
+ False,
+ False,
+ [],
+ None,
+ None,
+ None)

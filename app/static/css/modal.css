@@ -1,0 +1,30 @@
+.modal-card{
+    background-color: #00000080;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    position: fixed; 
+    display: flex;
+    z-index: 999999;
+    pointer-events: auto;
+}
+
+
+/* Modal Card delete usuário */
+#card-delete{
+    background-color: #ffffff;
+    max-width: 100%;
+    width: auto !important;
+    margin-left: 0;
+    position: relative;
+}
+
+#btns{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

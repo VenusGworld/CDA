@@ -1,0 +1,67 @@
+{% extends "administrador/base.html" %}
+{% block content %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleUsuarios.css') }}">
+{% endblock %}
+{% include "header.html" %}
+<section class="content">
+    <div class="container-fluid p-2">
+        <div id="alert" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <h6>Senhas não coincidem!</h6>
+            <button type="button" class="btn-close" onclick="fechaAlert()" aria-label="Close"></button>
+        </div>
+        <form action="{{ context.action }}" onsubmit="return validarSenha('senha', 'senhaConfirm')" method="POST">
+            <div class="row mb-2">
+                <div class="col-4">
+                    <label for="">Nome:</label>
+                    <input type="text" name="nome" id="nome" class="form-control upper" autocomplete="off" tabindex="1" value="{% if context.usuario %}{{ context.usuario.nome }}{% endif %}" required>
+                </div>
+                <div class="col-3">
+                    <label for="">Usuário:</label>
+                    <input type="text" name="usuario" id="usuario" class="form-control upper" maxlength="10" autocomplete="off" tabindex="2" value="{% if context.usuario %}{{ context.usuario.usuario }}{% endif %}" required>
+                </div>
+                <div class="col-5">
+                    <label for="">E-mail:</label>
+                    <input type="text" name="email" id="email" class="form-control upper" autocomplete="off" tabindex="4" value="{% if context.usuario %}{{ context.usuario.email }}{% endif %}" required>
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col-3">
+                    <label for="">Grupo:</label>
+                    <select type="text" name="grupo" id="grupo" class="form-select form-select-sm border-radius-input select" tabindex="5" required>
+                        <option value=""></option>
+                        <option {% if context.usuario %}{% if context.usuario.grupo == 'ADM' %}selected{% endif %}{% endif %} value="ADM">ADM</option>
+                        <option {% if context.usuario %}{% if context.usuario.grupo == 'TEC' %}selected{% endif %}{% endif %} value="TEC">TEC</option>
+                        <option {% if context.usuario %}{% if context.usuario.grupo == 'VIG' %}selected{% endif %}{% endif %} value="VIG">VIG</option>
+                    </select>
+                </div>
+                <div class="col-4">
+                    <label for="">Senha:</label>
+                    <input type="password" name="senha" id="senha" class="form-control upper" maxlength="8" autocomplete="off" tabindex="6" value="{% if context.usuario %}{{ context.usuario.senha }}{% endif %}" required>
+                </div>
+                <div class="col-4">
+                    <label for="">Confirm. Senha:</label>
+                    <input type="password" name="senhaConfirm" id="senhaConfirm" class="form-control upper" maxlength="8" autocomplete="off" tabindex="7" value="{% if context.usuario %}{{ context.usuario.senha }}{% endif %}" required>
+                </div>
+                <div class="col-1 ver-senha">
+                    <button type="button" class="btn btn-outline-primary" onclick="mostarSenha(this)" tabindex="8">
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+                </div>
+                {% if context.usuario %}
+                <div class="col-1 d-none">
+                    <input type="text" name="id" id="id" maxlength="8" autocomplete="off" tabindex="7" value="{% if context %}{{ context.usuario.id }}{% endif %}" required>
+                </div>
+                {% endif %}
+            </div>
+            <div class="btns">
+                <a href="javascript:history.back()" class="btn btn-outline-danger" type="button" name="btnCancelar" id="btnCancelar" tabindex="10">Cancelar</a>
+                <input type="submit" class="btn btn-outline-success" id="btnGravar" value="{{ context.botao }}" tabindex="9">
+            </div>
+        </form>
+    </div>
+</section>
+{% block script %}
+<script src="{{ url_for('static', filename='js/usuario/funcoes.js') }}"></script>
+{% endblock %}
+{% endblock %}

@@ -1,0 +1,38 @@
+.acoes{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.pesquisa{
+    display: flex;
+    flex-direction: row;
+}
+
+.input-pesquisa{
+    margin-left: 0.3rem;
+    border-radius: 0.2rem;
+    border: 1px solid #b1b1b1;
+}
+
+.tabela{
+    background-color: rgb(32, 88, 136);
+}
+
+.ver-senha{
+    display: flex;
+    justify-content: center;
+    align-self: flex-end;
+}
+
+.select{
+    height: 2.4rem;
+}
+
+.btns{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}

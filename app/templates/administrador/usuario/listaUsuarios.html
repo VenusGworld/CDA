@@ -1,0 +1,102 @@
+{% extends "administrador/base.html" %}
+{% block content %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleUsuarios.css') }}">
+{% endblock %}
+{% include "header.html" %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <script>
+                window.setTimeout(function() {
+                    $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                        $(this).remove(); 
+                    });
+                }, 10000);
+            </script>
+            <div class="alert alert-{{ category }} d-flex align-items-center alert-margin" role="alert">
+                <div>
+                    <h6>{{ message }}</h6>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+{% include "administrador/modal/modalExclusao.html" %}
+<section class="content">
+    <div class="container-fluid p-0">
+        <div class="acoes p-1">
+            <div class="pesquisa">
+                <label for="">Pesquisa: </label>
+                <input type="text" class="input-pesquisa" id="searchField">
+            </div>
+            <div class="botao">
+                <a href="{{url_for('usuarioAdm.cadastroUsuarioAdm')}}" class="btn btn-outline-success">Incluir Usuário</a>
+            </div>
+        </div>
+        <div class="tabela p-3">
+            <div id="lista-usuario"></div>
+        </div>
+    </div>
+</section>
+{% block script %}
+<script src="{{ url_for('static', filename='js/usuario/dataUsuario.js') }}"></script>
+<script src="{{ url_for('static', filename='js/usuario/funcoes.js') }}"></script>
+<script>
+    if (dadosUser.length >= 7){
+        pagination = true
+    }else{
+        pagination = false
+    }
+
+    var table = $('#lista-usuario').tableSortable({
+        data: dadosUser,
+        columns: colunasUser,
+        searchField: '#searchField',
+        responsive: {
+            600: {
+                columns: {
+                    formCode: 'Form Code',
+                    formName: 'Form Name',
+                },
+            },
+        },
+        rowsPerPage: 7,
+        pagination: pagination,
+        tableWillMount: function() {
+            console.log('table will mount')
+        },
+        tableDidMount: function() {
+            console.log('table did mount')
+        },
+        tableWillUpdate: function() {console.log('table will update')},
+        tableDidUpdate: function() {console.log('table did update')},
+        tableWillUnmount: function() {console.log('table will unmount')},
+        tableDidUnmount: function() {console.log('table did unmount')},
+        onPaginationChange: function(nextPage, setPage) {
+            setPage(nextPage);
+        }
+    });
+
+    $('#changeRows').on('change', function() {
+        table.updateRowsPerPage(parseInt($(this).val(), 10));
+    })
+
+    $('#rerender').click(function() {
+        table.refresh(true);
+    })
+
+    $('#distory').click(function() {
+        table.distroy();
+    })
+
+    $('#refresh').click(function() {
+        table.refresh();
+    })
+
+    $('#setPage2').click(function() {
+        table.setPage(1);
+    })
+</script>
+{% endblock %}
+{% endblock %}

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleIndex.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='plugins/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='plugins/fontawesome/css/all.min.css') }}">
+
+    <script type="text/javascript" src="{{ url_for('static', filename='plugins/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='plugins/jquery/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='plugins/jquery/jquery-ui.min.js') }}"></script>
+
+    <title>Document</title>
+</head>
+<body id="body">
+    <div class="container-fluid centralizar">
+        <div class="card-form">
+            <div class="head-card">
+                <img style="width: 22%; margin-bottom: 1rem;" src="{{ url_for('static', filename='img/logo4.png') }}" id="icon" alt="User Icon"/>
+            </div>
+            <!-- Exibe Mensagem quando usuário ou senha esteja incorreto -->
+            {% with message = get_flashed_messages() %}
+                {% if message %}
+                    <div class="alert-login" id="alert-login">
+                        <div class="icon-alert">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                        </div>
+                        <h6 style="font-size: 15px;">{{ message[0] }}</h6>
+                    </div>
+                    <script>
+                        window.setTimeout(function() {
+                            $("#alert-login").fadeTo(500, 0).slideUp(500, function(){
+                                $(this).remove(); 
+                            });
+                        }, 6000);
+                    </script>
+                {% endif %}
+            {% endwith %}
+            <div class="body-card">
+                <form action="/login" method="POST" class="body-card">
+                    <div class="row" style="width: 16rem;">
+                        <label for="">Usuário:</label>
+                        <div class="form-group">
+                            <i class="fa-solid fa-user"></i>
+                            <input type="text" class="form-control upper" id="user" name="user" maxlength="15" autofocus required>
+                        </div>
+                        <label for="">Senha:</label>
+                        <div class="form-group">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" class="form-control upper" id="pssd" name="pssd" maxlength="10" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-ok">
+                    <input type="submit" class="btn btn-outline-success btn-sm btn-login" value="Acessar">
+                </div>
+            </form>
+            <div class="footer-card">
+                <a href="/esqueci-senha-modal">Esqueceu a senha?
+                    <div class="barra">
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- Exibe Modal para preencher os dados para a recuperação da senha -->
+    {% if contexto %}
+        {% if contexto.modal %}
+            <section class="modal-form">
+                <div id="card-form">
+                    <h2>Preencha seus dados</h2>
+                    <hr>
+                    <form action="/esqueci-senha" method="POST">
+                        <div id="inputs">
+                            <div class="alert" id="alert" style="display: none;" role="alert">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                            <label for="email">E-mail:</label>
+                            <div class="form-group">
+                                <i class="fa-solid fa-envelope"></i>
+                                <input type="email" id="email" name="email" class="form-control" style="text-transform: uppercase;" maxlength="45" required>
+                            </div>
+                            <label for="usuario">Usuário:</label>
+                            <div class="form-group">
+                                <i class="fa-solid fa-user"></i>
+                                <input type="text" id="user" name="user" class="form-control" style="text-transform: uppercase;" maxlength="15" required>
+                            </div>
+                        </div>
+                        <div id="btns">
+                            <input type="button" id="btnEnviar" class="btn btn-outline-success" value="Enviar">
+                            <a href="/" class="btn btn-outline-danger">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </section>
+            <!-- Ajax que envia a insformações digitadas no modal -->
+            <script type="text/javascript">
+                $(document).ready(function(){
+
+                    $("#btnEnviar").click(function(){
+                        $.ajax({
+                        url: '/esqueci-senha',
+                        type: 'POST',
+                        data:{
+                            email: $("#email").val(),
+                            usuario: $("#user").val()
+                        },
+                        success: function(data){
+                            if (data.success === false){
+                                if (data.hasOwnProperty("email")){
+                                    var h6 = `E-mail não foi enviado, contate a aquipe de T.I`;
+                                    $("#alert").append(h6);
+                                    $("#alert").addClass("alert alert-danger alert-dismissible fade show");
+                                    $("#alert").show();
+                                    window.setTimeout(function() {
+                                        $("#alert").fadeTo(500, 0).slideUp(500, function(){
+                                            $(this).remove(); 
+                                        });
+                                    }, 15000);
+                                }else{
+                                    var h6 = `E-mail/Usuário incorreto!`;
+                                    $("#alert").append(h6);
+                                    $("#alert").addClass("alert alert-danger alert-dismissible fade show");
+                                    $("#alert").show();
+                                    window.setTimeout(function() {
+                                        $("#alert").fadeTo(500, 0).slideUp(500, function(){
+                                            $(this).remove(); 
+                                        });
+                                    }, 15000);
+                                }
+                            }else{
+                                var h6 = `E-mail enviado com sucesso!<br>Verifique sua caixa de entrada.`;
+                                $("#alert").empty();
+                                $("#alert").append(h6);
+                                $("#alert").removeClass();
+                                $("#alert").addClass("alert alert-success alert-dismissible fade show");
+                                $("#alert").show();
+                                $("#email").val("");
+                                $("#user").val("");
+                                setTimeout(function(){ 
+                                    window.location='/index'
+                                }, 7000);
+                            }
+                            
+                        },
+                        error: function(data){
+                            var h6 = `E-mail não foi enviado, contate a aquipe de T.I`;
+                            $("#alert").append(h6);
+                            $("#alert").addClass("alert alert-danger alert-dismissible fade show");
+                            $("#alert").show();
+                            window.setTimeout(function() {
+                                $("#alert").fadeTo(500, 0).slideUp(500, function(){
+                                    $(this).remove(); 
+                                });
+                            }, 15000);
+                        },
+                        });
+                    });
+                });
+            </script>
+        {% endif %}
+    {% endif %}
+</body>
+</html>

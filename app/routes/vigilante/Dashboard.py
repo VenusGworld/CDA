@@ -1,11 +1,11 @@
 from flask import Blueprint, render_template
 from flask_login import login_required
 
-dashVig = Blueprint("dashVig", __name__)
+dashVigBlue = Blueprint("dashVigBlue", __name__)
 
 
 #Rota para a dashboard dos Vigilantes
-@dashVig.route('/vig/dashboard')
+@dashVigBlue.route('/vig/dashboard')
 @login_required
 def dashboardVig():
     context = {"titulo": "Dashboard"}

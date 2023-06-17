@@ -1,7 +1,13 @@
 import bcrypt
 from random import randint
 
-#Classe Usuario do sistema
+"""
+Classe Usuario
+@author - Fabio
+@version - 2.0
+@since - 23/05/2023
+"""
+
 class Usuario:
     id: int
     nome: str
@@ -14,7 +20,7 @@ class Usuario:
     delete: bool
     senhaCompara: str
     senhaNova: bool
-    hashSenhaNova: int
+    hashSenhaNova: str
 
     def set_id(self, id: int) -> None:
         self.id = id
@@ -49,7 +55,7 @@ class Usuario:
     def set_senhaNova(self, senhaNova: bool) -> None:
         self.senhaNova = senhaNova
 
-    def set_hashSenhaNova(self, hashSenhaNova: int) -> None:
+    def set_hashSenhaNova(self, hashSenhaNova: str) -> None:
         self.hashSenhaNova = hashSenhaNova
 
     def get_id(self) -> int:
@@ -85,7 +91,7 @@ class Usuario:
     def get_senhaNova(self) -> bool:
         return self.senhaNova
     
-    def get_hashSenhaNova(self) -> int:
+    def get_hashSenhaNova(self) -> str:
         return self.hashSenhaNova
     
     def gerarSenha(self, senha: str) -> None:
@@ -93,6 +99,7 @@ class Usuario:
         hash = bcrypt.hashpw(senha.encode('utf-8'), salt)
         self.senha = hash.decode("utf-8")
         self.complex = salt.decode("utf-8")
+        
 
     def verificarSenha(self) -> bool:
         hash = bcrypt.hashpw(self.senha.encode('utf-8'), bytes(self.complex, 'utf-8'))
@@ -126,3 +133,8 @@ class Usuario:
             hash.append(randint(1, 9))
 
         self.hashSenhaNova = "".join(map(str, hash))
+        self.senhaNova = True
+
+    def apagaHashSenhaNova(self):
+        self.hashSenhaNova = ""
+        self.senhaNova = False

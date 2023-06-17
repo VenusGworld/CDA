@@ -1,5 +1,11 @@
 
-#Classe de login do sistema
+"""
+Classe Login
+@author - Fabio
+@version - 1.0
+@since - 25/04/2023
+"""
+
 class Login:
     def __init__(self, user, pssd):
         self.user = user

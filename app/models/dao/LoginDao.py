@@ -1,63 +1,90 @@
 from ..Tables import SysUser
 from ..entity.Usuario import Usuario
 from ...extensions.Database import DB
-from configparser import ConfigParser
 import sys
-import os
 
-#Classe para trabalhar com o banco de dados
+"""
+Classe Dao para login no sistema
+@tables - SysUser
+@author - Fabio
+@version - 1.0
+@since - 25/04/2023
+"""
+
 class LoginDao:
     
     def consultaUsuario(self, login: Usuario):
         #########################################################################################
-        # Função que verifica se o usuário que está acessando o sistema existe no banco de dados.
+        # Essa Função verfica se usuário existe no banco.
          
         # PARAMETROS:
-        #   login = Classe Usuario que contem o usuário e a senha.
+        #   login = Instancia da classe Usuario com usuário e senha.
         
         # RETORNO:
         #   return user = Retorna o usuário que achou no banco.
+        #   return 0 = Retorna 0 caso o usuário não exista.
         #########################################################################################
 
-        # dic = {
-        #     'teste': 15,
-        #     'teste2': 0,
-        # }
-        # json_data = json.dumps(dic)
-
         try:
-            user = SysUser.query.filter_by(us_usuario=login.get_usuario()).first()
-            if user:
-                login.set_id(user.id)
-                login.set_nome(user.us_nome)
-                login.set_email(user.us_email)
-                login.set_grupo(user.us_grupo)
-                login.set_complex(user.us_complex)
-                login.set_ativo(user.us_ativo)
-                login.set_delete(user.us_delete)
-                login.set_senhaCompara(user.us_senha)
-                return user
+            sysuser = SysUser.query.filter_by(us_usuario=login.get_usuario()).first()
+            if sysuser:
+                login.set_id(sysuser.id)
+                login.set_nome(sysuser.us_nome)
+                login.set_email(sysuser.us_email)
+                login.set_grupo(sysuser.us_grupo)
+                login.set_complex(sysuser.us_complex)
+                login.set_ativo(sysuser.us_ativo)
+                login.set_delete(sysuser.us_delete)
+                login.set_senhaCompara(sysuser.us_senha)
+                return sysuser
             else:
                 return 0 
         except Exception as erro:
             print(erro, sys.exc_info()[0])
             pass
-        # user.teste = bytes(json_data, encoding='utf-8')
-        # DB.session.commit()
-        # print(user.teste)
-        # json_data = user.teste.decode("utf-8")
-        # print(json_data)
-        # data = json.loads(json_data)
-        # print(data['teste'])
 
 
-    def loginAdm(self, login: Usuario):
-        arquivo = ConfigParser()
-        arquivo.read(f"{os.path.dirname(os.path.realpath(__file__))}/variaveis/auth.ini")
-        login.set_nome(arquivo.get("MasterUser", "usuario"))
-        login.set_senhaCompara(arquivo.get("MasterUser", "senha"))
-        login.set_complex(arquivo.get("MasterUser", "complex"))
-        return login
-
+    def verficaTrocaSenha(self, login: Usuario) -> bool:
+        #########################################################################################
+        # Essa Função verfica se usuário está logando solicitou a troca de senha.
+         
+        # PARAMETROS:
+        #   login = Instancia da classe Usuario com usuário e senha.
         
+        # RETORNO:
+        #   return True = Retorna True caso foi solicitado;
+        #   return False = Retorna False caso não foi solicitado.
+        #########################################################################################
+
+        sysuser = SysUser.query.get(login.get_id())
+        if sysuser.us_senhaNova:
+            return True
+        else:
+            return False
+        
+    
+    def atulizaTrocaSenha(self, login: Usuario) -> bool:
+        #########################################################################################
+        # Essa Função atualiza os campos de troca senha, para retirar a solicitação.
+         
+        # PARAMETROS:
+        #   login = Instancia da classe Usuario com usuário e senha.
+        
+        # RETORNO:
+        #   return True = Retorna True caso foi alterado com sucesso;
+        #   return False = Retorna False caso de erro.
+        #########################################################################################
+
+        sysuser = SysUser.query.get(login.get_id())
+        sysuser.us_hashNovaSenha = ""
+        sysuser.us_senhaNova = False
+
+        try:
+            DB.session.commit()
+            return True
+        except Exception as erro:
+            print(erro, sys.exc_info()[0])
+            return False
+            
+    
          

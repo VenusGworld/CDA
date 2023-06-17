@@ -1,12 +1,27 @@
-from ..entity.Usuario import Usuario
-from ..Tables import SysUser, CDA013, CDA008, CDA012, CDA006, CDA011, CDA010, CDA001, CDA014
-from ...extensions.Database import DB
-import sys
+from ..Tables import CDA013, CDA008, CDA012, CDA006, CDA011, CDA010, CDA001, CDA014
 
+"""
+Classe Dao para verificar movimento do usuário no sistema
+@tables - CDA013, CDA008, CDA012, CDA006, CDA011, CDA010, CDA001, CDA014
+@author - Fabio
+@version - 1.0
+@since - 07/06/2023
+"""
 
 class VerificaMovimentoDao:
 
     def verificaMovimentoUsuario(self, id: int) -> bool:
+        #########################################################################################
+        # Essa Função verifica nas tabelas de log se o usuário teve movimentação no sistema.
+        
+        # PARAMETROS:
+        #   id = ID do usuário para consulta as tabelas.
+        
+        # RETORNOS:
+        #   return True = Retorna True caso o usuário não tenha movimento;
+        #   return False = Retorna False caso o usuário tenha movimento.
+        #########################################################################################
+
         movimento = 0
         if CDA013.query.filter(CDA013.lus_idUsua==id).first():
             movimento += 1
@@ -30,6 +45,9 @@ class VerificaMovimentoDao:
             movimento += 1
 
         if CDA014.query.filter(CDA014.lme_idUsua==id).first():
+            movimento += 1
+
+        if CDA001.query.filter(CDA001.lmch_idUsua==id).first():
             movimento += 1
 
         if movimento == 0:

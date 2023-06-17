@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleIndex.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleEsqueciSenha.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='plugins/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='plugins/fontawesome/css/all.min.css') }}">
+
+    <script type="text/javascript" src="{{ url_for('static', filename='plugins/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='plugins/jquery/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='plugins/jquery/jquery-ui.min.js') }}"></script>
+
+    <title>Nova Senha</title>
+</head>
+
+<body id="body">
+    <div class="container-fluid centralizar">
+        <div class="card-form">
+            <h3>Alteração de Senha</h3>
+            <div class="body-card">
+                <form action="" method="POST" class="body-card">
+                    <div class="row" style="width: 16rem;">
+                        <label for="">Senha:</label>
+                        <div class="form-group">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" class="form-control upper" id="senha" name="senha" maxlength="10" autofocus required>
+                        </div>
+                        <label for="">Confirme Senha:</label>
+                        <div class="form-group">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" class="form-control upper" id="senhaConfirm" name="senhaConfirm" maxlength="10" required>
+                        </div>
+                        <input style="display: none;" class="form-control upper" id="hash" name="hash" value="{{ context.hash }}">
+                    </div>
+            </div>
+            <div class="btn-ok">
+                <input type="button" id="btnEnviar" class="btn btn-outline-success btn-sm btn-login" value="Confirmar">
+            </div>
+            </form>
+        </div>
+    </div>
+    <section class="modal-alert inativo" id="modal">
+        <div class="card-modal" id="card">
+            <div class="titulo">
+                AVISO
+            </div>
+            <hr>
+            <div>
+                <h2 class="texto" id="texto"></h2>
+            </div>
+        </div>
+    </section>
+</body>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#btnEnviar").click(function(){
+            var senha = $("#senha").val();
+            var confirmSenha = $("#senhaConfirm").val()
+            if ( senha != "" && confirmSenha != "" && senha === confirmSenha){
+                $.ajax({
+                    url: '/esqueci-senha',
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data:JSON.stringify({
+                        hash: $("#hash").val(),
+                        senha: $("#senha").val(),
+                    }),
+                    success: function(data, status){
+                        var h6 = `Senha alterada com sucesso!`;
+                        $("#texto").empty();
+                        $("#modal").removeClass("inativo");
+                        $("#card").removeClass("vermelho");
+                        $("#texto").append(h6);
+                        $("#modal").addClass("ativo");
+                        $("#card").addClass("verde");
+                        $("#email").val("");
+                        $("#userEsqueci").val("");
+                        setTimeout(function(){ 
+                            window.close();
+                        }, 7000);
+                    }
+                });
+            }else{
+                var h6 = `As Senhas não coincidem!`;
+                $("#texto").empty();
+                $("#modal").removeClass("inativo");
+                $("#card").removeClass("verde");
+                $("#texto").append(h6);
+                $("#modal").addClass("ativo");
+                $("#card").addClass("vermelho");
+                window.setTimeout(function() {
+                    $("#modal").removeClass("ativo");
+                    $("#modal").addClass("inativo");
+                }, 5000);
+            }
+        });
+    });
+</script>
+
+</html>

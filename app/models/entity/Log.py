@@ -2,6 +2,13 @@ from ..entity.Usuario import Usuario
 from datetime import datetime
 import json
 
+"""
+Classe Log
+@author - Fabio
+@version - 2.0
+@since - 23/05/2023
+"""
+
 class Log:
     id: int
     acao: str

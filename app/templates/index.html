@@ -68,16 +68,15 @@
         </div>
     </div>
     <!-- Exibe Modal para preencher os dados para a recuperação da senha -->
-    {% if contexto %}
-        {% if contexto.modal %}
+    {% if context %}
+        {% if context.modal %}
             <section class="modal-form">
                 <div id="card-form">
                     <h2>Preencha seus dados</h2>
                     <hr>
-                    <form action="/esqueci-senha" method="POST">
+                    <form action="/esqueci-senha-modal" method="POST">
                         <div id="inputs">
                             <div class="alert" id="alert" style="display: none;" role="alert">
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                             <label for="email">E-mail:</label>
                             <div class="form-group">
@@ -87,7 +86,7 @@
                             <label for="usuario">Usuário:</label>
                             <div class="form-group">
                                 <i class="fa-solid fa-user"></i>
-                                <input type="text" id="user" name="user" class="form-control" style="text-transform: uppercase;" maxlength="15" required>
+                                <input type="text" id="userEsqueci" name="userEsqueci" class="form-control" style="text-transform: uppercase;" maxlength="15" required>
                             </div>
                         </div>
                         <div id="btns">
@@ -100,61 +99,44 @@
             <!-- Ajax que envia a insformações digitadas no modal -->
             <script type="text/javascript">
                 $(document).ready(function(){
-
                     $("#btnEnviar").click(function(){
                         $.ajax({
-                        url: '/esqueci-senha',
+                        url: '/esqueci-senha-modal',
                         type: 'POST',
-                        data:{
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        data:JSON.stringify({
+                            usuario: $("#userEsqueci").val(),
                             email: $("#email").val(),
-                            usuario: $("#user").val()
-                        },
-                        success: function(data){
-                            if (data.success === false){
-                                if (data.hasOwnProperty("email")){
-                                    var h6 = `E-mail não foi enviado, contate a aquipe de T.I`;
-                                    $("#alert").append(h6);
-                                    $("#alert").addClass("alert alert-danger alert-dismissible fade show");
-                                    $("#alert").show();
-                                    window.setTimeout(function() {
-                                        $("#alert").fadeTo(500, 0).slideUp(500, function(){
-                                            $(this).remove(); 
-                                        });
-                                    }, 15000);
-                                }else{
-                                    var h6 = `E-mail/Usuário incorreto!`;
-                                    $("#alert").append(h6);
-                                    $("#alert").addClass("alert alert-danger alert-dismissible fade show");
-                                    $("#alert").show();
-                                    window.setTimeout(function() {
-                                        $("#alert").fadeTo(500, 0).slideUp(500, function(){
-                                            $(this).remove(); 
-                                        });
-                                    }, 15000);
-                                }
-                            }else{
-                                var h6 = `E-mail enviado com sucesso!<br>Verifique sua caixa de entrada.`;
-                                $("#alert").empty();
-                                $("#alert").append(h6);
-                                $("#alert").removeClass();
-                                $("#alert").addClass("alert alert-success alert-dismissible fade show");
-                                $("#alert").show();
-                                $("#email").val("");
-                                $("#user").val("");
-                                setTimeout(function(){ 
-                                    window.location='/index'
-                                }, 7000);
-                            }
+                        }),
+                        success: function(data, status){
+                            console.log(data)
+                            console.log(status)
+                            var h6 = `E-mail enviado com sucesso!<br>Verifique sua caixa de entrada.`;
+                            $("#alert").prop("style").removeProperty("opacity");
+                            $("#alert").empty();
+                            $("#alert").removeClass();
+                            $("#alert").append(h6);
+                            $("#alert").addClass("alert alert-success alert-dismissible fade show");
+                            $("#alert").show();
+                            $("#email").val("");
+                            $("#userEsqueci").val("");
+                            setTimeout(function(){ 
+                                window.location='/index'
+                            }, 7000);
                             
                         },
-                        error: function(data){
-                            var h6 = `E-mail não foi enviado, contate a aquipe de T.I`;
+                        error: function(data, status){
+                            var h6 = data.responseJSON.msg;
+                            $("#alert").prop("style").removeProperty("opacity");
+                            $("#alert").empty();
+                            $("#alert").removeClass();
                             $("#alert").append(h6);
                             $("#alert").addClass("alert alert-danger alert-dismissible fade show");
                             $("#alert").show();
                             window.setTimeout(function() {
                                 $("#alert").fadeTo(500, 0).slideUp(500, function(){
-                                    $(this).remove(); 
+                                     
                                 });
                             }, 15000);
                         },

@@ -3,9 +3,19 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Dashboard</title>
+    
+    {% if session.grupo == 'ADM' %}
+        <title>CDA | ADMIN</title>
+    {% elif session.grupo == 'TEC' %}
+        <title>CDA | TEC</title>
+    {% else %}
+        <title>CDA | VIG</title>
+    {% endif %} 
+    
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/logo6.png') }}">
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styleBase.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleModal.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='plugins/adminlte/adminlte.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='plugins/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='plugins/fontawesome/css/all.min.css') }}">
@@ -78,74 +88,16 @@
         </nav>
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <div class="brand-link">
-                <img class="brand-image img-circle elevation-3" src="{{ url_for('static', filename='img/logo4.png') }}" id="icon" alt="User Icon"/>
+                <img class="brand-image img-circle elevation-3" src="{{ url_for('static', filename='img/logo6.png') }}" id="icon" alt="User Icon"/>
                 <span class="brand-text font-weight-light">Controle</span>
             </div>
-            <div class="sidebar">
-                <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <li class="nav-item">
-                            <a href="/dashboard" class="nav-link">
-                                <i class="fa-solid fa-gauge icon-space"></i>
-                                <p class="font-p">
-                                    Dashboard
-                                    <!-- <span class="right badge badge-danger" style="font-size: 13px;">New</span> -->
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/dashboard" class="nav-link">
-                                <i class="fa-solid fa-newspaper icon-space"></i>
-                                <p class="font-p">
-                                    Relatórios
-                                    <!-- <span class="right badge badge-danger" style="font-size: 13px;">New</span> -->
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fa-solid fa-file-invoice icon-space"></i>
-                                <p class="font-p">
-                                    Consultar Log
-                                    <i class="right fas fa-angle-left font-icon"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="./index.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Controle Gerente</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="./index2.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Controle Terceiros</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="./index3.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Controle Chaves</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="./index3.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Manter Terceiro</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="./index3.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Manter Chaves</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>   
-                </nav>
-            </div>
+            {% if session.grupo == 'ADM' %}
+                {% include "public/menusAdm.html" %}
+            {% elif session.grupo == 'TEC' %}
+                {% include "public/menusTec.html" %}
+            {% else %}
+                {% include "public/menusVig.html" %}
+            {% endif %}                     
         </aside>
         <div class="content-wrapper" style="min-height: 521px;">
             {% block content %}

@@ -13,15 +13,15 @@ class EnviaEmail:
             msg = EmailMessage()
             msg['Subject'] = "Alteração de senha no CDA" #Assunto do E-mail
             msg["From"] = "" #Correspondente que vai aparcer no e-mail
-            msg["To"] = usuario.get_email() #Pra quem vai enviar
+            msg["To"] = usuario.email #Pra quem vai enviar
             msg.set_type("text/html")
             msg.set_content("Alteração de senha no CDA") 
             #Mensagem
             htmlMsg = f"""
-            <h3>Solicitação de alteração de senha do usuário {usuario.get_usuario()} foi aceita. Utilize a link abaixo para alterção da mesma.</h3>
+            <h3>Solicitação de alteração de senha do usuário {usuario.usuario} foi aceita. Utilize a link abaixo para alterção da mesma.</h3>
             <br>
             
-            <p><strong>Link:</strong> <a href='http://{self.ipServidor()}:6560/esqueci-senha/{usuario.get_hashSenhaNova()}'>http://{self.ipServidor()}:6560/esqueci-senha/{usuario.get_hashSenhaNova()}</a></p>
+            <p><strong>Link:</strong> <a href='http://{self.ipServidor()}:6560/esqueci-senha/{usuario.hashSenhaNova}'>http://{self.ipServidor()}:6560/esqueci-senha/{usuario.hashSenhaNova}</a></p>
             <br><br>
             
             E-mail enviado automaticamente. Não responder.<br>
@@ -38,7 +38,6 @@ class EnviaEmail:
         
         except:
             return False    
-        
         
     def ipServidor(self):
         interfaces = netifaces.interfaces()

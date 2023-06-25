@@ -1,0 +1,176 @@
+{% extends "public/base.html" %}
+{% block content %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleUsuarios.css') }}">
+{% endblock %}
+{% include "public/header.html" %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <script>
+                window.setTimeout(function() {
+                    $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                        $(this).remove(); 
+                    });
+                }, 10000);
+            </script>
+            <div class="alert alert-{{ category }} d-flex align-items-center alert-margin" role="alert">
+                <div>
+                    <h6>{{ message }}</h6>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+{% include "modal/modalLogin.html" %}
+<section class="content">
+    <div class="container-fluid p-0">
+        <div class="acoes p-1 mb-3">
+            <div class="botao">
+                {% if session.grupo != 'ADM' %}
+                    <a href="{{url_for('controleChaveVigcBlue.manutencaoChave')}}" class="btn btn-outline-secondary">Manutenção</a>
+                {% else %}
+                    <a href="{{url_for('controleChaveAdmcBlue.manutencaoChave')}}" class="btn btn-outline-secondary">Manutenção</a>
+                {% endif %}
+            </div>
+            <div class="botao">
+                {% if session.grupo != 'ADM' %}
+                    <a data-bs-toggle="modal" data-bs-target="#modalLogin" data-bs-acao="INCLUIR" data-bs-url="{{url_for('controleChaveVigcBlue.incluirRetiradaModalLogin')}}" data-bs-toggle="modal" class="btn btn-outline-success">Incluir</a>
+                {% else %} 
+                    <a href="{{url_for('controleChaveAdmcBlue.incluirRetirada')}}" class="btn btn-outline-success">Incluir</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="mb-3">
+            <div class="pesquisa">
+                <label for="">Pesquisa: </label>
+                <input type="text" class="input-pesquisa" id="searchField">
+            </div>
+        </div>
+        <div class="tabela p-3">
+            <div id="lista-retirada-chave"></div>
+        </div>
+    </div>
+</section>
+{% block script %}
+<script src="{{ url_for('static', filename='js/chave/dataChaveRet.js') }}"></script>
+<script src="{{ url_for('static', filename='js/chave/funcoes.js') }}"></script>
+<script>
+    if (dadosUser.length >= 7){
+        pagination = true
+    }else{
+        pagination = false
+    }
+
+    if (window.innerHeight > 900){
+        rowsPerPage = 12
+    }else{
+        rowsPerPage = 6
+    }
+
+    var table = $('#lista-retirada-chave').tableSortable({
+        data: dadosUser,
+        columns: colunasUser,
+        searchField: '#searchField',
+        responsive: {
+            600: {
+                columns: {
+                    formCode: 'Form Code',
+                    formName: 'Form Name',
+                },
+            },
+        },
+        rowsPerPage: 7,
+        pagination: pagination,
+        tableWillMount: function() {
+            console.log('table will mount')
+        },
+        tableDidMount: function() {
+            console.log('table did mount')
+        },
+        tableWillUpdate: function() {console.log('table will update')},
+        tableDidUpdate: function() {console.log('table did update')},
+        tableWillUnmount: function() {console.log('table will unmount')},
+        tableDidUnmount: function() {console.log('table did unmount')},
+        onPaginationChange: function(nextPage, setPage) {
+            setPage(nextPage);
+        }
+    });
+
+    $('#changeRows').on('change', function() {
+        table.updateRowsPerPage(parseInt($(this).val(), 10));
+    })
+
+    $('#rerender').click(function() {
+        table.refresh(true);
+    })
+
+    $('#distory').click(function() {
+        table.distroy();
+    })
+
+    $('#refresh').click(function() {
+        table.refresh();
+    })
+
+    $('#setPage2').click(function() {
+        table.setPage(1);
+    })
+</script>
+<!-- Ajax que envia a insformações digitadas no modal -->
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#btnEnviar").click(function(){
+            autenticacao()
+        });
+
+        $("#pssd").keypress(function(event){
+            if (event.which === 13 && $(this).is(':focus')) {
+                autenticacao()
+            }
+        })
+
+        $("#user").keypress(function(event){
+            if (event.which === 13 && $(this).is(':focus')) {
+                $('#pssd').focus();
+            }
+        })
+
+        function autenticacao(){
+            $.ajax({
+            url: $("#url").val(),
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            data:JSON.stringify({
+                usuario: $("#user").val(),
+                senha: $("#pssd").val(),
+            }),
+            success: function(data, status){
+                if ($("#acao").val() == "INCLUIR"){
+                    window.location='/vig/controle-chave/incluir-retirada'
+                }else{
+                    window.location='/index'
+                }
+            },
+            error: function(data, status){
+                var h6 = data.responseJSON.msg;
+                $("#alert").prop("style").removeProperty("opacity");
+                $("#alert").empty();
+                $("#alert").removeClass();
+                $("#alert").append(h6);
+                $("#alert").addClass("alert alert-danger alert-dismissible fade show");
+                $("#alert").show();
+                window.setTimeout(function() {
+                    $("#alert").fadeTo(500, 0).slideUp(500, function(){
+                    });
+                }, 15000);
+            },
+            });
+        }
+        
+    });
+</script>
+
+{% endblock %}
+{% endblock %}

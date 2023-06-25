@@ -1,9 +1,9 @@
-{% extends "administrador/base.html" %}
+{% extends "public/base.html" %}
 {% block content %}
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styleUsuarios.css') }}">
 {% endblock %}
-{% include "header.html" %}
+{% include "public/header.html" %}
 <section class="content">
     <div class="container-fluid p-2">
         <div id="alert" class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -22,7 +22,7 @@
                 </div>
                 <div class="col-5">
                     <label for="">E-mail:</label>
-                    <input type="text" name="email" id="email" class="form-control upper" autocomplete="off" tabindex="4" value="{% if context.usuario %}{{ context.usuario.email }}{% endif %}" required>
+                    <input type="email" name="email" id="email" class="form-control upper" autocomplete="off" tabindex="4" value="{% if context.usuario %}{{ context.usuario.email }}{% endif %}" required>
                 </div>
             </div>
             <div class="row mb-5">

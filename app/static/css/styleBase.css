@@ -61,3 +61,45 @@
 .upper{
     text-transform: uppercase;
 }
+
+.form-group{
+    display: flex;
+    align-items: center;
+    border-radius: 1rem;
+    margin-bottom: 0.3rem;
+}
+
+.form-group input{
+    padding-left: 30px !important;
+}
+
+.form-group i{
+    position: absolute;
+    z-index: 9999;
+    padding-left: 8px;
+    color: #000000ab
+}
+
+.ui-menu{
+    background-color: #ffffff;
+    list-style: none;
+    width: 2rem;
+    padding: 2px 2px 2px 5px;
+    border-radius: 0 0 0.5rem 0.5rem;
+    border: 1px solid #000000;
+}
+
+.ui-menu li:hover{
+    background-color: #a1a1a1;
+    padding: 2px 2px 2px 5px;
+    border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.ui-menu li:focus{
+    background-color: #a1a1a1;
+    border-radius: 0 0 0.5rem 0;
+}
+
+.header-titulo{
+    font-weight: 600;
+}

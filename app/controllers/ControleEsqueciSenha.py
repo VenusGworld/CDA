@@ -28,13 +28,13 @@ class ControleEsqueciSenha:
 
         user = Usuario()
         esqueciSenhaDao = EsqueciSenhaDao()
-        user.set_usuario(usuario)
-        user.set_email(email)
+        user.usuario = usuario
+        user.email = email
         respDao = esqueciSenhaDao.verificaUsuario(user)
         if respDao != 0:
             user.gerarHashSenhaNova()
             while True:
-                if esqueciSenhaDao.verificaHash(user.get_hashSenhaNova()):
+                if esqueciSenhaDao.verificaHash(user.hashSenhaNova):
                     break
                 else:
                     user.gerarHashSenhaNova()
@@ -72,8 +72,8 @@ class ControleEsqueciSenha:
     def trocaSenha(self, senha: str, hash: str) -> int:
         user = Usuario()
         user.gerarSenha(senha)
-        user.set_hashSenhaNova("")
-        user.set_senhaNova(False)
+        user.hashSenhaNova= ""
+        user.senhaNova = False
 
         esqueciSenhaDao = EsqueciSenhaDao()
         if esqueciSenhaDao.trocaSenha(hash, user):

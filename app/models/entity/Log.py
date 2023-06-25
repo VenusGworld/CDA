@@ -18,42 +18,68 @@ class Log:
     dadosAntigos: dict
     dadosNovos: dict
 
-    def set_acao(self, acao: str) -> None:
-        self.acao = acao
-
-    def set_dataHora(self, dataHora: datetime) -> None:
-        self.dataHora = dataHora
-
-    def set_observacao(self, observacao: str) -> None:
-        self.observacao = observacao
-
-    def set_usuario(self, usuario: Usuario) -> None:
-        self.usuario = usuario
-
-    def set_dadosAntigos(self, dadosAntigos: dict) -> None:
-        self.dadosAntigos = dadosAntigos
-
-    def set_dadosNovos(self, dadosNovos: dict) -> None:
-        self.dadosNovos = dadosNovos
-
-    def get_acao(self) -> str:
-        return self.acao
+    @property
+    def id(self) -> int:
+        return self._id
     
-    def get_dataHora(self) -> datetime:
-        return self.dataHora
+    @id.setter
+    def id(self, id: int) -> None:
+        self._id = id
+
+    @property
+    def acao(self) -> str:
+        return self._acao
     
-    def get_observacao(self) -> str:
-        return self.observacao
+    @acao.setter
+    def acao(self, acao: str) -> None:
+        self._acao = acao
+
+    @property
+    def dataHora(self) -> datetime:
+        return self._dataHora
     
-    def get_usuario(self) -> Usuario:
-        return self.usuario
+    @dataHora.setter
+    def dataHora(self, dataHora: datetime) -> None:
+        self._dataHora = dataHora
+
+    @property
+    def observacao(self) -> str:
+        return self._observacao
+    
+    @observacao.setter
+    def observacao(self, observacao: str) -> None:
+        self._observacao = observacao
+    
+    @property
+    def usuario(self) -> Usuario:
+        return self._usuario
+    
+    @usuario.setter
+    def usuario(self, usuario: Usuario) -> None:
+        self._usuario = usuario
+    
+    @property
+    def dadosAntigos(self) -> dict:
+        return self._dadosAntigos
+    
+    @dadosAntigos.setter
+    def dadosAntigos(self, dadosAntigos: dict) -> None:
+        self._dadosAntigos = dadosAntigos
+    
+    @property
+    def dadosNovos(self) -> dict:
+        return self._dadosNovos
+    
+    @dadosNovos.setter
+    def dadosNovos(self, dadosNovos: dict) -> None:
+        self._dadosNovos = dadosNovos
     
     def converteDadosAntigos(self) -> bytes:
-        jsondata = json.dumps(self.dadosAntigos)
+        jsondata = json.dumps(self._dadosAntigos)
 
         return bytes(jsondata, encoding='utf-8')
     
     def converteDadosNovos(self) -> bytes:
-        jsondata = json.dumps(self.dadosNovos)
+        jsondata = json.dumps(self._dadosNovos)
 
         return bytes(jsondata, encoding='utf-8')

@@ -31,25 +31,26 @@ class ControleLogin:
         #########################################################################################
         
         usuario = Usuario()
-        usuario.set_usuario(user)
-        usuario.set_senha(pssd)
+        usuario.usuario = user
+        usuario.senha = pssd
         if user == "ADMIN":
             return self.loginAdm(usuario)
         else:
             loginDao = LoginDao()
             userResp = loginDao.consultaUsuario(usuario)
             if userResp != 0:
-                if usuario.get_delete() != True and usuario.get_ativo() != True: #Verifica se o usuário está inativo ou deletado
+                if usuario.delete != True and usuario.ativo != True: #Verifica se o usuário está inativo ou deletado
                     if usuario.verificarSenha(): #Verfica a senha digitada
                         self.verficaTrocaSenha(usuario) #Verifica se usuário que está logando solicitou troca de senha
                         login_user(userResp)
-                        session["nome"] = usuario.get_nome()
-                        session["usuario"] = usuario.get_usuario()
-                        if usuario.get_grupo() == "ADM":
+                        session["nome"] = usuario.nome
+                        session["usuario"] = usuario.usuario
+                        session["grupo"] = usuario.grupo
+                        if usuario.grupo == "ADM":
                             return 1
-                        elif usuario.get_grupo() == "TEC":
+                        elif usuario.grupo == "TEC":
                             return 2
-                        elif usuario.get_grupo() == "VIG":
+                        elif usuario.grupo == "VIG":
                             return 3
                     else:
                         return 4
@@ -78,8 +79,9 @@ class ControleLogin:
             if usuario.verificarSenha():
                 self.verficaTrocaSenha(usuario) #Verifica se usuário que está logando solicitou troca de senha 
                 login_user(userResp)
-                session["nome"] = usuario.get_nome()
-                session["usuario"] = usuario.get_usuario()
+                session["nome"] = usuario.nome
+                session["usuario"] = usuario.usuario
+                session["grupo"] = usuario.grupo
                 return 1
             else:
                 return 4
@@ -91,11 +93,54 @@ class ControleLogin:
             if usuario.verificarSenha():
                 self.verficaTrocaSenha(usuario) #Verifica se usuário que está logando solicitou troca de senha
                 login_user(userResp)
-                session["nome"] = usuario.get_nome()
-                session["usuario"] = usuario.get_usuario()
+                session["nome"] = usuario.nome
+                session["usuario"] = usuario.usuario
+                session["grupo"] = usuario.grupo
                 return 1
             else: 
                 return 4
+            
+    def loginVig(self, user: str, pssd: str) -> int:
+        #########################################################################################
+        # Essa função recebe o usuário e a senha para autenticação na hora da movimentação no 
+        # sistema.
+        
+        # PARAMETROS:
+        #   user = Usuário informado no form de login;
+        #   pssd = Senha informada no form de login.
+        
+        # RETORNOS:
+        #   return 1 = Retorna 1 se o usuário existe e está correto e usuário Administrador;
+        #   return 2 = Retorna 2 se o usuário existe e está correto e usuário Tec. Segurança;
+        #   return 3 = Retorna 3 se o usuário existe e está correto e usuário Vigilante;
+        #   return 4 = Retorna 4 se a senha/usuário estão incorretos;
+        #   return 5 = Retorna 5 se o usuário está inativo ou deletado;
+        #   return 6 = Retorna 6 se o usuário não existe;
+        #########################################################################################
+        
+        usuario = Usuario()
+        usuario.usuario = user
+        usuario.senha = pssd
+        loginDao = LoginDao()
+        userResp = loginDao.consultaUsuario(usuario)
+        if userResp != 0:
+            if usuario.delete != True and usuario.ativo != True: #Verifica se o usuário está inativo ou deletado
+                if usuario.verificarSenha(): #Verfica a senha digitada
+                    self.verficaTrocaSenha(usuario) #Verifica se usuário que está logando solicitou troca de senha
+                    login_user(userResp)
+                    session["usuarioVIG"] = usuario.usuario
+                    if usuario.grupo == "ADM":
+                        return 1
+                    elif usuario.grupo == "TEC":
+                        return 2
+                    elif usuario.grupo == "VIG":
+                        return 3
+                else:
+                    return 4
+            else:
+                return 5
+        else:
+            return 6
 
 
     def verficaTrocaSenha(self, usuario: Usuario) -> None:

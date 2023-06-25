@@ -1,0 +1,10 @@
+[25/06/2023 15:23:37] - Erro: <class 'sqlalchemy.exc.OperationalError'> (sqlite3.OperationalError) no such column: sys_user.us_hashNovaSenha
+[SQL: SELECT sys_user.id AS sys_user_id, sys_user.us_nome AS sys_user_us_nome, sys_user.us_email AS sys_user_us_email, sys_user.us_usuario AS sys_user_us_usuario, sys_user.us_senha AS sys_user_us_senha, sys_user.us_grupo AS sys_user_us_grupo, sys_user.us_complex AS sys_user_us_complex, sys_user."us_hashNovaSenha" AS "sys_user_us_hashNovaSenha", sys_user."us_senhaNova" AS "sys_user_us_senhaNova", sys_user.us_ativo AS sys_user_us_ativo, sys_user.us_delete AS sys_user_us_delete 
+FROM sys_user 
+WHERE sys_user.us_usuario = ?
+ LIMIT ? OFFSET ?]
+[parameters: ('DFSD', 1, 0)]
+(Background on this error at: https://sqlalche.me/e/14/e3q8) - Arquivo: D:\VS Code - Windows\Flask\Portaria\venvWin\lib\site-packages\sqlalchemy\engine\default.py - Linha: 736 - URL: http://127.0.0.1:5000/login
+
+[25/06/2023 15:25:31] - Erro: <class 'ValueError'> Invalid salt - Arquivo: D:\VS Code - Windows\Flask\Portaria\venvWin\lib\site-packages\bcrypt\__init__.py - Linha: 84 - URL: http://127.0.0.1:5000/login
+

@@ -22,109 +22,138 @@ class Usuario:
     senhaNova: bool
     hashSenhaNova: str
 
-    def set_id(self, id: int) -> None:
-        self.id = id
-
-    def set_nome(self, nome: str) -> None:
-        self.nome = nome
-
-    def set_email(self, email: str) -> None:
-        self.email = email
+    @property
+    def id(self) -> int:
+        return self._id
     
-    def set_grupo(self, grupo: str) -> None:
-        self.grupo = grupo
-        
-    def set_usuario(self, usuario: str) -> None:
-        self.usuario = usuario
+    @id.setter
+    def id(self, id: int) -> None:
+        self._id = id
 
-    def set_senha(self, senha: str) -> None:
-        self.senha = senha
+    @property
+    def nome(self) -> str:
+        return self._nome
     
-    def set_complex(self, complex: str) -> None:
-        self.complex = complex
+    @nome.setter
+    def nome(self, nome: str) -> None:
+        self._nome = nome
 
-    def set_ativo(self, ativo: bool) -> None:
-        self.ativo = ativo
+    @property
+    def email(self) -> str:
+        return self._email
     
-    def set_delete(self, delete: bool) -> None:
-        self.delete = delete
+    @email.setter
+    def email(self, email: str) -> None:
+        self._email = email
 
-    def set_senhaCompara(self, senhaCompara: str) -> None:
-        self.senhaCompara = senhaCompara
-
-    def set_senhaNova(self, senhaNova: bool) -> None:
-        self.senhaNova = senhaNova
-
-    def set_hashSenhaNova(self, hashSenhaNova: str) -> None:
-        self.hashSenhaNova = hashSenhaNova
-
-    def get_id(self) -> int:
-        return self.id
-
-    def get_nome(self) -> str:
-        return self.nome
-
-    def get_email(self) -> str:
-        return self.email
+    @property
+    def grupo(self) -> str:
+        return self._grupo
     
-    def get_grupo(self) -> str:
-        return self.grupo
-        
-    def get_usuario(self) -> str:
-        return self.usuario
+    @grupo.setter
+    def grupo(self, grupo: str) -> None:
+        self._grupo = grupo
+    
+    @property
+    def usuario(self) -> str:
+        return self._usuario
+    
+    @usuario.setter
+    def usuario(self, usuario: str) -> None:
+        self._usuario = usuario
+    
+    @property
+    def senha(self) -> str:
+        return self._senha
+    
+    @senha.setter
+    def senha(self, senha: str) -> None:
+        self._senha = senha
+    
+    @property
+    def complex(self) -> str:
+        return self._complex
+    
+    @complex.setter
+    def complex(self, complex: str) -> None:
+        self._complex = complex
+    
+    @property
+    def ativo(self) -> bool:
+        return self._ativo
+    
+    @ativo.setter
+    def ativo(self, ativo: bool) -> None:
+        self._ativo = ativo
+    
+    @property
+    def delete(self) -> bool:
+        return self._delete
+    
+    @delete.setter
+    def delete(self, delete: bool) -> None:
+        self._delete = delete
+    
+    @property
+    def senhaCompara(self) -> str:
+        return self._senhaCompara
+    
+    @senhaCompara.setter
+    def senhaCompara(self, senhaCompara: str) -> None:
+        self._senhaCompara = senhaCompara
+    
+    @property
+    def senhaNova(self) -> bool:
+        return self._senhaNova
+    
+    @senhaNova.setter
+    def senhaNova(self, senhaNova: bool) -> None:
+        self._senhaNova = senhaNova
+    
+    @property
+    def hashSenhaNova(self) -> str:
+        return self._hashSenhaNova
+    
+    @hashSenhaNova.setter
+    def hashSenhaNova(self, hashSenhaNova: str) -> None:
+        self._hashSenhaNova = hashSenhaNova
+    
 
-    def get_senha(self) -> str:
-        return self.senha
-    
-    def get_complex(self) -> str:
-        return self.complex
-
-    def get_ativo(self) -> bool:
-        return self.ativo
-    
-    def get_delete(self) -> bool:
-        return self.delete
-    
-    def get_senhaCompara(self) -> str:
-        return self.senhaCompara
-    
-    def get_senhaNova(self) -> bool:
-        return self.senhaNova
-    
-    def get_hashSenhaNova(self) -> str:
-        return self.hashSenhaNova
-    
     def gerarSenha(self, senha: str) -> None:
         salt = bcrypt.gensalt(8)
         hash = bcrypt.hashpw(senha.encode('utf-8'), salt)
-        self.senha = hash.decode("utf-8")
-        self.complex = salt.decode("utf-8")
+        self._senha = hash.decode("utf-8")
+        self._complex = salt.decode("utf-8")
         
 
     def verificarSenha(self) -> bool:
-        hash = bcrypt.hashpw(self.senha.encode('utf-8'), bytes(self.complex, 'utf-8'))
-        if hash.decode('utf-8') == self.senhaCompara:
+        print(self._senha)
+        hash = bcrypt.hashpw(self._senha.encode('utf-8'), bytes(self._complex, 'utf-8'))
+        if hash.decode('utf-8') == self._senhaCompara:
             return True
         else:
             return False
-        
+
+
     def toJson(self) -> dict:
         json = {
-            "id": self.id,
-            "us_nome": self.nome,
-            "us_email": self.email,
-            "us_usuario": self.usuario,
-            "us_senha": self.senha,
-            "us_grupo": self.grupo,
-            "us_complex": self.complex,
-            "us_ativo": self.ativo,
-            "us_delete": self.delete
+            "id": self._id,
+            "us_nome": self._nome,
+            "us_email": self._email,
+            "us_usuario": self._usuario,
+            "us_senha": self._senha,
+            "us_grupo": self._grupo,
+            "us_complex": self._complex,
+            "us_ativo": self._ativo,
+            "us_delete": self._delete
         }
 
         return json
     
+
     def toUsuario(self, dic: dict):
         pass
+
 
     def gerarHashSenhaNova(self):
         hash: list = []
@@ -132,9 +161,10 @@ class Usuario:
         for x in range(10):
             hash.append(randint(1, 9))
 
-        self.hashSenhaNova = "".join(map(str, hash))
-        self.senhaNova = True
+        self._hashSenhaNova = "".join(map(str, hash))
+        self._senhaNova = True
+
 
     def apagaHashSenhaNova(self):
-        self.hashSenhaNova = ""
-        self.senhaNova = False
+        self._hashSenhaNova = ""
+        self._senhaNova = False

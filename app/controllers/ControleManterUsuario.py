@@ -2,7 +2,7 @@ from ..models.entity.Usuario import Usuario
 from ..models.entity.Log import Log
 from ..models.dao.ManterUsuarioDao import ManterUsuarioDao
 from ..models.dao.ConsultaIdsDao import ConsultaIds
-from ..models.dao.GeraLogUsuarioDao import GeraLogUsuarioDao
+from ..models.dao.GeraLogDao import GeraLogDao
 from ..models.dao.VerificamovimentoDao import VerificaMovimentoDao
 from datetime import datetime
 from flask import session
@@ -16,7 +16,7 @@ Classe Controller para o CRUD do usuário
 
 class ControleManterUsuario:
 
-    def mostarUsuarios(self) -> list:
+    def mostarUsuarios(self) -> list[dict]:
         #########################################################################################
         # Essa função recupera os dados dos usuários de um objeto "ManterUsuarioDao" e cria uma 
         # lista de dicionários, onde cada dicionário representa um usuário e contém seu ID, nome, 
@@ -34,10 +34,10 @@ class ControleManterUsuario:
         listaDados = []
         for usuario in usuarios:
             dicUser = {
-                "id": usuario.get_id(),
-                "nome": usuario.get_nome(),
-                "usuario": usuario.get_usuario(),
-                "grupo": usuario.get_grupo(),
+                "id": usuario.id,
+                "nome": usuario.nome,
+                "usuario": usuario.usuario,
+                "grupo": usuario.grupo,
             }
 
             listaDados.append(dicUser)
@@ -80,15 +80,15 @@ class ControleManterUsuario:
         #########################################################################################
 
         self.usuarioNovo = Usuario()
-        self.usuarioNovo.set_nome(nome)
-        self.usuarioNovo.set_email(email)
-        self.usuarioNovo.set_usuario(user)
-        self.usuarioNovo.set_grupo(grupo)
+        self.usuarioNovo.nome = nome
+        self.usuarioNovo.email = email
+        self.usuarioNovo.usuario = user
+        self.usuarioNovo.grupo = grupo
         self.usuarioNovo.gerarSenha(senha)
-        self.usuarioNovo.set_hashSenhaNova("")
-        self.usuarioNovo.set_senhaNova(False)
-        self.usuarioNovo.set_ativo(False)
-        self.usuarioNovo.set_delete(False)
+        self.usuarioNovo.hashSenhaNova = ""
+        self.usuarioNovo.senhaNova = False
+        self.usuarioNovo.ativo = False
+        self.usuarioNovo.delete = False
 
         self.usuarioLogado = Usuario()
 
@@ -96,9 +96,9 @@ class ControleManterUsuario:
         if manterUsuarioDao.inserirUsuario(self.usuarioNovo): #Verifica o retorno do banco
             consultaIdUser = ConsultaIds()
             #Consulta id do usuário logado
-            self.usuarioLogado.set_id(consultaIdUser.consultaIdUserLogado(session["usuario"]))
+            self.usuarioLogado.id = consultaIdUser.consultaIdUserLogado(session["usuario"])
             #Consulta o ultimo id da tabela
-            self.usuarioNovo.set_id(consultaIdUser.consultaIdFinalUser())
+            self.usuarioNovo.id = consultaIdUser.consultaIdFinalUser()
             #Gera Log
             self.geraLogUsuario("INSERT")
             return True
@@ -130,23 +130,23 @@ class ControleManterUsuario:
 
         self.usuarioAntigo = manterUsuarioDao.mostarUsuarioDetalhado(id)
 
-        self.usuarioNovo.set_id(id)
-        self.usuarioNovo.set_nome(nome)
-        self.usuarioNovo.set_email(email)
-        self.usuarioNovo.set_usuario(user)
-        self.usuarioNovo.set_grupo(grupo)
-        self.usuarioNovo.set_senha(senha)
-        self.usuarioNovo.set_ativo(False)
-        self.usuarioNovo.set_delete(False)
-        self.usuarioNovo.set_complex(self.usuarioAntigo.get_complex())
+        self.usuarioNovo.id = id
+        self.usuarioNovo.nome = nome
+        self.usuarioNovo.email = email
+        self.usuarioNovo.usuario = user
+        self.usuarioNovo.grupo = grupo
+        self.usuarioNovo.senha = senha
+        self.usuarioNovo.ativo = False
+        self.usuarioNovo.delete = False
+        self.usuarioNovo.complex = self.usuarioAntigo.complex
 
         #Verifica se a senha teve alteração, se teve é gerada novo hash da senha nova
-        if self.usuarioAntigo.get_senha() != self.usuarioNovo.get_senha(): 
+        if self.usuarioAntigo.senha != self.usuarioNovo.senha: 
             self.usuarioNovo.gerarSenha(senha.upper())
 
         if manterUsuarioDao.editarUsuario(self.usuarioNovo):
             #Consulta id do usuário logado
-            self.usuarioLogado.set_id(consultaIdUser.consultaIdUserLogado(session["usuario"]))
+            self.usuarioLogado.id = consultaIdUser.consultaIdUserLogado(session["usuario"])
             #Gera Log
             self.geraLogUsuario("UPDATE")
             return True
@@ -177,10 +177,10 @@ class ControleManterUsuario:
 
         self.usuarioAntigo = manterUsuarioDao.mostarUsuarioDetalhado(id)
 
-        self.usuarioLogado.set_id(consultaIdUser.consultaIdUserLogado(session["usuario"]))
+        self.usuarioLogado.id = consultaIdUser.consultaIdUserLogado(session["usuario"])
         
         #Verifica se o usuário selecionado é o mesmo que o usuário logado
-        if id == self.usuarioLogado.get_id():
+        if id == self.usuarioLogado.id:
             return 1
         else:
             if verificaMovimentoDao.verificaMovimentoUsuario(id):
@@ -210,20 +210,20 @@ class ControleManterUsuario:
         #########################################################################################
 
         log = Log()
-        log.set_acao(acao)
-        log.set_dataHora(datetime.now())
-        log.set_observacao("")
-        log.set_usuario(self.usuarioLogado)
+        log.acao = acao
+        log.dataHora = datetime.now()
+        log.observacao = ""
+        log.usuario = self.usuarioLogado
 
         if acao == "INSERT":
-            log.set_dadosAntigos({"vazio": 0})
-            log.set_dadosNovos(self.usuarioNovo.toJson())
+            log.dadosAntigos = {"vazio": 0}
+            log.dadosNovos = self.usuarioNovo.toJson()
         elif acao == "UPDATE":
-            log.set_dadosAntigos(self.usuarioAntigo.toJson())
-            log.set_dadosNovos(self.usuarioNovo.toJson())
+            log.dadosAntigos = self.usuarioAntigo.toJson()
+            log.dadosNovos = self.usuarioNovo.toJson()
         else:
-            log.set_dadosAntigos(self.usuarioAntigo.toJson())
-            log.set_dadosNovos({"vazio": 0})
+            log.dadosAntigos = self.usuarioAntigo.toJson()
+            log.dadosNovos = {"vazio": 0}
 
-        logDao = GeraLogUsuarioDao()
-        logDao.inserirLog(log)
+        logDao = GeraLogDao()
+        logDao.inserirLogUsuario(log)

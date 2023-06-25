@@ -1,0 +1,100 @@
+section.modal-alert {
+    background-color: #00000080;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    position: fixed;
+    display: flex;
+    z-index: 999999;
+    pointer-events: auto;
+}
+
+/* Inicio Modal para integração*/
+    section.modal-alert div#card-alert {
+        width: 40rem;
+        height: auto;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 2rem;
+    }
+
+    section.modal-alert div#card-alert h2 {
+        color: #000;
+        padding: 0.3rem;
+        font-size: 25px;
+        float: right;
+    }
+
+    section.modal-alert div#card-alert hr {
+        width: 95%;
+    }
+
+    section.modal-alert div#card-alert p {
+        font-size: 15px;
+    }
+
+    section.modal-alert div#card-alert div#btns {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+    }
+
+    section.modal-alert div#card-alert div#btns a.btn-sim {
+        text-decoration: none;
+        color: #000;
+        cursor: pointer;
+        padding: 0.5rem;
+        margin-right: 15rem;
+        background-color: #004499;
+        font-weight: bold;
+        color: #fff;
+        border-radius: 5px;
+        border: 2px solid #004499;
+    }
+
+    section.modal-alert div#card-alert div#btns a.btn-nao {
+        text-decoration: none;
+        color: #000;
+        padding: 0.5rem;
+        background-color: #004499;
+        font-weight: bold;
+        color: #fff;
+        border-radius: 5px;
+        border: 2px solid #004499;
+    }
+
+    section.modal-alert div#loader {
+        width: 25rem;
+        height: auto;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 2rem;
+    }
+
+    section.modal-alert div#loader h2 {
+        font-size: 30px;
+        color: #000;
+    }
+
+    section.modal-alert div#loader hr {
+        width: 95%;
+    }
+
+    section.modal-alert div#loader p {
+        font-size: 15px;
+    }
+/* Termino Modal para integração*/

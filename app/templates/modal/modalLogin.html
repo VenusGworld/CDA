@@ -1,0 +1,39 @@
+<div class="modal fade" id="modalLogin" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+    aria-labelledby="staticBackdropLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Login</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <input type="text" class="url" id="url" style="display: none;">
+            <input type="text" class="acao" id="acao" style="display: none;">
+            <div class="alert" id="alert" style="display: none; margin-left: 1rem; margin-right: 1rem; margin-top: 1rem;" role="alert">
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <label for="">Usuário:</label>
+                        <div class="form-group">
+                            <i class="fa-solid fa-user"></i>
+                            <input type="text" class="form-control upper" id="user" name="user" maxlength="15" autofocus
+                                required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="">Senha:</label>
+                        <div class="form-group">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" class="form-control upper" id="pssd" name="pssd" maxlength="10"
+                                required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancelar</button>
+                <a type="submit" id="btnEnviar" class="btn btn-outline-success">Confirmar</a>
+            </div>
+        </div>
+    </div>
+</div>

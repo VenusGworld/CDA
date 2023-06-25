@@ -14,13 +14,13 @@
     <script type="text/javascript" src="{{ url_for('static', filename='plugins/jquery/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='plugins/jquery/jquery-ui.min.js') }}"></script>
 
-    <title>Document</title>
+    <title>CDA | LOGIN</title>
 </head>
 <body id="body">
     <div class="container-fluid centralizar">
         <div class="card-form">
             <div class="head-card">
-                <img style="width: 22%; margin-bottom: 1rem;" src="{{ url_for('static', filename='img/logo4.png') }}" id="icon" alt="User Icon"/>
+                <img style="width: 25%; margin-bottom: 0.5rem;" src="{{ url_for('static', filename='img/logo6.png') }}" id="icon" alt="User Icon"/>
             </div>
             <!-- Exibe Mensagem quando usuário ou senha esteja incorreto -->
             {% with message = get_flashed_messages() %}

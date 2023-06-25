@@ -1,5 +1,5 @@
 from ..Tables import SysUser
-from ...extensions.Database import DB
+from ...configurations.Database import DB
 
 """
 Classe Dao para consultar IDs do sistema

@@ -1,8 +1,8 @@
 from flask import Flask
-from .extensions import Database
-from .extensions import Auth
-from .extensions import Configuration
-from .extensions import Blueprint
+from .configurations import Database
+from .configurations import Auth
+from .configurations import Configuration
+from .configurations import Blueprint
 from flask_sock import Sock
 
 

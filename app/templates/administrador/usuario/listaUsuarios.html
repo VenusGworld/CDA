@@ -1,9 +1,9 @@
-{% extends "administrador/base.html" %}
+{% extends "public/base.html" %}
 {% block content %}
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styleUsuarios.css') }}">
 {% endblock %}
-{% include "header.html" %}
+{% include "public/header.html" %}
 {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
         {% for category, message in messages %}
@@ -22,7 +22,7 @@
         {% endfor %}
     {% endif %}
 {% endwith %}
-{% include "administrador/modal/modalExclusao.html" %}
+{% include "modal/modalExclusaoUsuario.html" %}
 <section class="content">
     <div class="container-fluid p-0">
         <div class="acoes p-1">
@@ -47,6 +47,12 @@
         pagination = true
     }else{
         pagination = false
+    }
+
+    if (window.innerHeight > 900){
+        rowsPerPage = 12
+    }else{
+        rowsPerPage = 6
     }
 
     var table = $('#lista-usuario').tableSortable({

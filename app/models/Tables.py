@@ -1,12 +1,12 @@
-from ..extensions.Database import DB
+from ..configurations.Database import DB
 from flask_login import UserMixin
 from sqlalchemy import Column, LargeBinary, Integer, String, Boolean, DateTime
 from datetime import datetime
 
 '''
 @author Fabio
-@version 1.0
-@since 01/06/2023
+@version 3.0
+@since 20/06/2023
 '''
 
 
@@ -19,12 +19,12 @@ class SysUser(UserMixin, DB.Model):
     us_senha = Column(String(65),  nullable=False)
     us_grupo = Column(String(5),  nullable=False)
     us_complex = Column(String(36), nullable=False)
-    us_hashNovaSenha = Column(Integer, nullable=False)
+    us_hashNovaSenha = Column(String(10), nullable=False)
     us_senhaNova = Column(Boolean, nullable=False)
     us_ativo = Column(Boolean, nullable=False)
     us_delete = Column(Boolean, nullable=False)
     
-    def __init__(self, nome: str, email: str, usuario: str, senha: str, grupo: str, complex: str, ativo: bool, delete: bool):
+    def __init__(self, nome: str, email: str, usuario: str, senha: str, grupo: str, complex: str, hashNovaSenha: str, senhaNova: bool, ativo: bool, delete: bool):
         #Função para instanciar um objeto para adcionar no banco
         self.us_nome = nome
         self.us_email = email
@@ -32,6 +32,8 @@ class SysUser(UserMixin, DB.Model):
         self.us_senha = senha
         self.us_grupo = grupo
         self.us_complex = complex
+        self.us_hashNovaSenha = hashNovaSenha
+        self.us_senhaNova = senhaNova
         self.us_ativo = ativo
         self.us_delete = delete
 
@@ -57,12 +59,14 @@ class CDA002(DB.Model):
     id_movChave = Column(Integer, primary_key=True, nullable=False)
     mch_dataRet = Column(String(8), nullable=False)
     mch_horaRet = Column(String(5), nullable=False)
+    mch_respRet = Column(String(45), nullable=False)
     mch_dataDev = Column(String(8))
     mch_horaDev = Column(String(5))
+    mch_respDev = Column(String(45))
     mch_delete = Column(Boolean, nullable=False)
     mch_idChav = Column(Integer, nullable=False)
 
-    def __init__(self, dataRet: str, horaRet: str, delete: str, idChave: int):
+    def __init__(self, dataRet: str, horaRet: str, delete: bool, idChave: int):
         #Função para instanciar um objeto para adcionar no banco
         self.mch_dataRet = dataRet
         self.mch_horaRet = horaRet
@@ -70,7 +74,7 @@ class CDA002(DB.Model):
         self.mch_idChav = idChave
 
 
-#Tabela de Log Mocimento Chave
+#Tabela de Log Movimento Chave
 class CDA001(DB.Model):
     id_logChave = Column(Integer, primary_key=True, nullable=False)
     lmch_dataHora = Column(DateTime, nullable=False)
@@ -92,25 +96,27 @@ class CDA001(DB.Model):
         self.lmch_idMov = idMov
 
 
-#Tabela de Gerente
+#Tabela de Funcionarios
 class CDA007(DB.Model):
-    id_Gerente = Column(Integer, primary_key=True, nullable=False)
-    ge_codigo = Column(String(6), nullable=False)
-    ge_nome = Column(String(45), nullable=False)
-    ge_maquina = Column(String(20), nullable=False)
-    ge_ativo = Column(Boolean, nullable=False)
-    ge_delete = Column(Boolean, nullable=False)
+    id_Funcionarios = Column(Integer, primary_key=True, nullable=False)
+    fu_cracha = Column(String(6), nullable=False)
+    fu_nome = Column(String(45), nullable=False)
+    fu_maquina = Column(String(20))
+    fu_gerente = Column(Boolean)
+    fu_ativo = Column(Boolean, nullable=False)
+    fu_delete = Column(Boolean, nullable=False)
 
-    def __init__(self, codigo: str, nome: str, maquina: str, ativo: bool, delete: bool):
+    def __init__(self, cracha: str, nome: str, ativo: bool, delete: bool, gerente: bool, maquina: str):
         #Função para instanciar um objeto para adcionar no banco
-        self.ge_codigo = codigo
-        self.ge_nome = nome
-        self.ge_maquina = maquina
-        self.ge_ativo = ativo
-        self.ge_delete = delete
+        self.fu_cracha = cracha
+        self.fu_nome = nome
+        self.fu_maquina = maquina
+        self.fu_gerente = gerente
+        self.fu_ativo = ativo
+        self.fu_delete = delete
     
 
-#Tabele de Movimento Gerente
+#Tabela de Movimento Gerente
 class CDA003(DB.Model):
     id_movGere = Column(Integer, primary_key=True, nullable=False)
     mge_dataEntra = Column(String(8),  nullable=False)
@@ -118,14 +124,14 @@ class CDA003(DB.Model):
     mge_dataSaid = Column(String(8))
     mge_horaSaid = Column(String(5))
     mge_delete = Column(Boolean, nullable=False)
-    mge_idGere = Column(Boolean, nullable=False)
+    mge_idFunc = Column(Boolean, nullable=False)
 
-    def __init__(self, dataEntrada: str, horaEntrada: str, delete: bool, idGere):
+    def __init__(self, dataEntrada: str, horaEntrada: str, delete: bool, idFunc: int):
         #Função para instanciar um objeto para adcionar no banco
         self.mge_dataEntra = dataEntrada
         self.mge_horaEntra = horaEntrada
         self.mge_delete = delete
-        self.mge_idGere = idGere
+        self.mge_idFunc = idFunc
     
 
 #Tabela de Log Movimento Gerente
@@ -173,9 +179,9 @@ class CDA004(DB.Model):
     id_movTerc = Column(Integer, primary_key=True, nullable=False)
     mte_dataEntra = Column(String(8), nullable=False)
     mte_horaEntra = Column(String(5), nullable=False)
-    mte_empresa = Column(String(45), nullable=False)
-    mte_veiculo = Column(String(45), nullable=False)
-    mte_placa = Column(String(10), nullable=False)
+    mte_empresa = Column(String(45))
+    mte_veiculo = Column(String(45))
+    mte_placa = Column(String(10))
     mte_visitado = Column(String(45), nullable=False)
     mte_motivo = Column(String(45), nullable=False)
     mte_dataSaid = Column(String(8), nullable=False)
@@ -226,9 +232,8 @@ class CDA010(DB.Model):
     lch_dadosAntigos = Column(LargeBinary)
     lch_dadosNovos = Column(LargeBinary)
     lch_idUsua = Column(Integer, nullable=False)
-    lch_idChav = Column(Integer, nullable=False)
 
-    def __init__(self, dataHora: datetime, acao: str, observacao: str, dadosAntigos: bytes, dadosNovos: bytes, idUsua: int, idChav: int):
+    def __init__(self, dataHora: datetime, acao: str, observacao: str, dadosAntigos: bytes, dadosNovos: bytes, idUsua: int):
         #Função para instanciar um objeto para adcionar no banco
         self.lch_dataHora = dataHora
         self.lch_acao = acao
@@ -236,29 +241,24 @@ class CDA010(DB.Model):
         self.lch_dadosAntigos = dadosAntigos
         self.lch_dadosNovos = dadosNovos
         self.lch_idUsua = idUsua
-        self.lch_idChav = idChav
 
 
-#Tabela de Log Gerente
+#Tabela de Log Funcionarios
 class CDA011(DB.Model):
-    id_logGere = Column(Integer, primary_key=True, nullable=False)
-    lge_dataHora = Column(DateTime, nullable=False)
-    lge_acao = Column(String(45), nullable=False)
-    lge_observacao = Column(String(120), nullable=False)
-    lge_dadosAntigos = Column(LargeBinary)
-    lge_dadosNovos = Column(LargeBinary)
-    lge_idUsua = Column(Integer, nullable=False)
-    lge_idGere = Column(Integer, nullable=False)
+    id_logFunc = Column(Integer, primary_key=True, nullable=False)
+    lfu_dataHora = Column(DateTime, nullable=False)
+    lfu_acao = Column(String(45), nullable=False)
+    lfu_dadosAntigos = Column(LargeBinary)
+    lfu_dadosNovos = Column(LargeBinary)
+    lfu_idUsua = Column(Integer, nullable=False)
 
-    def __init__(self, dataHora: datetime, acao: str, observacao: str, dadosAntigos: bytes, dadosNovos: bytes, idUsua: int, idGere: int):
+    def __init__(self, dataHora: datetime, acao: str, dadosAntigos: bytes, dadosNovos: bytes, idUsua: int):
         #Função para instanciar um objeto para adcionar no banco
-        self.lge_dataHora = dataHora
-        self.lge_acao = acao
-        self.lge_observacao = observacao
-        self.lge_dadosAntigos = dadosAntigos
-        self.lge_dadosNovos = dadosNovos
-        self.lge_idUsua = idUsua
-        self.lge_idGere = idGere
+        self.lfu_dataHora = dataHora
+        self.lfu_acao = acao
+        self.lfu_dadosAntigos = dadosAntigos
+        self.lfu_dadosNovos = dadosNovos
+        self.lfu_idUsua = idUsua
 
 
 #Tabela de Log Terceiro
@@ -270,9 +270,8 @@ class CDA012(DB.Model):
     lte_dadosAntigos = Column(LargeBinary)
     lte_dadosNovos = Column(LargeBinary)
     lte_idUsua = Column(Integer, nullable=False)
-    lte_idTerc = Column(Integer, nullable=False)
 
-    def __init__(self, dataHora: datetime, acao: str, observacao: str, dadosAntigos: bytes, dadosNovos: bytes, idUsua: int, idTerc: int):
+    def __init__(self, dataHora: datetime, acao: str, observacao: str, dadosAntigos: bytes, dadosNovos: bytes, idUsua: int):
         #Função para instanciar um objeto para adcionar no banco
         self.lte_dataHora = dataHora
         self.lte_acao = acao
@@ -280,7 +279,6 @@ class CDA012(DB.Model):
         self.lte_dadosAntigos = dadosAntigos
         self.lte_dadosNovos = dadosNovos
         self.lte_idUsua = idUsua
-        self.lte_idTerc = idTerc
 
 
 #Tabela de Log Usuário

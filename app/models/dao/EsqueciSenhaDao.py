@@ -1,6 +1,6 @@
 from ..entity.Usuario import Usuario
 from ..Tables import SysUser
-from ...extensions.Database import DB
+from ...configurations.Database import DB
 import sys
 
 """
@@ -25,16 +25,13 @@ class EsqueciSenhaDao:
         #   return False = Retorna False caso ocorra erro na inserção.
         #########################################################################################
 
-        sysuser = SysUser.query.get(usuario.get_id())
-        sysuser.us_hashNovaSenha = usuario.get_hashSenhaNova()
-        sysuser.us_senhaNova = usuario.get_senhaNova()
+        sysuser = SysUser.query.get(usuario.id)
+        sysuser.us_hashNovaSenha = usuario.hashSenhaNova
+        sysuser.us_senhaNova = usuario.senhaNova
 
-        try:
-            DB.session.commit()
-            return True
-        except Exception as erro:
-            print(erro, sys.exc_info()[0])
-            return False
+        DB.session.commit()
+        return True
+        
 
 
     def verificaUsuario(self, usuario: Usuario):
@@ -49,17 +46,17 @@ class EsqueciSenhaDao:
         #   return 0 = Retrona 0 caso não encontre o usuário.
         #########################################################################################
 
-        sysuser = SysUser.query.filter(SysUser.us_usuario==usuario.get_usuario(), SysUser.us_email==usuario.get_email(), SysUser.us_ativo==False, SysUser.us_delete==False).first()
+        sysuser = SysUser.query.filter(SysUser.us_usuario==usuario.usuario, SysUser.us_email==usuario.email, SysUser.us_ativo==False, SysUser.us_delete==False).first()
         if sysuser:
-            usuario.set_id(sysuser.id)
-            usuario.set_nome(sysuser.us_nome)
-            usuario.set_grupo(sysuser.us_grupo)
-            usuario.set_complex(sysuser.us_complex)
-            usuario.set_ativo(sysuser.us_ativo)
-            usuario.set_delete(sysuser.us_delete)
-            usuario.set_senhaCompara(sysuser.us_senha)
-            usuario.set_hashSenhaNova(sysuser.us_hashNovaSenha)
-            usuario.set_senhaNova(sysuser.us_senhaNova)
+            usuario.id = sysuser.id
+            usuario.nome = sysuser.us_nome
+            usuario.grupo = sysuser.us_grupo
+            usuario.complex = sysuser.us_complex
+            usuario.ativo = sysuser.us_ativo
+            usuario.delete = sysuser.us_delete
+            usuario.senhaCompara = sysuser.us_senha
+            usuario.hashSenhaNova = sysuser.us_hashNovaSenha
+            usuario.senhaNova = sysuser.us_senhaNova
             return usuario
         else:
             return 0
@@ -100,16 +97,13 @@ class EsqueciSenhaDao:
 
         sysuser = SysUser.query.filter(SysUser.us_hashNovaSenha==hash).first()
 
-        sysuser.us_senha = usuario.get_senha()
-        sysuser.us_complex = usuario.get_complex()
-        sysuser.us_senhaNova = usuario.get_senhaNova()
-        sysuser.us_hashNovaSenha = usuario.get_hashSenhaNova()
+        sysuser.us_senha = usuario.senha
+        sysuser.us_complex = usuario.complex
+        sysuser.us_senhaNova = usuario.senhaNova
+        sysuser.us_hashNovaSenha = usuario.hashSenhaNova
 
-        try:
-            DB.session.commit()
-            return True
-        except Exception as erro:
-            print(erro, sys.exc_info()[0])
-            return False
+        DB.session.commit()
+        return True
+        
 
 

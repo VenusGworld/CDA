@@ -1,6 +1,6 @@
 from ..entity.Usuario import Usuario
 from ..Tables import SysUser
-from ...extensions.Database import DB
+from ...configurations.Database import DB
 import sys
 import os
 from configparser import ConfigParser
@@ -28,17 +28,17 @@ class ManterUsuarioDao:
 
         lisUsuarios = []
 
-        sysusers = SysUser.query.filter(SysUser.us_ativo!=1, SysUser.us_delete!=1).all()
+        sysusers = SysUser.query.filter(SysUser.us_ativo!=True, SysUser.us_delete!=True)
         for sysuser in sysusers:
             user = Usuario()
-            user.set_id(sysuser.id)
-            user.set_nome(sysuser.us_nome)
-            user.set_email(sysuser.us_email)
-            user.set_usuario(sysuser.us_usuario)
-            user.set_senha(sysuser.us_senha)
-            user.set_grupo(sysuser.us_grupo)
-            user.set_ativo(sysuser.us_ativo)
-            user.set_delete(sysuser.us_delete)
+            user.id = sysuser.id
+            user.nome = sysuser.us_nome
+            user.email = sysuser.us_email
+            user.usuario = sysuser.us_usuario
+            user.senha = sysuser.us_senha
+            user.grupo = sysuser.us_grupo
+            user.ativo = sysuser.us_ativo
+            user.delete = sysuser.us_delete
             lisUsuarios.append(user)
         return lisUsuarios
     
@@ -57,15 +57,15 @@ class ManterUsuarioDao:
         sysuser = SysUser.query.get(id)
         
         usuario = Usuario()
-        usuario.set_id(sysuser.id)
-        usuario.set_nome(sysuser.us_nome)
-        usuario.set_email(sysuser.us_email)
-        usuario.set_usuario(sysuser.us_usuario)
-        usuario.set_senha(sysuser.us_senha)
-        usuario.set_complex(sysuser.us_complex)
-        usuario.set_grupo(sysuser.us_grupo)
-        usuario.set_ativo(sysuser.us_ativo)
-        usuario.set_delete(sysuser.us_delete)
+        usuario.id = sysuser.id
+        usuario.nome = sysuser.us_nome
+        usuario.email = sysuser.us_email
+        usuario.usuario = sysuser.us_usuario
+        usuario.senha = sysuser.us_senha
+        usuario.complex = sysuser.us_complex
+        usuario.grupo = sysuser.us_grupo
+        usuario.ativo = sysuser.us_ativo
+        usuario.delete = sysuser.us_delete
         
         return usuario
     
@@ -82,26 +82,22 @@ class ManterUsuarioDao:
         #   return False = Retorna False caso ocorra erro na inserção.
         #########################################################################################
 
-        if usuario.get_usuario() != "ADMIN": #Verifica se o usuário para inserção é o ADMIN
-            sysuser = SysUser(usuario=usuario.get_usuario(), senha=usuario.get_senha(),
-                            email=usuario.get_email(), nome=usuario.get_nome(),
-                            grupo=usuario.get_grupo(), complex=usuario.get_complex(),
-                            hashNovaSenha=usuario.get_hashSenhaNova(), senhaNova=usuario.get_senhaNova(),
-                            ativo=usuario.get_ativo(), delete=usuario.get_delete())
+        if usuario.usuario != "ADMIN": #Verifica se o usuário para inserção é o ADMIN
+            sysuser = SysUser(usuario=usuario.usuario, senha=usuario.senha,
+                            email=usuario.email, nome=usuario.nome,
+                            grupo=usuario.grupo, complex=usuario.complex,
+                            hashNovaSenha=usuario.hashSenhaNova, senhaNova=usuario.senhaNova,
+                            ativo=usuario.ativo, delete=usuario.delete)
         else:
-            sysuser = SysUser(usuario=usuario.get_usuario(), senha=usuario.get_senhaCompara(),
-                            email=usuario.get_email(), nome=usuario.get_nome(),
-                            grupo=usuario.get_grupo(), complex=usuario.get_complex(),
-                            hashNovaSenha=usuario.get_hashSenhaNova(), senhaNova=usuario.get_senhaNova(),
-                            ativo=usuario.get_ativo(), delete=usuario.get_delete())
+            sysuser = SysUser(usuario=usuario.usuario, senha=usuario.senhaCompara,
+                            email=usuario.email, nome=usuario.nome,
+                            grupo=usuario.grupo, complex=usuario.complex,
+                            hashNovaSenha=usuario.hashSenhaNova, senhaNova=usuario.senhaNova,
+                            ativo=usuario.ativo, delete=usuario.delete)
             
-        try:
-            DB.session.add(sysuser)
-            DB.session.commit()
-            return True
-        except Exception as erro:
-            print(erro, sys.exc_info()[0])
-            return False
+        DB.session.add(sysuser)
+        DB.session.commit()
+        return True
 
 
     def editarUsuario(self, usuario: Usuario) -> bool:
@@ -116,22 +112,19 @@ class ManterUsuarioDao:
         #   return False = Retorna False caso ocorra erro na alteração.
         #########################################################################################
 
-        sysuser = SysUser.query.get(usuario.get_id())
-        sysuser.us_nome = usuario.get_nome()
-        sysuser.us_email = usuario.get_email()
-        sysuser.us_usuario = usuario.get_usuario()
-        sysuser.us_senha = usuario.get_senha()
-        sysuser.us_grupo = usuario.get_grupo()
-        sysuser.us_complex = usuario.get_complex()
-        sysuser.us_ativo = usuario.get_ativo()
-        sysuser.us_delete = usuario.get_delete()
+        sysuser = SysUser.query.get(usuario.id)
+        sysuser.us_nome = usuario.nome
+        sysuser.us_email = usuario.email
+        sysuser.us_usuario = usuario.usuario
+        sysuser.us_senha = usuario.senha
+        sysuser.us_grupo = usuario.grupo
+        sysuser.us_complex = usuario.complex
+        sysuser.us_ativo = usuario.ativo
+        sysuser.us_delete = usuario.delete
 
-        try:
-            DB.session.commit()
-            return True
-        except Exception as erro:
-            print(erro, sys.exc_info()[0])
-            return False
+        DB.session.commit()
+        return True
+        
         
 
     def excluirUsuario(self, id: int) -> bool:
@@ -149,12 +142,9 @@ class ManterUsuarioDao:
         sysuser = SysUser.query.get(id)
         sysuser.us_delete = True
 
-        try:
-            DB.session.commit()
-            return True
-        except Exception as erro:
-            print(erro, sys.exc_info()[0])
-            return False
+        DB.session.commit()
+        return True
+       
         
     def inativaUsuario(self, id: int) -> bool:
         #########################################################################################
@@ -171,12 +161,9 @@ class ManterUsuarioDao:
         sysuser = SysUser.query.get(id)
         sysuser.us_ativo = True
         
-        try:
-            DB.session.commit()
-            return True
-        except Exception as erro:
-            print(erro, sys.exc_info()[0])
-            return False
+        DB.session.commit()
+        return True
+        
 
 
     def adicionaAdm(self, usuario: Usuario):
@@ -193,13 +180,13 @@ class ManterUsuarioDao:
         arquivo = ConfigParser()
         arquivo.read(f"{os.path.dirname(os.path.realpath(__file__))}/variaveis/auth.ini")
         
-        usuario.set_nome(arquivo.get("MasterUser", "usuario"))
-        usuario.set_senhaCompara(arquivo.get("MasterUser", "senha"))
-        usuario.set_complex(arquivo.get("MasterUser", "complex"))
-        usuario.set_nome(arquivo.get("MasterUser", "nome"))
-        usuario.set_email(arquivo.get("MasterUser", "email"))
-        usuario.set_grupo(arquivo.get("MasterUser", "grupo"))
-        usuario.set_hashSenhaNova('')
-        usuario.set_senhaNova(False)
-        usuario.set_ativo(False)
-        usuario.set_delete(False)
+        usuario.nome = arquivo.get("MasterUser", "usuario")
+        usuario.senhaCompara = arquivo.get("MasterUser", "senha")
+        usuario.complex = arquivo.get("MasterUser", "complex")
+        usuario.nome = arquivo.get("MasterUser", "nome")
+        usuario.email = arquivo.get("MasterUser", "email")
+        usuario.grupo = arquivo.get("MasterUser", "grupo")
+        usuario.hashSenhaNova = ''
+        usuario.senhaNova = False 
+        usuario.ativo = False
+        usuario.delete = False

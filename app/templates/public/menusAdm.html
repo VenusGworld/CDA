@@ -1,0 +1,156 @@
+<div class="sidebar">
+    <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <li class="nav-item">
+                <a href="{{url_for('dashAdmBlue.dashboardAdm')}}" class="nav-link {% if context.active == 'dashboard' %}active{% endif %}">
+                    <i class="fa-solid fa-gauge icon-space"></i>
+                    <p class="font-p">
+                        Dashboard
+                        <!-- <span class="right badge badge-danger" style="font-size: 13px;">New</span> -->
+                    </p>
+                </a>
+            </li>
+            <li class="nav-item {% if context.active in ['controlGer', 'controlTerc', 'controlChav'] %}menu-open{% endif %}">
+                <a href="#" class="nav-link">
+                    <i class="fa-solid fa-person-walking-arrow-loop-left icon-space"></i>
+                    <p class="font-p">
+                        Controles
+                        <i class="right fas fa-angle-left font-icon"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="./index.html" class="nav-link {% if context.active == 'controlGer' %}active{% endif %}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Gerentes</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="./index2.html" class="nav-link {% if context.active == 'controlTerc' %}active{% endif %}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Terceiros</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{url_for('controleChaveAdmcBlue.controleChave')}}" class="nav-link {% if context.active == 'controlChav' %}active{% endif %}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Chaves</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item {% if context.active in ['cadUser', 'cadTerc', 'cadFunc', 'cadChave'] %}menu-open{% endif %}">
+                <a href="#" class="nav-link">
+                    <i class="fa-solid fa-user-plus icon-space"></i>
+                    <p class="font-p">
+                        Cadastro
+                        <i class="right fas fa-angle-left font-icon"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="./index.html" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Terceiro</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{url_for('funcionarioAdmBlue.listaFuncionariosAdm')}}" class="nav-link {% if context.active == 'cadFunc' %}active{% endif %}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Funcionário</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="./index3.html" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Chave</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{url_for('usuarioAdmBlue.listaUsuariosAdm')}}" class="nav-link {% if context.active == 'cadUser' %}active{% endif %}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Usuário</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="/dashboard" class="nav-link">
+                    <i class="fa-solid fa-newspaper icon-space"></i>
+                    <p class="font-p">
+                        Relatórios
+                        <!-- <span class="right badge badge-danger" style="font-size: 13px;">New</span> -->
+                    </p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fa-solid fa-file-invoice icon-space"></i>
+                    <p class="font-p">
+                        Consultar Log
+                        <i class="right fas fa-angle-left font-icon"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="./index.html" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Controle Gerentes</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="./index2.html" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Controle Terceiros</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="./index3.html" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Controle Chaves</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="./index3.html" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Manter Terceiro</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="./index3.html" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Manter Chaves</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="./index3.html" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Manter Gerente</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="./index3.html" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Manter Usuário</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="./index3.html" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Mensagem</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="/dashboard" class="nav-link">
+                    <i class="fa-solid fa-message icon-space"></i>
+                    <p class="font-p">
+                        Mensagem
+                        <!-- <span class="right badge badge-danger" style="font-size: 13px;">New</span> -->
+                    </p>
+                </a>
+            </li>
+        </ul>   
+    </nav>
+</div>

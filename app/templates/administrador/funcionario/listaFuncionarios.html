@@ -1,0 +1,121 @@
+{% extends "public/base.html" %}
+{% block content %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleUsuarios.css') }}">
+{% endblock %}
+{% include "public/header.html" %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <script>
+                window.setTimeout(function() {
+                    $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                        $(this).remove(); 
+                    });
+                }, 10000);
+            </script>
+            <div class="alert alert-{{ category }} d-flex align-items-center alert-margin" role="alert">
+                <div>
+                    <h6>{{ message }}</h6>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+{% include "modal/modalExclusaoUsuario.html" %}
+{% if context.modal == 1 %}
+    {% include "modal/modalIntegracao.html" %}
+{% endif %}
+<section class="content">
+    <div class="container-fluid p-0">
+        <div class="acoes p-1 mb-3">
+            <div class="botao">
+                <div class="botao">
+                    <a href="{{url_for('funcionarioAdmBlue.listaFuncionariosAdmModalIntegracao')}}" class="btn btn-outline-success">Atualizar base</a>
+                </div>
+            </div>
+            <div class="botao">
+                <div class="botao">
+                    <a href="{{url_for('funcionarioAdmBlue.cadastroFuncionarioAdm')}}" class="btn btn-outline-success">Incluir Funcionário</a>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="pesquisa">
+                <label for="">Pesquisa: </label>
+                <input type="text" class="input-pesquisa" id="searchField">
+            </div>
+        </div>
+        </div>
+        <div class="tabela p-3">
+            <div id="lista-funcionarios"></div>
+        </div>
+    </div>
+</section>
+{% block script %}
+<script src="{{ url_for('static', filename='js/funcionario/dataFunc.js') }}"></script>
+<script src="{{ url_for('static', filename='js/funcionario/funcoes.js') }}"></script>
+<script>
+    if (dadosFunc.length >= 7){
+        pagination = true
+    }else{
+        pagination = false
+    }
+
+    if (window.innerHeight > 900){
+        rowsPerPage = 12
+    }else{
+        rowsPerPage = 6
+    }
+
+    var table = $('#lista-funcionarios').tableSortable({
+        data: dadosFunc,
+        columns: colunasFunc,
+        searchField: '#searchField',
+        responsive: {
+            600: {
+                columns: {
+                    formCode: 'Form Code',
+                    formName: 'Form Name',
+                },
+            },
+        },
+        rowsPerPage: rowsPerPage,
+        pagination: pagination,
+        tableWillMount: function() {
+            console.log('table will mount')
+        },
+        tableDidMount: function() {
+            console.log('table did mount')
+        },
+        tableWillUpdate: function() {console.log('table will update')},
+        tableDidUpdate: function() {console.log('table did update')},
+        tableWillUnmount: function() {console.log('table will unmount')},
+        tableDidUnmount: function() {console.log('table did unmount')},
+        onPaginationChange: function(nextPage, setPage) {
+            setPage(nextPage);
+        }
+    });
+
+    $('#changeRows').on('change', function() {
+        table.updateRowsPerPage(parseInt($(this).val(), 10));
+    })
+
+    $('#rerender').click(function() {
+        table.refresh(true);
+    })
+
+    $('#distory').click(function() {
+        table.distroy();
+    })
+
+    $('#refresh').click(function() {
+        table.refresh();
+    })
+
+    $('#setPage2').click(function() {
+        table.setPage(1);
+    })
+</script>
+{% endblock %}
+{% endblock %}

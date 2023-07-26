@@ -56,6 +56,6 @@
     margin-left: 1.5rem;
 }
 
-#alert{
-    display: none;
+.none{
+    display: none !important;
 }

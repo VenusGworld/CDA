@@ -1,5 +1,5 @@
-var exampleModal = document.getElementById('exampleModal')
-exampleModal.addEventListener('show.bs.modal', function (event) {
+var modalExcluir = document.getElementById('modalExcluir')
+modalExcluir.addEventListener('show.bs.modal', function (event) {
     // Button that triggered the modal
     var button = event.relatedTarget
     // Extract info from data-bs-* attributes
@@ -9,18 +9,17 @@ exampleModal.addEventListener('show.bs.modal', function (event) {
     // and then do the updating in a callback.
     //
     // Update the modal's content.
-    var msg = exampleModal.querySelector('.msg')
+    var msg = modalExcluir.querySelector('.msg')
     msg.textContent = "Deseja realmente excluir o usuário " + recipient + "?"
 
-    var link = exampleModal.querySelector('.btn-outline-danger')
-    link.setAttribute("href", `/adm/excluir-usuario/${recipient2}`);
+    var link = modalExcluir.querySelector('.btn-outline-danger')
+    link.setAttribute("href", `/admin/usuario/excluir-usuario/${recipient2}`);
 })
 
 
-
-function validarSenha(campo1, campo2){
+function validarUsuarioeSenha(campo1, campo2){
     /*
-    # Função que valida se as senha que foram informadas estão iguais.
+    # Função que valida se usuário já existe e se as senha que foram informadas estão iguais.
     
     # PARAMETROS:
     #   campo1 = Senha digitada no input de senha;
@@ -33,19 +32,27 @@ function validarSenha(campo1, campo2){
 
     var senha1 = document.getElementById(campo1).value;
     var senha2 = document.getElementById(campo2).value;
-    var div = document.getElementById("alert")
+    var div = document.getElementById("alert");
+    var msg = document.getElementById("msg");
 
     if (senha1 != "" && senha2 != "" && senha1 === senha2){
-        return true;
+        if (!verificaUsuario()){
+            return false;
+        }else{
+            return true;
+        }   
     }else{
-        div.style.display = "block";
+        div.classList.remove('none');
+        msg.innerHTML = "";
+        msg.innerHTML = "<h6 class='msg-alert'>As senhas não coincidem!</h6>";
         document.getElementById(campo1).focus(); //Exibe mensagem de erro
         setTimeout(() =>{
-            div.style.display = "none";
+            div.classList.add('none');
         }, 5000);
         return false;
     }
 }
+
 
 function mostarSenha(button){
     var inputSenha = document.getElementById("senha");
@@ -63,20 +70,60 @@ function mostarSenha(button){
 }
 
 
-function fechaAlert(){
-    /*
-    # Função que fecha o alert da função validarSenha(campo1, campo2).
-    
-    # PARAMETROS:
-    #   Não tem parametro.
-    
-    # RETORNOS:
-    #   Não tem retorno.
-    */
-    var div = document.getElementById("alert")
-    div.style.display = "none"
+function verificaUsuario(){
+    var div = document.getElementById("alert");
+    var msg = document.getElementById("msg");
+    var usuario = document.getElementById("usuario").value;
+    var botao = document.getElementById("btnGravar").value;
+    var respUsuario = false;
+
+    if (botao != "Editar"){
+        $.ajax({
+            url: `/usuario-pesquisa/${usuario.trim()}/0`,
+            type: 'GET',
+            async: false,
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function(data){
+                respUsuario = data;
+            }
+        });
+
+        if (respUsuario){
+            div.classList.remove('none');
+            msg.innerHTML = "";
+            msg.innerHTML = "<h6 class='msg-alert'>O usuário informado já existe</h6>";
+            setTimeout(() =>{
+                div.classList.add('none');
+            }, 6000);
+            return false;
+        }else{
+            return true
+        }
+    }else{
+        var idUsuario = document.getElementById("id").value;
+        
+        $.ajax({
+            url: `/usuario-pesquisa/${usuario.trim()}/${idUsuario.trim()}`,
+            type: 'GET',
+            async: false,
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function(data){
+                respUsuario = data;
+            }
+        });
+
+        if (respUsuario){
+            div.classList.remove('none');
+            msg.innerHTML = "";
+            msg.innerHTML = "<h6 class='msg-alert'>O usuário informado já existe</h6>";
+            setTimeout(() =>{
+                div.classList.add('none');
+            }, 6000);
+            return false;
+        }else{
+            return true
+        }
+    }
 }
-
-
-    
-

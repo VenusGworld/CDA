@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, abort, request
 from flask_login import login_required
-from ...extensions.Log import LogErro
+from ...extensions.LogErro import LogErro
 import sys
 import traceback
 
@@ -10,10 +10,10 @@ dashVigBlue = Blueprint("dashVigBlue", __name__)
 #Rota para a dashboard dos Vigilantes
 @dashVigBlue.route('/dashboard', methods=["GET"])
 @login_required
-def dashboardVig():
+def dashboard():
     try:
         context = {"titulo": "Dashboard", "active": "dashboard"}
-        return render_template("vigilante/dashboard.html", context=context)
+        return render_template("vigAdm/dashboard/dashboard.html", context=context)
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()

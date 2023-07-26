@@ -146,7 +146,7 @@ class ManterUsuarioDao:
         return True
        
         
-    def inativaUsuario(self, id: int) -> bool:
+    def inativarUsuario(self, id: int) -> bool:
         #########################################################################################
         # Essa Função inativa o usuário.
         
@@ -166,7 +166,7 @@ class ManterUsuarioDao:
         
 
 
-    def adicionaAdm(self, usuario: Usuario):
+    def adicionarAdm(self, usuario: Usuario):
         #########################################################################################
         # Essa Função acessa o arquivo .ini para completar os dados do usuário ADMIN.
         

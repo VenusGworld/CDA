@@ -87,7 +87,7 @@ class ControleLogin:
                 return 4
         else:
             controleManterUsuario = ManterUsuarioDao()
-            controleManterUsuario.adicionaAdm(usuario)
+            controleManterUsuario.adicionarAdm(usuario)
             controleManterUsuario.inserirUsuario(usuario)
             userResp = loginDao.consultaUsuario(usuario)
             if usuario.verificarSenha():

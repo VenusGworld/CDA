@@ -1,6 +1,6 @@
 from ..entity.Usuario import Usuario
 from datetime import datetime
-import json
+import json as js
 
 """
 Classe Log
@@ -17,6 +17,15 @@ class Log:
     usuario: Usuario
     dadosAntigos: dict
     dadosNovos: dict
+
+    def __init__(self) -> None:
+        self._id = None
+        self._acao = None
+        self._dataHora = None
+        self._observacao = None
+        self._usuario = None
+        self._dadosAntigos = None
+        self.dadosNovos = None
 
     @property
     def id(self) -> int:
@@ -73,13 +82,29 @@ class Log:
     @dadosNovos.setter
     def dadosNovos(self, dadosNovos: dict) -> None:
         self._dadosNovos = dadosNovos
-    
-    def converteDadosAntigos(self) -> bytes:
-        jsondata = json.dumps(self._dadosAntigos)
+
+
+    def converteBytesDadosAntigos(self) -> bytes:
+        jsondata = js.dumps(self._dadosAntigos)
 
         return bytes(jsondata, encoding='utf-8')
     
-    def converteDadosNovos(self) -> bytes:
-        jsondata = json.dumps(self._dadosNovos)
+    
+    def converteBytesDadosNovos(self) -> bytes:
+        jsondata = js.dumps(self._dadosNovos)
 
         return bytes(jsondata, encoding='utf-8')
+    
+
+    def converteDictDadosAntigos(self, json) -> None:
+        jsonData = json.decode("utf-8")
+        jsonData = js.loads(jsonData)
+
+        self.dadosAntigos = jsonData
+
+
+    def converteDictDadosNovos(self, json) -> None:
+        jsonData = json.decode("utf-8")
+        jsonData = js.loads(jsonData)
+
+        self.dadosNovos = jsonData

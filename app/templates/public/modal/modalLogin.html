@@ -1,0 +1,92 @@
+<div class="modal fade" id="modalLogin" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+    aria-labelledby="staticBackdropLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Login</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <input type="text" class="urlDest" id="urlDest" style="display: none;">
+            <input type="text" class="acao" id="acao" style="display: none;">
+            <input type="text" class="idModalLogin" id="idModalLogin" style="display: none;">
+            <div class="alert" id="alert-modal-login" style="display: none; margin-left: 1rem; margin-right: 1rem; margin-top: 1rem;" role="alert">
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <label for="">Usuário:</label>
+                        <div class="form-group">
+                            <i class="fa-solid fa-user"></i>
+                            <input type="text" class="form-control upper" id="user" name="user" maxlength="10" autocomplete="off" autofocus required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="">Senha:</label>
+                        <div class="form-group">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" class="form-control upper" id="pssd" name="pssd" maxlength="8" autocomplete="off" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancelar</button>
+                <a type="submit" id="btnEnviarLogin" class="btn btn-outline-success">Confirmar</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% block script %}
+<!-- Ajax que envia a insformações digitadas no modal de login para movimentação no sistema-->
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#btnEnviarLogin").click(function(){
+            autenticacao();
+        });
+
+        $("#user").keypress(function(event){
+            if (event.which === 13 && $(this).is(':focus')) {
+                $('#pssd').focus();
+            }
+        })
+
+        $("#pssd").keypress(function(event){
+            if (event.which === 13 && $(this).is(':focus')) {
+                autenticacao();
+            }
+        })
+
+        function autenticacao(){
+            var dest = $("#urlDest").val();
+            var acao = $("#acao").val();
+           
+            $.ajax({
+                url: "/modal-login",
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                data:JSON.stringify({
+                    usuario: $("#user").val(),
+                    senha: $("#pssd").val(),
+                }),
+                success: function(data, status){
+                    window.location = dest
+                },
+                error: function(data, status){
+                    var h6 = data.responseJSON.msg;
+                    $("#alert-modal-login").prop("style").removeProperty("opacity");
+                    $("#alert-modal-login").empty();
+                    $("#alert-modal-login").removeClass();
+                    $("#alert-modal-login").append(h6);
+                    $("#alert-modal-login").addClass("alert alert-danger alert-dismissible fade show");
+                    $("#alert-modal-login").show();
+                    window.setTimeout(() => {
+                        $("#alert-modal-login").fadeTo(500, 0).slideUp(500, () => {});
+                    }, 3500);
+                }
+            });
+        }
+        
+    });
+</script>
+{% endblock %}

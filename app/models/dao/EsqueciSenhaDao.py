@@ -4,7 +4,7 @@ from ...configurations.Database import DB
 import sys
 
 """
-Classe Dao para funções do esquci a senha
+Classe Dao para funções do esqueci a senha
 @tables - SysUser
 @author - Fabio
 @version - 1.0

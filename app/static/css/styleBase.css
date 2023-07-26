@@ -87,6 +87,7 @@
     padding: 2px 2px 2px 5px;
     border-radius: 0 0 0.5rem 0.5rem;
     border: 1px solid #000000;
+    z-index: 999999999999999;
 }
 
 .ui-menu li:hover{
@@ -102,4 +103,21 @@
 
 .header-titulo{
     font-weight: 600;
+}
+
+.icone-ativo{
+    color: #33961f;
+}
+
+.icone-inativo{
+    color: #dc3545;
+}
+
+.msg-alert{
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.btn-group{
+    background-color: #f4f6f9;
 }

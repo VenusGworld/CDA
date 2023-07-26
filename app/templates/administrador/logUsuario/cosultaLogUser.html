@@ -1,0 +1,231 @@
+{% extends "public/base.html" %}
+{% block content %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styleUsuarios.css') }}">
+{% endblock %}
+{% include "public/header.html" %}
+<section class="content">
+    <div class="container-fluid p-0">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
+                    role="tab" aria-controls="home" aria-selected="true"><i class="fa-solid fa-plus"></i>
+                    INSERT</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button"
+                    role="tab" aria-controls="profile" aria-selected="false"><i class="fa-solid fa-pen"></i>
+                    UPDATE</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button"
+                    role="tab" aria-controls="contact" aria-selected="false"><i class="fa-solid fa-check"></i>
+                    ACTIVE</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button"
+                    role="tab" aria-controls="contact" aria-selected="false"><i class="fa-solid fa-x"></i>
+                    DELETE</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div class="acoes p-1 mb-1">
+                    <div class="row mb-3 mt-3">
+                        <div class="pesquisa">
+                            <label for="">Pesquisa: </label>
+                            <input type="text" class="input-pesquisa" id="searchFieldInsert">
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <a class="btn btn-secondary dropdown" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-sliders"></i>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="">Meses Select:</label>
+                                        <input type="text" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tabela p-3">
+                    <div id="lista-logs-insert"></div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="acoes p-1 mb-1">
+                    <div class="row mb-3 mt-3">
+                        <div class="pesquisa">
+                            <label for="">Pesquisa: </label>
+                            <input type="text" class="input-pesquisa" id="searchFieldUpdate">
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <a class="btn btn-secondary dropdown" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-sliders"></i>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="">Meses Select:</label>
+                                        <input type="text" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tabela p-3 m-2">
+                    <div id="lista-logs-update"></div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                <div class="acoes p-1 mb-1">
+                    <div class="row mb-3 mt-3">
+                        <div class="pesquisa">
+                            <label for="">Pesquisa: </label>
+                            <input type="text" class="input-pesquisa" id="searchFieldDelete">
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <a class="btn btn-secondary dropdown" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-sliders"></i>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="">Meses Select:</label>
+                                        <input type="text" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tabela p-3 m-2">
+                    <div id="lista-logs-delete"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% block script %}
+<script src="{{ url_for('static', filename='js/logUsuario/dataLogInsert.js') }}"></script>
+<script>
+    if (dadosLogUserInsert.length >= 7) {
+        pagination = true
+    } else {
+        pagination = false
+    }
+
+    if (window.innerHeight > 900) {
+        rowsPerPage = 12
+    } else {
+        rowsPerPage = 6
+    }
+
+    var table = $('#lista-logs-insert').tableSortable({
+        data: dadosLogUserInsert,
+        columns: colunasLogUserInsert,
+        searchField: '#searchFieldInsert',
+        responsive: {
+            200: {
+                columns: colunasLogUserInsert,
+                data: dadosLogUserInsert
+            },
+        },
+        rowsPerPage: rowsPerPage,
+        pagination: pagination,
+        onPaginationChange: function (nextPage, setPage) {
+            setPage(nextPage);
+        }
+
+    });
+
+    $('#changeRows').on('change', function () {
+        table.updateRowsPerPage(parseInt($(this).val(), 10));
+    })
+</script>
+
+<script src="{{ url_for('static', filename='js/logUsuario/dataLogUpdate.js') }}"></script>
+<script>
+    if (dadosLogUserUpdate.length >= 7) {
+        pagination = true
+    } else {
+        pagination = false
+    }
+
+    if (window.innerHeight > 900) {
+        rowsPerPage = 12
+    } else {
+        rowsPerPage = 6
+    }
+
+    var table = $('#lista-logs-update').tableSortable({
+        data: dadosLogUserUpdate,
+        columns: colunasLogUserUpdate,
+        searchField: '#searchFieldUpdate',
+        responsive: {
+            200: {
+                columns: colunasLogUserUpdate,
+                data: dadosLogUserUpdate
+            },
+        },
+        rowsPerPage: rowsPerPage,
+        pagination: pagination,
+        onPaginationChange: function (nextPage, setPage) {
+            setPage(nextPage);
+        }
+
+    });
+
+    $('#changeRows').on('change', function () {
+        table.updateRowsPerPage(parseInt($(this).val(), 10));
+    })
+</script>
+
+<script src="{{ url_for('static', filename='js/logUsuario/dataLogDelete.js') }}"></script>
+<script>
+    if (dadosLogUserDelete.length >= 7) {
+        pagination = true
+    } else {
+        pagination = false
+    }
+
+    if (window.innerHeight > 900) {
+        rowsPerPage = 12
+    } else {
+        rowsPerPage = 6
+    }
+
+    var table = $('#lista-logs-delete').tableSortable({
+        data: dadosLogUserDelete,
+        columns: colunasLogUserDelete,
+        searchField: '#searchFieldDelete',
+        responsive: {
+            200: {
+                columns: colunasLogUserDelete,
+                data: dadosLogUserDelete
+            },
+        },
+        rowsPerPage: rowsPerPage,
+        pagination: pagination,
+        onPaginationChange: function (nextPage, setPage) {
+            setPage(nextPage);
+        }
+
+    });
+
+    $('#changeRows').on('change', function () {
+        table.updateRowsPerPage(parseInt($(this).val(), 10));
+    })
+</script>
+{% endblock %}
+{% endblock %}

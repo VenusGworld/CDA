@@ -1,0 +1,27 @@
+{% extends "public/base.html" %}
+{% block content %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleUsuarios.css') }}">
+{% endblock %}
+{% include "public/header.html" %}
+<section class="content">
+    <div class="container-fluid p-2">
+        <form action="{% if session.grupo != 'ADM'  %}{{url_for('chaveVigBlue.insertChave')}}{% else %}{{url_for('chaveAdmBlue.insertChave')}}{% endif %}" method="POST">
+            <div class="row mb-2">
+                <div class="col-3">
+                    <label for="">Código:</label>
+                    <input type="text" name="codigo" id="codigo" class="form-control upper" autocomplete="off" value="{{ context.codigo }}" required readonly>
+                </div>
+                <div class="col-9 mb-3">
+                    <label for="">Nome:</label>
+                    <input type="text" name="nome" id="nome" class="form-control upper" maxlength="30" autocomplete="off" tabindex="1" autofocus required>
+                </div>
+            </div>
+            <div class="btns">
+                <a href="javascript:history.back()" class="btn btn-outline-danger" type="button" name="btnCancelar" id="btnCancelar" tabindex="3">Cancelar</a>
+                <input type="submit" class="btn btn-outline-success" id="btnGravar" value="Inlcuir" tabindex="2">
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

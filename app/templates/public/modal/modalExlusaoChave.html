@@ -1,0 +1,50 @@
+<section class="modal-alert">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Aviso</h5>
+                    </div>
+                    {% if session.grupo != 'ADM' %}
+                        <form action="{{url_for('chaveVigBlue.deleteChave')}}" method="POST" onsubmit="return verificaObservacao(observacaoExcluir)">
+                    {% else %}
+                        <form action="{{url_for('chaveAdmBlue.deleteChave')}}" method="POST">
+                    {% endif %}
+                            <div class="modal-body">
+                                <div class="alert alert-danger alert-dismissible fade show none" id="alert-excluir" style="margin-left: 1rem; margin-right: 1rem; margin-top: 1rem;" role="alert">
+                                    <span>Observação precisa ter mais que 15 caracteres.</span>
+                                </div>
+                                <div class="mb-3">
+                                    <span class="msg-obs">Deseja realmente excluir a Chave {{ context.chave.nome }} ?</span>
+                                </div>
+                                <input type="text" name="idExcluir" id="idExcluir" value="{{ context.chave.id }}" style="display: none;">
+                                {% if session.grupo != 'ADM' %}
+                                    <div class="row">
+                                        <span class="obs-alert">* Observação deve ser preenchida</span>
+                                        <div class="col">
+                                            <label for="">Observação:</label>
+                                            <textarea class="form-control" id="observacaoExcluir" name="observacaoExcluir" rows="3" cols="50" maxlength="120"></textarea>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="row" style="display: none;">
+                                        <div class="col">
+                                            <label for="">Observação:</label>
+                                            <textarea class="form-control" id="observacaoExcluir" name="observacaoExcluir" rows="3" cols="50" maxlength="120"></textarea>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                {% if session.grupo != 'ADM' %}
+                                    <a href="/vig/chave/lista-chaves" class="btn btn-outline-primary">Cancelar</a>
+                                {% else %}
+                                    <a href="/admin/chave/lista-chaves" class="btn btn-outline-primary">Cancelar</a>
+                                {% endif %}
+                                <button type="submit" class="btn btn-outline-danger">Excluir</button>
+                            </div>
+                    </form>
+                </div>
+        </div>
+    </div>
+</section>

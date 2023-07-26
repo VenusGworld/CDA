@@ -8,6 +8,15 @@ class Funcionario:
     ativo: bool
     delete: bool
 
+    def __init__(self) -> None:
+        self._id = None
+        self._nome = None
+        self._cracha = None
+        self._maquina = None
+        self._gerente = None
+        self._ativo = None
+        self._delete = None
+
     @property
     def id(self) -> int:
         return self._id

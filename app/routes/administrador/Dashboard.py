@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, abort, request
 from flask_login import login_required
-from ...extensions.Log import LogErro
+from ...extensions.LogErro import LogErro
 import sys
 import traceback
 

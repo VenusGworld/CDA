@@ -59,18 +59,19 @@ class CDA002(DB.Model):
     id_movChave = Column(Integer, primary_key=True, nullable=False)
     mch_dataRet = Column(String(8), nullable=False)
     mch_horaRet = Column(String(5), nullable=False)
-    mch_respRet = Column(String(45), nullable=False)
+    mch_respRet = Column(Integer, nullable=False)
     mch_dataDev = Column(String(8))
     mch_horaDev = Column(String(5))
-    mch_respDev = Column(String(45))
+    mch_respDev = Column(Integer)
     mch_delete = Column(Boolean, nullable=False)
     mch_idChav = Column(Integer, nullable=False)
 
-    def __init__(self, dataRet: str, horaRet: str, delete: bool, idChave: int):
+    def __init__(self, dataRet: str, horaRet: str, delete: bool, idChave: int, idFunc: int):
         #Função para instanciar um objeto para adcionar no banco
         self.mch_dataRet = dataRet
         self.mch_horaRet = horaRet
         self.mch_delete = delete
+        self.mch_respRet = idFunc
         self.mch_idChav = idChave
 
 
@@ -83,9 +84,8 @@ class CDA001(DB.Model):
     lmch_dadosAntigos = Column(LargeBinary)
     lmch_dadosNovos = Column(LargeBinary)
     lmch_idUsua = Column(Integer, nullable=False)
-    lmch_idMov = Column(Integer, nullable=False)
 
-    def __init__(self, dataHora: datetime, acao: str, observacao: str, idUsua: int, idMov: int, dadosAntigos: bytes, dadosNovos: bytes):
+    def __init__(self, dataHora: datetime, acao: str, observacao: str, idUsua: int, dadosAntigos: bytes, dadosNovos: bytes):
         #Função para instanciar um objeto para adcionar no banco
         self.lmch_dataHora = dataHora
         self.lmch_acao = acao
@@ -93,12 +93,11 @@ class CDA001(DB.Model):
         self.lmch_dadosAntigos = dadosAntigos
         self.lmch_dadosNovos = dadosNovos
         self.lmch_idUsua = idUsua
-        self.lmch_idMov = idMov
 
 
 #Tabela de Funcionarios
 class CDA007(DB.Model):
-    id_Funcionarios = Column(Integer, primary_key=True, nullable=False)
+    id_funcionarios = Column(Integer, primary_key=True, nullable=False)
     fu_cracha = Column(String(6), nullable=False)
     fu_nome = Column(String(45), nullable=False)
     fu_maquina = Column(String(20))
@@ -124,7 +123,7 @@ class CDA003(DB.Model):
     mge_dataSaid = Column(String(8))
     mge_horaSaid = Column(String(5))
     mge_delete = Column(Boolean, nullable=False)
-    mge_idFunc = Column(Boolean, nullable=False)
+    mge_idFunc = Column(Integer, nullable=False)
 
     def __init__(self, dataEntrada: str, horaEntrada: str, delete: bool, idFunc: int):
         #Função para instanciar um objeto para adcionar no banco
@@ -210,9 +209,8 @@ class CDA008(DB.Model):
     lmte_dadosAntigos = Column(LargeBinary)
     lmte_dadosNovos = Column(LargeBinary)
     lmte_idUsua = Column(Integer, nullable=False)
-    lmte_idMov = Column(Integer, nullable=False)
 
-    def __init__(self, dataHora: datetime, acao: str, observacao: str, dadosAntigos: bytes, dadosNovos: bytes, idUsua: int, idMov: int):
+    def __init__(self, dataHora: datetime, acao: str, observacao: str, dadosAntigos: bytes, dadosNovos: bytes, idUsua: int):
         #Função para instanciar um objeto para adcionar no banco
         self.lmte_dataHora = dataHora
         self.lmte_acao = acao
@@ -220,7 +218,6 @@ class CDA008(DB.Model):
         self.lmte_dadosAntigos = dadosAntigos
         self.lmte_dadosNovos = dadosNovos
         self.lmte_idUsua = idUsua
-        self.lmte_idMov = idMov
 
     
 #Tabela de Log Chave
@@ -312,3 +309,10 @@ class CDA014(DB.Model):
         self.lus_acao = acao
         self.lme_mensagem = mensagem
         self.lte_idUsua = idUsua
+
+
+#Tabelas de Parametros
+class CDA015(DB.Model):
+    id_parametros = Column(Integer, primary_key=True, nullable=False)
+    par_codigo = Column(String(10), nullable=False)
+    par_valor = Column(String(10), nullable=False)

@@ -1,14 +1,18 @@
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify, flash, abort
 from flask_login import login_required
 from ...controllers.ControleManterUsuario import ControleManterUsuario
-from ...extensions.Log import LogErro
+from ...extensions.LogErro import LogErro
 import sys
 import traceback
 
 usuarioAdmBlue = Blueprint("usuarioAdmBlue", __name__)
 
+##############################################################
+# Rotas relacionadas ao CRUD de Usuários
+##############################################################
+
 #Rota para a tela de listagem de usuários
-@usuarioAdmBlue.route('/lista-usuarios', methods=["GET"])
+@usuarioAdmBlue.route('/usuario/lista-usuarios', methods=["GET"])
 @login_required
 def listaUsuariosAdm():
     try:
@@ -23,7 +27,7 @@ def listaUsuariosAdm():
 
 
 #Rota para a tela de cadastro de usuários
-@usuarioAdmBlue.route('/cadastro-usuario', methods=["GET"])
+@usuarioAdmBlue.route('/usuario/cadastro-usuario', methods=["GET"])
 @login_required
 def cadastroUsuarioAdm():
     try:
@@ -36,8 +40,9 @@ def cadastroUsuarioAdm():
         log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo[-1][0], tracebackInfo[-1][1], request.url)
         abort(500)
 
+
 #Rota para inserir usuário
-@usuarioAdmBlue.route('/cadastro-usuario',  methods=["POST"])
+@usuarioAdmBlue.route('/usuario/cadastro-usuario',  methods=["POST"])
 @login_required
 def insertUsuarioAdm():
     try:
@@ -54,7 +59,7 @@ def insertUsuarioAdm():
 
 
 #Rota para a tela para editar o usuário
-@usuarioAdmBlue.route('/editar-usuario/<id>',  methods=["GET"])
+@usuarioAdmBlue.route('/usuario/editar-usuario/<id>',  methods=["GET"])
 @login_required
 def editarUsuarioAdm(id):
     try:
@@ -71,7 +76,7 @@ def editarUsuarioAdm(id):
 
 
 #Rota para editar o usuário
-@usuarioAdmBlue.route('/editar-usuario',  methods=["POST"])
+@usuarioAdmBlue.route('/usuario/editar-usuario',  methods=["POST"])
 @login_required
 def editUsuarioAdm():
     try:
@@ -87,17 +92,14 @@ def editUsuarioAdm():
         abort(500)
     
 
-#Rota para a tela com modal de confirmação de exclusão do usuário
-@usuarioAdmBlue.route('/excluir-usuario/<id>',  methods=["GET"])
+#Rota para exclusão de usuário
+@usuarioAdmBlue.route('/usuario/excluir-usuario/<id>',  methods=["GET"])
 @login_required
 def deleteUsuarioAdm(id):
     try: 
         controleManterUsuario = ControleManterUsuario()
         respControle = controleManterUsuario.excluirUsuario(int(id))
-        if respControle == 0:
-            flash("Deu ruim", "danger")
-            return redirect(url_for("usuarioAdmBlue.listaUsuariosAdm"))
-        elif respControle == 1:
+        if respControle == 1:
             flash("Usuário logado não pode ser excluido", "danger")
             return redirect(url_for("usuarioAdmBlue.listaUsuariosAdm"))
         elif respControle == 2:

@@ -1,0 +1,147 @@
+<section class="modal-alert">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Devolução de Chave</h5>
+            </div>
+            <div class="modal-body overflow-scroll">
+                <div class="container">
+                    <div class="row">
+                        <div class="col mb-1 d-none">
+                            <input type="text" name="idMov" id="idMov" class="form-control upper" value="{{ context.movimento.id }}" readonly>
+                        </div>
+                        <div class="col mb-1">
+                            <label for="recipient-name" class="col-form-label">Chave:</label>
+                            <input type="text" name="chave" id="chave" class="form-control upper" value="{{ context.movimento.chave.nome }}" readonly>
+                        </div>
+                        <div class="col mb-1">
+                            <label for="recipient-name" class="col-form-label">Responsavel retirada:</label>
+                            <input type="text" name="respRet" id="respRet" class="form-control upper" value="{{ context.movimento.respRet.nome }}" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col mb-1">
+                            <label for="recipient-name" class="col-form-label">Data Retirada:</label>
+                            <input type="date" name="dataRet" id="dataRet" class="form-control" value="{{ context.movimento.dataRet | dataInput }}" readonly>
+                        </div>
+                        <div class="col mb-1">
+                            <label for="recipient-name" class="col-form-label">Hora Retirada:</label>
+                            <input type="time" name="horaRet" id="horaRet" class="form-control" value="{{ context.movimento.horaRet }}" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col mb-2">
+                            <label for="recipient-name" class="col-form-label">Data Devolução:</label>
+                            <input type="date" name="dataDev" id="dataDev" class="form-control" value="{{ context.dataAtual | dataInput }}" required>
+                        </div>
+                        <div class="col mb-2">
+                            <label for="recipient-name" class="col-form-label">Hora Devolução:</label>
+                            <input type="time" name="horaDev" id="horaDev" class="form-control" value="{{ context.dataAtual | horaInput }}" tabindex="25" required>
+                        </div>
+                    </div>
+                    <div class="row" id="check">
+                        <div class="col mb-1">
+                            <label for="recipient-name" class="col-form-label">Responsavel pela devolução diferente?</label>
+                            <input type="checkbox" value="False" name="checkResp"  id="checkResp" onclick="ativaResponsavel(this)">
+                        </div>
+                    </div>
+                    <div class="row" id="inputResp" style="display: none;">
+                        <div class="col mb-3">
+                            <label for="respDev" class="col-form-label">Responsavel devolução:</label>
+                            <input type="text" name="respDev" id="respDev" class="form-control upper">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                {% if session.grupo != 'ADM' %}
+                    <a href="{{url_for('controleChaveVigcBlue.controleChave')}}" class="btn btn-outline-danger">Cancelar</a>
+                {% else %}
+                    <a href="{{url_for('controleChaveAdmcBlue.controleChave')}}" class="btn btn-outline-danger">Cancelar</a>
+                {% endif %}
+                <button type="button" class="btn btn-outline-success" id="btnEnviarDev">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</section>
+{% block script %}
+<script>
+    function ativaResponsavel(radio){
+        var input = document.getElementById("inputResp");
+
+        if (radio.checked) {
+            radio.value = "True"
+            input.style.display = "block";
+        }else{
+            radio.value = "False"
+            input.style.display = "none";
+        }
+    }
+</script>
+<script>
+    $("#respDev").keyup(function(){
+        var nomeResp = this.value
+        if (nomeResp.length > 2){
+            
+            var responsaveis=[]
+            function carregaResponsaveis(){
+                $.getJSON(`/funcionario-pesquisa/${nomeResp}`, function(data, status, xhr){
+                    for (var i = 0; i < data.length; i++){
+                        responsaveis.push(data[i].funcionario)
+                    }
+                });
+            }
+            carregaResponsaveis();
+            
+
+            $("#respDev").autocomplete({
+                source: responsaveis,
+            });
+
+            $(".ui-helper-hidden-accessible").css("display", "none")
+        }
+    })
+</script>
+<script type="text/javascript">
+    {% if session.grupo == 'ADM' %}
+        var url = "{{url_for('controleChaveAdmcBlue.insertDevolucao')}}"
+        var dest = "{{url_for('controleChaveAdmcBlue.controleChave')}}"
+    {% else %}
+        var url = "{{url_for('controleChaveVigcBlue.insertDevolucao')}}"
+        var dest = "{{url_for('controleChaveVigcBlue.controleChave')}}"
+    {% endif %}
+
+    $(document).ready(function(){
+        $("#btnEnviarDev").click(function(){
+            $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            data:JSON.stringify({
+                idMov: $("#idMov").val(),
+                dataDev: $("#dataDev").val(),
+                horaDev: $("#horaDev").val(),
+                respDev: $("#respDev").val(),
+                check: $("#checkResp").prop("checked"),
+            }),
+            success: function(data, status){
+                window.location=dest
+            },
+            error: function(data, status){
+                var h6 = data.responseJSON.msg;
+                $("#alert").prop("style").removeProperty("opacity");
+                $("#alert").empty();
+                $("#alert").removeClass();
+                $("#alert").append(h6);
+                $("#alert").addClass("alert alert-danger alert-dismissible fade show");
+                $("#alert").show();
+                window.setTimeout(function() {
+                    $("#alert").fadeTo(500, 0).slideUp(500, function(){});
+                }, 15000);
+            },
+            });
+        });
+    });
+</script>
+{% endblock %}

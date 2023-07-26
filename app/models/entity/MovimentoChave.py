@@ -1,4 +1,5 @@
 from .Chave import Chave
+from .Funcionario import Funcionario
 
 """
 Classe Movimento Chave
@@ -11,10 +12,22 @@ class MovimentoChave:
     id: int
     dataRet: str
     horaRet: str
+    respRet: Funcionario
     dataDev: str
     horaDev: str
+    respDev: Funcionario
     chave: Chave
     delete: bool
+
+    def __init__(self) -> None:
+        self._id = None
+        self._dataRet = None
+        self._horaRet = None
+        self._respRet = None
+        self._dataDev = None
+        self._horaDev = None
+        self._chave = None
+        self._delete = None 
 
     @property
     def id(self) -> int:
@@ -72,6 +85,22 @@ class MovimentoChave:
     def delete(self, delete: bool) -> None:
         self._delete = delete
 
+    @property
+    def respRet(self) -> Funcionario:
+        return self._respRet
+    
+    @respRet.setter
+    def respRet(self, respRet: Funcionario) -> None:
+        self._respRet = respRet
+
+    @property
+    def respDev(self) -> Funcionario:
+        return self._respDev
+    
+    @respDev.setter
+    def respDev(self, respDev: Funcionario) -> None:
+        self._respDev = respDev
+
     def calcularTempo(self) -> str:
         pass
 
@@ -80,3 +109,18 @@ class MovimentoChave:
             return True
         else:
             return False
+        
+    def toJson(self) -> dict:
+        json = {
+            "id": self._id,
+            "dataRet": self._dataRet,
+            "horaret": self._horaRet,
+            "respRet": self._respRet.toJson(),
+            "dataDev":  self._dataDev,
+            "horaDev": self._horaDev,
+            "respDev": self._respDev.toJson(),
+            "chave": self._chave.toJson(),
+            "delete": self._delete
+        }
+
+        return json

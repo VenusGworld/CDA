@@ -13,8 +13,8 @@ $.ajax({
             nome: resp[x].nome,
             maquina: resp[x].maquina,
             gerente: resp[x].gerente,
-            editar: `<div style="width: 100%;display: flex;align-items: center;text-align: center;justify-content: center;"><a href="/admin/editar-funcionario/${resp[x].id}" class="btn btn-warning btn-sm"><i class="fa-regular fa-pen-to-square"></i></a></div>`,
-            excluir: `<div style="width: 100%;display: flex;align-items: center;text-align: center;justify-content: center;"><a class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="${resp[x].nome}" data-bs=${resp[x].id}><i class="fa-solid fa-trash-can"></i></a></div>`
+            editar: `<div style="width: 100%;display: flex;align-items: center;text-align: center;justify-content: center;"><a href="/admin/funcionario/editar-funcionario/${resp[x].id}" class="btn btn-warning btn-sm"><i class="fa-regular fa-pen-to-square"></i></a></div>`,
+            excluir: `<div style="width: 100%;display: flex;align-items: center;text-align: center;justify-content: center;"><a class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalExcluir" data-bs-whatever="${resp[x].nome}" data-bs=${resp[x].id}><i class="fa-solid fa-trash-can"></i></a></div>`
            }
            dadosFunc.push(dataresp)
         }

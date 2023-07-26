@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, jsonify, Response, abort
 from ...controllers.ControleEsqueciSenha import ControleEsqueciSenha
-from ...extensions.Log import LogErro
+from ...extensions.LogErro import LogErro
 import sys
 import traceback
 import json
@@ -35,7 +35,7 @@ def enviaDados():
             resp = Response(response=json.dumps({"msg": "E-mail não enviado, contate a equipe de T.I"}), status=500, mimetype="application/json")
             return resp
         else:
-            resp = Response(response=json.dumps({"msg": "E-mail/Usúario incorreto!"}), status=500, mimetype="application/json")
+            resp = Response(response=json.dumps({"msg": "E-mail/Usúario incorreto!"}), status=401, mimetype="application/json")
             return resp
     except:
         log = LogErro()

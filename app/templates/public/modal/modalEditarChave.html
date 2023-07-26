@@ -1,0 +1,59 @@
+<section class="modal-alert">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Editar Chave</h5>
+            </div>
+            {% if session.grupo != 'ADM' %}
+                <form action="{{url_for('chaveVigBlue.editChave')}}" method="POST" onsubmit="return verificaObservacao(observacaoEditar)">
+            {% else %}
+                <form action="{{url_for('chaveAdmBlue.editChave')}}" method="POST">
+            {% endif %}
+                <div class="modal-body">
+                    <div class="alert alert-danger alert-dismissible fade show none" id="alert-excluir" style="margin-left: 1rem; margin-right: 1rem; margin-top: 1rem;" role="alert">
+                        <span>Observação precisa ter mais que 15 caracteres.</span>
+                    </div>
+                    <div class="container">
+                        <div class="row mb-1">
+                            <div class="col mb-1 d-none">
+                                <input type="text" name="idChav" id="idChav" class="form-control upper" value="{{ context.chave.id }}" readonly>
+                            </div>
+                            <div class="col mb-1">
+                                <label for="recipient-name" class="col-form-label">Código:</label>
+                                <input type="text" name="codigoChav" id="codigoChav" class="form-control upper" value="{{ context.chave.codigo }}" readonly>
+                            </div>
+                            <div class="col mb-3">
+                                <label for="recipient-name" class="col-form-label">Chave:</label>
+                                <input type="text" name="nomeChave" id="nomeChave" class="form-control upper" value="{{ context.chave.nome }}">
+                            </div>
+                        </div>
+                        {% if session.grupo != 'ADM' %}
+                            <div class="row">
+                                <span class="obs-alert">* Observação deve ser preenchida</span>
+                                <div class="col">
+                                    <label for="">Observação:</label>
+                                    <textarea class="form-control" id="observacaoEditar" name="observacaoEditar" rows="3" cols="50" maxlength="120"></textarea>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="row" style="display: none;">
+                                <div class="col">
+                                    <label for="">Observação:</label>
+                                    <textarea class="form-control" id="observacaoEditar" name="observacaoEditar" rows="3" cols="50" maxlength="120"></textarea>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    {% if session.grupo != 'ADM' %}
+                        <a href="{{url_for('chaveVigBlue.listaChaves')}}" class="btn btn-outline-danger">Cancelar</a>
+                    {% else %}
+                        <a href="{{url_for('chaveAdmBlue.listaChaves')}}" class="btn btn-outline-danger">Cancelar</a>
+                    {% endif %}
+                    <button type="submit" class="btn btn-outline-success" id="btnEnviarDev">Confirmar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

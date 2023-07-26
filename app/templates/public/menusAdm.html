@@ -2,7 +2,7 @@
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <li class="nav-item">
-                <a href="{{url_for('dashAdmBlue.dashboardAdm')}}" class="nav-link {% if context.active == 'dashboard' %}active{% endif %}">
+                <a href="{{url_for('dashAdmBlue.dashboard')}}" class="nav-link {% if context.active == 'dashboard' %}active{% endif %}">
                     <i class="fa-solid fa-gauge icon-space"></i>
                     <p class="font-p">
                         Dashboard
@@ -61,7 +61,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="./index3.html" class="nav-link">
+                        <a href="{{url_for('chaveAdmBlue.listaChaves')}}" class="nav-link {% if context.active == 'cadChave' %}active{% endif %}">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Chave</p>
                         </a>
@@ -83,7 +83,7 @@
                     </p>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item {% if context.active in ['logUser', 'logFunc', 'logChave', 'logTerc', 'logControlChav', 'logControlTerc', 'logControlGere', 'logMsg'] %}menu-open{% endif %}">
                 <a href="#" class="nav-link">
                     <i class="fa-solid fa-file-invoice icon-space"></i>
                     <p class="font-p">
@@ -93,49 +93,49 @@
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="./index.html" class="nav-link">
+                        <a href="./index.html" class="nav-link {% if context.active == 'logControlGere' %}active{% endif %}">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Controle Gerentes</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="./index2.html" class="nav-link">
+                        <a href="./index2.html" class="nav-link {% if context.active == 'logControlTerc' %}active{% endif %}">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Controle Terceiros</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="./index3.html" class="nav-link">
+                        <a href="./index3.html" class="nav-link {% if context.active == 'logControlChav' %}active{% endif %}">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Controle Chaves</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="./index3.html" class="nav-link">
+                        <a href="./index3.html" class="nav-link {% if context.active == 'logTerc' %}active{% endif %}">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Manter Terceiro</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="./index3.html" class="nav-link">
+                        <a href="./index3.html" class="nav-link {% if context.active == 'logChave' %}active{% endif %}">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Manter Chaves</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="./index3.html" class="nav-link">
+                        <a href="./index3.html" class="nav-link {% if context.active == 'logFunc' %}active{% endif %}">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Manter Gerente</p>
+                            <p>Manter Funcionário</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="./index3.html" class="nav-link">
+                        <a href="{{url_for('logUserAdmBlue.listagemLog')}}" class="nav-link {% if context.active == 'logUser' %}active{% endif %}">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Manter Usuário</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="./index3.html" class="nav-link">
+                        <a href="./index3.html" class="nav-link {% if context.active == 'logMsg' %}active{% endif %}">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Mensagem</p>
                         </a>
@@ -143,7 +143,7 @@
                 </ul>
             </li>
             <li class="nav-item">
-                <a href="/dashboard" class="nav-link">
+                <a href="/dashboard" class="nav-link {% if context.active == 'mansagem' %}active{% endif %}">
                     <i class="fa-solid fa-message icon-space"></i>
                     <p class="font-p">
                         Mensagem

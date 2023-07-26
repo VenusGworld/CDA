@@ -22,6 +22,20 @@ class Usuario:
     senhaNova: bool
     hashSenhaNova: str
 
+    def __init__(self) -> None:
+        self._id = None
+        self._nome = None
+        self._email = None
+        self._grupo = None
+        self._usuario = None
+        self._senha = None
+        self._complex = None
+        self._ativo = None
+        self._delete = None
+        self._senhaCompara = None
+        self._senhaNova = None
+        self._hashSenhaNova = None
+
     @property
     def id(self) -> int:
         return self._id

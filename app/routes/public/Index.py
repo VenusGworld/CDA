@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, jsonify
 import os
 
 indexBlue = Blueprint("indexBlue", __name__)
@@ -8,3 +8,5 @@ indexBlue = Blueprint("indexBlue", __name__)
 @indexBlue.route("/index")
 def indeX():
     return render_template("public/index.html")
+
+

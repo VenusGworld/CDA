@@ -1,7 +1,7 @@
 from ..models.entity.Usuario import Usuario
 from ..models.entity.Log import Log
 from ..models.dao.ManterUsuarioDao import ManterUsuarioDao
-from ..models.dao.ConsultaIdsDao import ConsultaIds
+from ..models.dao.ConsultaIdsDao import ConsultaIdsDao
 from ..models.dao.GeraLogDao import GeraLogDao
 from ..models.dao.VerificamovimentoDao import VerificaMovimentoDao
 from datetime import datetime
@@ -19,8 +19,8 @@ class ControleManterUsuario:
     def mostarUsuarios(self) -> list[dict]:
         #########################################################################################
         # Essa função recupera os dados dos usuários de um objeto "ManterUsuarioDao" e cria uma 
-        # lista de dicionários, onde cada dicionário representa um usuário e contém seu ID, nome, 
-        # nome de usuário e grupo.
+        # lista de dicionários, onde cada dicionário representa um usuário e contém seu ID, nome 
+        # e grupo.
         
         # PARAMETROS:
         #   Não tem parametros.
@@ -94,7 +94,7 @@ class ControleManterUsuario:
 
         manterUsuarioDao = ManterUsuarioDao()
         if manterUsuarioDao.inserirUsuario(self.usuarioNovo): #Verifica o retorno do banco
-            consultaIdUser = ConsultaIds()
+            consultaIdUser = ConsultaIdsDao()
             #Consulta id do usuário logado
             self.usuarioLogado.id = consultaIdUser.consultaIdUserLogado(session["usuario"])
             #Consulta o ultimo id da tabela
@@ -110,12 +110,12 @@ class ControleManterUsuario:
         # Essa função recebe os dados de um usuário existente para a alterção.
         
         # PARAMETROS:
-        #   id = ID do usário que foi selecionado para a alterção;
-        #   nome = Nome do usuário informado no form de cadastro;
-        #   user = Username do usuário informado no form de cadastro;
-        #   email = E-mail do usuário informado no form de cadastro;
-        #   grupo = Grupo do usuário informado no form de cadastro;
-        #   senha = Senha do usuário informado no form de cadastro.
+        #   id = ID do usuário que foi selecionado para a alterção;
+        #   nome = Nome do usuário informado no form de alteração;
+        #   user = Username do usuário informado no form de alteração;
+        #   email = E-mail do usuário informado no form de alteração;
+        #   grupo = Grupo do usuário informado no form de alteração;
+        #   senha = Senha do usuário informado no form de alteração.
         
         # RETORNOS:
         #   return True = Retorna True em caso de sucesso na alteração do usuário;
@@ -126,7 +126,7 @@ class ControleManterUsuario:
         self.usuarioLogado = Usuario()
         self.usuarioAntigo = Usuario()
         manterUsuarioDao = ManterUsuarioDao()
-        consultaIdUser = ConsultaIds()    
+        consultaIdUser = ConsultaIdsDao()    
 
         self.usuarioAntigo = manterUsuarioDao.mostarUsuarioDetalhado(id)
 
@@ -171,7 +171,7 @@ class ControleManterUsuario:
 
         manterUsuarioDao = ManterUsuarioDao()
         verificaMovimentoDao = VerificaMovimentoDao()
-        consultaIdUser = ConsultaIds()
+        consultaIdUser = ConsultaIdsDao()
         self.usuarioLogado = Usuario()
         self.usuarioAntigo = Usuario()
 
@@ -184,21 +184,17 @@ class ControleManterUsuario:
             return 1
         else:
             if verificaMovimentoDao.verificaMovimentoUsuario(id):
-                if manterUsuarioDao.inativaUsuario(id):
+                if manterUsuarioDao.inativarUsuario(id):
                     self.geraLogUsuario("ACTIVE")
                     return 3
-                else:
-                    return 0
                 
             else:
                 if manterUsuarioDao.excluirUsuario(id):
                     self.geraLogUsuario("DELETE")
                     return 2
-                else:
-                    return 0
 
 
-    def geraLogUsuario(self, acao: str):
+    def geraLogUsuario(self, acao: str) -> None:
         #########################################################################################
         # Essa função gera log do INSERT, UPDATE e DELETE do usuário.
         

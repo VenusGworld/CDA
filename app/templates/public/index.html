@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/logo6.png') }}">
+
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styleIndex.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='plugins/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='plugins/fontawesome/css/all.min.css') }}">
@@ -46,12 +48,12 @@
                         <label for="">Usuário:</label>
                         <div class="form-group">
                             <i class="fa-solid fa-user"></i>
-                            <input type="text" class="form-control upper" id="user" name="user" maxlength="15" autofocus required>
+                            <input type="text" class="form-control upper" id="user" name="user" maxlength="10" autofocus required>
                         </div>
                         <label for="">Senha:</label>
                         <div class="form-group">
                             <i class="fa-solid fa-lock"></i>
-                            <input type="password" class="form-control upper" id="pssd" name="pssd" maxlength="10" required>
+                            <input type="password" class="form-control upper" id="pssd" name="pssd" maxlength="8" required>
                         </div>
                     </div>
                 </div>
@@ -86,7 +88,7 @@
                             <label for="usuario">Usuário:</label>
                             <div class="form-group">
                                 <i class="fa-solid fa-user"></i>
-                                <input type="text" id="userEsqueci" name="userEsqueci" class="form-control" style="text-transform: uppercase;" maxlength="15" required>
+                                <input type="text" id="userEsqueci" name="userEsqueci" class="form-control" style="text-transform: uppercase;" maxlength="10" required>
                             </div>
                         </div>
                         <div id="btns">

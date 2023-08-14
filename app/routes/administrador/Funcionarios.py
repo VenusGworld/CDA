@@ -1,12 +1,13 @@
-from flask import Blueprint, render_template, request, redirect, url_for, jsonify, flash, Response, abort
-from flask_login import login_required
+from flask import Blueprint, render_template, request, redirect, url_for, flash, Response, abort
 from ...controllers.ControleManterFuncionario import ControleManterFuncionario
 from ...extensions.Integracao import Integracao
 from ...extensions.LogErro import LogErro
-import json
-import sys
+from flask_login import login_required
 import distutils
 import traceback
+import json
+import sys
+
 
 funcionarioAdmBlue = Blueprint("funcionarioAdmBlue", __name__)
 
@@ -25,11 +26,11 @@ def listaFuncionariosAdm():
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
         tracebackInfo = traceback.extract_tb(tb)
-        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo[-1][0], tracebackInfo[-1][1], request.url)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
         abort(500)
 
 
-#Rota para a tela de listagem de Funcionários com modal de confirmação de para a atualização de base
+#Rota para o modal de confirmação de para a atualização de base
 @funcionarioAdmBlue.route('/funcionario/lista-funcionarios-modal-integracao', methods=["GET"])
 @login_required
 def listaFuncionariosAdmModalIntegracao():
@@ -40,7 +41,7 @@ def listaFuncionariosAdmModalIntegracao():
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
         tracebackInfo = traceback.extract_tb(tb)
-        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo[-1][0], tracebackInfo[-1][1], request.url)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
         abort(500)
 
 
@@ -58,7 +59,7 @@ def atualizaBaseFunc():
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
         tracebackInfo = traceback.extract_tb(tb)
-        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo[-1][0], tracebackInfo[-1][1], request.url)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
         abort(500)
         
 
@@ -73,7 +74,7 @@ def cadastroFuncionarioAdm():
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
         tracebackInfo = traceback.extract_tb(tb)
-        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo[-1][0], tracebackInfo[-1][1], request.url)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
         abort(500)
 
 
@@ -90,7 +91,7 @@ def insertFuncionarioAdm():
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
         tracebackInfo = traceback.extract_tb(tb)
-        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo[-1][0], tracebackInfo[-1][1], request.url)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
         abort(500)
 
 
@@ -107,11 +108,11 @@ def editarFuncionarioAdm(id):
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
         tracebackInfo = traceback.extract_tb(tb)
-        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo[-1][0], tracebackInfo[-1][1], request.url)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
         abort(500)
 
 
-#Rota para a tela para editar o Funcionário
+#Rota para editar o Funcionário
 @funcionarioAdmBlue.route('/funcionario/editar-funcionario',  methods=["POST"])
 @login_required
 def editFuncionarioAdm():
@@ -124,11 +125,11 @@ def editFuncionarioAdm():
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
         tracebackInfo = traceback.extract_tb(tb)
-        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo[-1][0], tracebackInfo[-1][1], request.url)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
         abort(500)
 
 
-#Rota para a tela com modal de confirmação de exclusão do Funcionário
+#Rota para a exclusão do Funcionário
 @funcionarioAdmBlue.route('/funcionario/excluir-funcionario/<id>',  methods=["GET"])
 @login_required
 def deleteFuncionarioAdm(id):
@@ -145,6 +146,6 @@ def deleteFuncionarioAdm(id):
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
         tracebackInfo = traceback.extract_tb(tb)
-        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo[-1][0], tracebackInfo[-1][1], request.url)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
         abort(500)
         

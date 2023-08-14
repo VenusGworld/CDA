@@ -1,15 +1,15 @@
-from flask import session
-from ..models.entity.MovimentoChave import MovimentoChave
-from ..models.entity.Log import Log
-from ..models.entity.Usuario import Usuario
-from ..models.entity.Funcionario import Funcionario
-from ..models.dao.ControleChaveDao import ControleChaveDao
 from ..models.dao.ManterFuncionarioDao import ManterFuncionarioDao
-from ..models.dao.ManterChaveDao import ManterChaveDao
-from ..models.dao.GeraLogDao import GeraLogDao
-from ..models.dao.ConsultaIdsDao import ConsultaIdsDao
 from ..extensions.FiltrosJson import filtroData, filtroNome
+from ..models.dao.ControleChaveDao import ControleChaveDao
+from ..models.entity.MovimentoChave import MovimentoChave
+from ..models.dao.ManterChaveDao import ManterChaveDao
+from ..models.dao.ConsultaIdsDao import ConsultaIdsDao
+from ..models.entity.Funcionario import Funcionario
+from ..models.dao.GeraLogDao import GeraLogDao
+from ..models.entity.Usuario import Usuario
+from ..models.entity.Log import Log
 from datetime import datetime
+from flask import session
 
 """
 Classe Controller para o controle de Chave
@@ -18,7 +18,7 @@ Classe Controller para o controle de Chave
 @since - 23/05/2023
 """
 
-class ControleCrontoleDeChave:
+class CrontoleDeChave:
 
     def inserirRetirada(self, dataRet: str, horaRet: str, codChave: str, crachaFun: str) -> bool:
         self.movimentoChaveNovo = MovimentoChave()
@@ -47,10 +47,10 @@ class ControleCrontoleDeChave:
             self.movimentoChaveNovo.id = consultaIds.consultaIdFinalMovChave()
             self.geraLogControleChave("RETIRADA", "")
             
-            return True
+        return True
         
     
-    def inserirDevolucao(self, id: int, dataDev: str, horaDev: str, respDev: str, checkbox) -> bool:
+    def inserirDevolucao(self, id: int, dataDev: str, horaDev: str, respDev: str, checkbox: bool) -> bool:
         self.movimentoChaveNovo = MovimentoChave()
         controleChaveDao = ControleChaveDao()
         manterFuncionarioDao = ManterFuncionarioDao()
@@ -72,7 +72,7 @@ class ControleCrontoleDeChave:
 
             self.geraLogControleChave("DEVOLUCAO", "")
             
-            return True
+        return True
         
 
     def consultaMovimentoDetalhado(self, id: int) -> MovimentoChave:

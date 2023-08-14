@@ -1,6 +1,7 @@
-from ..models.entity.Usuario import Usuario
 from ..models.dao.EsqueciSenhaDao import EsqueciSenhaDao
 from ..extensions.EnviaEmail import EnviaEmail
+from ..models.entity.Usuario import Usuario
+from datetime import datetime
 
 """
 Classe Controller para funções do esqueci a senha
@@ -59,14 +60,20 @@ class ControleEsqueciSenha:
         
         # RETORNOS:
         #   return 1 = Retorna 1 caso o hash não exista;
-        #   return 2 = Retorna 2 caso o hash exista.
+        #   return 2 = Retorna 2 caso o hash exista;
+        #   return 3 = Retorna 3 caso o hash exista mas o tempo já expirou.
         #########################################################################################
 
+        dataAtual = datetime.now()
         esqueciSenhaDao = EsqueciSenhaDao()
-        if esqueciSenhaDao.verificaHash(hash):
-            return 2
+        usuario = esqueciSenhaDao.verificaHashTempo(hash)
+        if usuario:
+            if str(dataAtual) > usuario.us_limiteNovasenha:
+                return 3
+            else:
+                return 1
         else:
-            return 1
+            return 2
         
 
     def trocaSenha(self, senha: str, hash: str) -> int:

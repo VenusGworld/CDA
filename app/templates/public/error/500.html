@@ -13,10 +13,12 @@
     <p id="desc">Erro no Servidor. Contate o setor de T.I</p>
     {% if session.grupo == 'ADM' %}
         <p class="link">Volte para o <a href="{{url_for('dashAdmBlue.dashboard')}}">Menu</a></p>
-    {% elif session.grupo == 'ETC' %}
+    {% elif session.grupo == 'TEC' %}
         <p class="link">Volte para o <a href="{{url_for('dashTecBlue.dashboardTec')}}">Menu</a></p>
+    {% elif session.grupo == 'VIG' %}
+        <p class="link">Volte para o <a href="{{url_for('dashVigBlue.dashboard')}}">Menu</a></p>        
     {% else %}
-        <p class="link">Volte para o <a href="{{url_for('dashVigBlue.dashboard')}}">Menu</a></p>
+        <p class="link">Volte para o <a href="{{url_for('indexBlue.index')}}">Index</a></p>
     {% endif %}
 </body>
 </html>

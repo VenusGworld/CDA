@@ -1,7 +1,6 @@
-from ..Tables import SysUser
-from ..entity.Usuario import Usuario
 from ...configurations.Database import DB
-import sys
+from ..entity.Usuario import Usuario
+from ..Tables import SysUser
 
 """
 Classe Dao para login no sistema
@@ -53,7 +52,7 @@ class LoginDao:
         #########################################################################################
 
         sysuser = SysUser.query.get(login.id)
-        if sysuser.us_senhaNova:
+        if sysuser.us_novaSenha:
             return True
         else:
             return False
@@ -73,7 +72,8 @@ class LoginDao:
 
         sysuser = SysUser.query.get(login.id)
         sysuser.us_hashNovaSenha = ""
-        sysuser.us_senhaNova = False
+        sysuser.us_novaSenha = False
+        sysuser.us_limiteNovasenha = ""
 
         DB.session.commit()
         return True

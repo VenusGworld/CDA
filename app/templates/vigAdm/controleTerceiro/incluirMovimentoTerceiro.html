@@ -1,0 +1,207 @@
+{% extends "public/base.html" %}
+{% block content %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleUsuarios.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleControleTerceiro.css') }}">
+{% endblock %}
+{% include "public/header.html" %}
+<section class="content">
+    <div class="container-fluid p-2">
+        <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+            <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+            </symbol>
+            <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+            </symbol>
+            <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+            </symbol>
+        </svg>
+        <div id="alert" class="alert alert-danger alert-dismissible d-flex align-items-center none" role="alert">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+            <div>
+                <h6 class="msg-alert"></h6>
+            </div>
+        </div>
+        <form id="formMovTerc" onsubmit="return verificaCPFs()">
+            <div class="row mb-2">
+                <div class="div-cpf col-3">
+                    <label for="" class="cpf">CPF:</label>
+                    <span class="alerta-cpf none">*CPF inválido</span>
+                    <input type="text" name="cpf_1" id="cpf_1" class="form-control upper" oninput="formatarCPF(this)" onkeyup="pesquisaCpf(this)" onblur="buscaCPF(this)" onkeypress="verificaCpfDiv(this)" maxlength="14" autocomplete="off" tabindex="1" required>
+                </div>
+                <div class="col-5">
+                    <label for="">Nome:</label>
+                    <input type="text" name="nome_1" id="nome_1" class="form-control upper" autocomplete="off" tabindex="2" required>
+                </div>
+                <div class="col-4">
+                    <label for="">Empresa:</label>
+                    <input type="text" name="empresa" id="empresa" class="form-control upper" onkeyup="pesquisaChave(this)" maxlength="45" autocomplete="off" tabindex="3">
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-2">
+                    <label for="">Placa:</label>
+                    <input type="text" name="placa" id="placa" class="form-control upper" oninput="formatarPlaca(this)" autocomplete="off" tabindex="4">
+                </div>
+                <div class="col-3">
+                    <label for="">Veículo:</label>
+                    <input type="text" name="veiculo" id="veiculo" class="form-control upper" maxlength="10" autocomplete="off" tabindex="5">
+                </div>
+                <div class="col-7">
+                    <label for="">Motivo:</label>
+                    <input type="text" name="motivo" id="motivo" class="form-control upper" autocomplete="off" tabindex="6" required>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-5">
+                    <label for="">Pessoa Visitada:</label>
+                    <input type="text" name="pessoaVisit" id="pessoaVisit" class="form-control upper" autocomplete="off" tabindex="7" required>
+                </div>
+                <div class="col-4">
+                    <label for="">Data Entrada:</label>
+                    <input type="date" name="dtEnt" id="dtEnt" class="form-control upper" maxlength="10" autocomplete="off" tabindex="8" value="{{ context.data | dataInput }}" required>
+                </div>
+                <div class="col-3">
+                    <label for="">Hora Entrada:</label>
+                    <input type="time" name="hrEnt" id="hrEnt" class="form-control upper" autocomplete="off" tabindex="9" value="{{ context.data | horaInput }}" required>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col">
+                    <label for="">Adicionar acompanhante?</label>
+                    <a class="btn btn-sm btn-outline-success" onclick="adicionarInput()" tabindex="10"><i class="fa-solid fa-plus"></i></a>
+                </div>
+            </div>
+            <div id="inputs-container">
+            </div>
+            <div class="btns">
+                {% if session.grupo != 'ADM' %}
+                    <a href="{{url_for('controleTercVigBlue.controleTerceiro')}}" class="btn btn-outline-danger" type="button" name="btnCancelar" id="btnCancelar" tabindex="14">Cancelar</a>
+                {% else %}
+                    <a href="{{url_for('controleTercAdmBlue.controleTerceiro')}}" class="btn btn-outline-danger" type="button" name="btnCancelar" id="btnCancelar" tabindex="14">Cancelar</a>
+                {% endif %}
+                <input type="submit" class="btn btn-outline-success" id="btnGravar" value="Incluir" tabindex="13">
+            </div>
+        </form>
+    </div>
+</section>
+{% block script %}
+<script src="{{ url_for('static', filename='js/ControleTerceiro/funcoes.js') }}"></script>
+<script>
+    document.getElementById('cpf_1').addEventListener('input', function(event) {
+        verificaCpfDiv(this);
+    });
+</script>
+<script>
+    $("#pessoaVisit").keyup(function(){
+        var nomeResp = this.value
+        if (nomeResp.length > 2){
+            
+            var pessoas=[]
+            function carregaPessoas(){
+                $.getJSON(`/funcionario-pesquisa/${nomeResp}`, function(data, status, xhr){
+                    for (var i = 0; i < data.length; i++){
+                        pessoas.push(data[i].funcionario)
+                    }
+                });
+            }
+            carregaPessoas();
+
+            $("#pessoaVisit").autocomplete({
+                source: pessoas,
+            });
+
+            $(".ui-helper-hidden-accessible").css("display", "none")
+        }
+    })
+</script>
+<script>
+    function pesquisaCpf(input){
+        var cpf = input.value
+        if (cpf.length >= 2){
+            
+            var cpfs = []
+            function carregaCpfs(){
+                $.getJSON(`/terceiro-pesquisa/${cpf}`, function(data, status, xhr){
+                    for (var i = 0; i < data.length; i++){
+                        cpfs.push(data[i].terceiro)
+                    }
+                });
+            }
+            carregaCpfs();
+
+            $(input).autocomplete({
+                source: cpfs,
+            });
+
+            $(".ui-helper-hidden-accessible").css("display", "none")
+        }
+    }
+</script>
+<script>
+    let isSubmitting = false;
+
+    document.getElementById('formMovTerc').addEventListener('submit', function(event) {
+        event.preventDefault(); // Previne a submissão padrão do formulário
+        if (!isSubmitting) { // Verifica se já não está sendo submetido
+            isSubmitting = true; // Ativa a variável para evitar novas submissões
+            enviarFormulario(event.target);
+        }
+    });
+
+    function enviarFormulario(form){
+        const inputsData = [];
+        const div = document.getElementById("inputs-container");
+        const inputs = div.querySelectorAll('input[id^="cpf"]');
+
+        inputs.forEach((input) => {
+            inputsData.push({"cpf": input.value, "nome": document.getElementById(`nome_${input.name.charAt(input.name.length - 1)}`).value});
+        });
+
+        {% if session.grupo == 'ADM' %}
+            var url = "{{url_for('controleTercAdmBlue.insertEntradaTerc')}}"
+            var dest = "{{url_for('controleTercAdmBlue.controleTerceiro')}}"
+        {% else %}
+            var url = "{{url_for('controleTercVigBlue.insertEntradaTerc')}}"
+            var dest = "{{url_for('controleTercVigBlue.controleTerceiro')}}"
+        {% endif %}
+
+
+        if (verificaCPFs() === true){
+            $.ajax({
+                url: url,
+                type: 'POST',
+                async: false,
+                dataType: 'json',
+                contentType: 'application/json;charset=UTF-8',
+                data:JSON.stringify({
+                    cpf: $("#cpf_1").val(), 
+                    nome: $("#nome_1").val(),
+                    empresa: $("#empresa").val(),
+                    placa: $("#placa").val(),
+                    veiculo: $("#veiculo").val(),
+                    motivo: $("#motivo").val(),
+                    pessoaVisit: $("#pessoaVisit").val(),
+                    dtEntrada: $("#dtEnt").val(),
+                    hrEntrada: $("#hrEnt").val(),
+                    acomps: inputsData,
+                }), 
+                success: function(resp){
+                    window.location = dest;
+                    isSubmitting = false;
+                },
+                error: function(resp){
+                    window.location = '/error_500';
+                    isSubmitting = false;
+                }
+            }) 
+        }else{
+            isSubmitting = false;
+        }
+        
+    }
+</script>
+{% endblock %}
+{% endblock %}

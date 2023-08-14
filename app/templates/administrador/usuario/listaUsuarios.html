@@ -38,10 +38,6 @@
 <section class="content">
     <div class="container-fluid p-0">
         <div class="acoes p-1">
-            <div class="pesquisa">
-                <label for="">Pesquisa: </label>
-                <input type="text" class="input-pesquisa" id="searchField">
-            </div>
             <div class="botao">
                 <a href="{{url_for('usuarioAdmBlue.cadastroUsuarioAdm')}}" class="btn btn-outline-success">Incluir Usuário</a>
             </div>
@@ -55,39 +51,14 @@
 <script src="{{ url_for('static', filename='js/usuario/dataUsuario.js') }}"></script>
 <script src="{{ url_for('static', filename='js/usuario/funcoes.js') }}"></script>
 <script>
-    if (dadosUser.length >= 7){
-        pagination = true
-    }else{
-        pagination = false
-    }
-
-    if (window.innerHeight > 900){
-        rowsPerPage = 12
-    }else{
-        rowsPerPage = 6
-    }
-
-    var table = $('#lista-usuario').tableSortable({
-        data: dadosUser,
+    new gridjs.Grid({
         columns: colunasUser,
-        searchField: '#searchField',
-        responsive: {
-            200: {
-                columns: colunasUser,
-                data: dadosUser
-            },
-        },
-        rowsPerPage: rowsPerPage,
-        pagination: pagination,
-        onPaginationChange: function(nextPage, setPage) {
-            setPage(nextPage);
-        }
-        
-    });
-    
-    $('#changeRows').on('change', function() {
-        table.updateRowsPerPage(parseInt($(this).val(), 10));
-    })
+        data: dadosUser,
+        search: true,
+        sort: true,
+        paginationAutoPageSize: true,
+        pagination: true,
+    }).render(document.getElementById("lista-usuario"));
 </script>
 {% endblock %}
 {% endblock %}

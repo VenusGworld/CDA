@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, abort, request
-from flask_login import login_required
 from ...extensions.LogErro import LogErro
-import sys
+from flask_login import login_required
 import traceback
+import sys
 
 dashVigBlue = Blueprint("dashVigBlue", __name__)
 
@@ -18,5 +18,5 @@ def dashboard():
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
         tracebackInfo = traceback.extract_tb(tb)
-        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo[-1][0], tracebackInfo[-1][1], request.url)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
         abort(500)

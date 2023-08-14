@@ -1,13 +1,17 @@
 from flask import Blueprint, request, redirect, session, flash, url_for, abort, Response
-from flask_login import login_required
-from ...models.Tables import *
 from ...controllers.ControleLogin import ControleLogin
 from ...extensions.LogErro import LogErro
-import sys
+from flask_login import login_required
 import traceback
 import json
+import sys
+
 
 autenticacaoBlue = Blueprint('autenticacaoBlue', __name__)
+
+##############################################################
+# Rotas relacionadas a autenticação no sistema
+##############################################################
 
 
 #Rota para efetuar o login no sistema
@@ -38,7 +42,7 @@ def login():
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
         tracebackInfo = traceback.extract_tb(tb)
-        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo[-1][0], tracebackInfo[-1][1], request.url)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
         abort(500)
 
 
@@ -71,7 +75,7 @@ def incluirRetiradaModalLogin():
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
         tracebackInfo = traceback.extract_tb(tb)
-        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo[-1][0], tracebackInfo[-1][1], request.url)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
         abort(500)
 
 

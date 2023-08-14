@@ -1,9 +1,10 @@
-from flask import Blueprint, render_template, request, redirect, url_for, jsonify, flash, abort
-from flask_login import login_required
+from flask import Blueprint, render_template, request, redirect, url_for, flash, abort
 from ...controllers.ControleManterUsuario import ControleManterUsuario
 from ...extensions.LogErro import LogErro
-import sys
+from flask_login import login_required
 import traceback
+import sys
+
 
 usuarioAdmBlue = Blueprint("usuarioAdmBlue", __name__)
 
@@ -22,7 +23,7 @@ def listaUsuariosAdm():
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
         tracebackInfo = traceback.extract_tb(tb)
-        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo[-1][0], tracebackInfo[-1][1], request.url)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
         abort(500)
 
 
@@ -37,7 +38,7 @@ def cadastroUsuarioAdm():
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
         tracebackInfo = traceback.extract_tb(tb)
-        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo[-1][0], tracebackInfo[-1][1], request.url)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
         abort(500)
 
 
@@ -54,7 +55,7 @@ def insertUsuarioAdm():
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
         tracebackInfo = traceback.extract_tb(tb)
-        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo[-1][0], tracebackInfo[-1][1], request.url)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
         abort(500)
 
 
@@ -71,7 +72,7 @@ def editarUsuarioAdm(id):
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
         tracebackInfo = traceback.extract_tb(tb)
-        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo[-1][0], tracebackInfo[-1][1], request.url)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
         abort(500)
 
 
@@ -88,7 +89,7 @@ def editUsuarioAdm():
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
         tracebackInfo = traceback.extract_tb(tb)
-        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo[-1][0], tracebackInfo[-1][1], request.url)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
         abort(500)
     
 
@@ -112,6 +113,6 @@ def deleteUsuarioAdm(id):
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
         tracebackInfo = traceback.extract_tb(tb)
-        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo[-1][0], tracebackInfo[-1][1], request.url)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
         abort(500)
         

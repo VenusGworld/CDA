@@ -1,9 +1,16 @@
-from ..entity.MovimentoChave import MovimentoChave
-from ..Tables import CDA001, CDA002, CDA005, CDA007
-from ...configurations.Database import DB
 from .ManterFuncionarioDao import ManterFuncionarioDao
+from ..entity.MovimentoChave import MovimentoChave
+from ..Tables import CDA002, CDA005, CDA007
 from .ManterChaveDao import ManterChaveDao
-import sys
+from ...configurations.Database import DB
+
+"""
+Classe Dao para funções do contole de chave
+@tables - CDA002, CDA005, CDA007
+@author - Fabio
+@version - 1.0
+@since - 10/07/2023
+"""
 
 class ControleChaveDao:
 
@@ -64,3 +71,15 @@ class ControleChaveDao:
                 .filter(CDA002.mch_dataDev!=None, CDA002.mch_horaDev!=None, CDA002.mch_delete!=True)
        
         return chavesRetiradas
+    
+
+    def verificaMovAbertoChave(self, idChave: int) -> CDA002:
+        idsMov = DB.session.query(CDA002.id_movChave).filter(CDA002.mch_idChav==idChave)
+
+        return idsMov
+    
+
+    def consultaMovAbertoChave(self, id: int) -> CDA002:
+        movimento = CDA002.query.filter(CDA002.id_movChave==id, CDA002.mch_dataDev==None, CDA002.mch_horaDev==None).first()
+
+        return movimento

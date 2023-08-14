@@ -1,5 +1,6 @@
-import bcrypt
+from datetime import datetime
 from random import randint
+import bcrypt
 
 """
 Classe Usuario
@@ -21,6 +22,7 @@ class Usuario:
     senhaCompara: str
     senhaNova: bool
     hashSenhaNova: str
+    limiteNovasenha: datetime
 
     def __init__(self) -> None:
         self._id = None
@@ -35,6 +37,7 @@ class Usuario:
         self._senhaCompara = None
         self._senhaNova = None
         self._hashSenhaNova = None
+        self._limiteNovasenha = None
 
     @property
     def id(self) -> int:
@@ -131,6 +134,14 @@ class Usuario:
     @hashSenhaNova.setter
     def hashSenhaNova(self, hashSenhaNova: str) -> None:
         self._hashSenhaNova = hashSenhaNova
+
+    @property
+    def limiteNovasenha(self) -> str:
+        return self._limiteNovasenha
+    
+    @limiteNovasenha.setter
+    def limiteNovasenha(self, limiteNovasenha: str) -> None:
+        self._limiteNovasenha = limiteNovasenha
     
 
     def gerarSenha(self, senha: str) -> None:

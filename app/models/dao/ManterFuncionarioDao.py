@@ -1,7 +1,15 @@
 from ..entity.Funcionario import Funcionario
-from ..Tables import CDA007
 from ...configurations.Database import DB
-import sys
+from ..Tables import CDA007
+
+
+"""
+Classe Dao para o manter Funcionário
+@tables - CDA007
+@author - Fabio
+@version - 1.0
+@since - 10/07/2023
+"""
 
 class ManterFuncionarioDao:
 

@@ -1,5 +1,5 @@
-from .Chave import Chave
 from .Funcionario import Funcionario
+from .Chave import Chave
 
 """
 Classe Movimento Chave
@@ -114,7 +114,7 @@ class MovimentoChave:
         json = {
             "id": self._id,
             "dataRet": self._dataRet,
-            "horaret": self._horaRet,
+            "horaRet": self._horaRet,
             "respRet": self._respRet.toJson(),
             "dataDev":  self._dataDev,
             "horaDev": self._horaDev,

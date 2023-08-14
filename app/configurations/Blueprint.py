@@ -22,6 +22,9 @@ def rotasMain(app):
     from ..routes.public.Erros import errosBlue
     app.register_blueprint(errosBlue)
 
+    from .FunctionShell import functionShellBlue
+    app.register_blueprint(functionShellBlue)
+
 
 
 #Adicionando as rotas relcionadas ao Administrador
@@ -39,16 +42,28 @@ def rotasAdm(app):
     app.register_blueprint(funcionarioAdmBlue, url_prefix="/admin")
 
     #Rotas relacionadas ao controle de Chaves com usuário admin
-    from ..routes.vigAdm.ControleChave import controleChaveVigcBlue
-    app.register_blueprint(controleChaveVigcBlue, url_prefix="/admin", name="controleChaveAdmcBlue")
+    from ..routes.vigAdm.ControleChave import controleChaveVigBlue
+    app.register_blueprint(controleChaveVigBlue, url_prefix="/admin", name="controleChaveAdmBlue")
 
     #Rotas relaciondas ao CRUD de Chave com usuário admin
-    from ..routes.vigAdm.Chaves import chaveVigBlue
+    from ..routes.vigAdm.Chave import chaveVigBlue
     app.register_blueprint(chaveVigBlue, url_prefix="/admin", name="chaveAdmBlue")
 
     #Rotas relaciondas ao log de Usuários
     from ..routes.administrador.LogManterUsuario import logUserAdmBlue
     app.register_blueprint(logUserAdmBlue, url_prefix="/admin")
+
+    #Rotas relacionadas ao CRUD de terceiros com usuário admin
+    from ..routes.vigAdm.Terceiro import terceiroVigBlue
+    app.register_blueprint(terceiroVigBlue, url_prefix="/admin", name="terceiroAdmBlue")
+
+    #Rotas relacionadas ao controle de Terceiros com usuário admin
+    from ..routes.vigAdm.ControleTerceiro import controleTercVigBlue
+    app.register_blueprint(controleTercVigBlue, url_prefix="/admin", name="controleTercAdmBlue")
+
+    #Rotas relacionadas ao controle de Gerenetes com usuário admin
+    from ..routes.vigAdm.ControleGerente import controleGerVigBlue
+    app.register_blueprint(controleGerVigBlue, url_prefix="/admin", name="controleGerAdmBlue")
 
 
 
@@ -67,9 +82,21 @@ def rotasVig(app):
     app.register_blueprint(dashVigBlue, url_prefix="/vig")
 
     #Rotas relacionadas ao controle de Chaves com usuário vig
-    from ..routes.vigAdm.ControleChave import controleChaveVigcBlue
-    app.register_blueprint(controleChaveVigcBlue, url_prefix="/vig")
+    from ..routes.vigAdm.ControleChave import controleChaveVigBlue
+    app.register_blueprint(controleChaveVigBlue, url_prefix="/vig")
 
-    #Rotas relaciondas ao CRUD de Chave com usuário vig
-    from ..routes.vigAdm.Chaves import chaveVigBlue
+    #Rotas relacionadas ao CRUD de Chave com usuário vig
+    from ..routes.vigAdm.Chave import chaveVigBlue
     app.register_blueprint(chaveVigBlue, url_prefix="/vig")
+
+    #Rotas relacionadas ao CRUD de terceiros com usuário vig
+    from ..routes.vigAdm.Terceiro import terceiroVigBlue
+    app.register_blueprint(terceiroVigBlue, url_prefix="/vig")
+
+    #Rotas relacionadas ao controle de Terceiros com usuário vig
+    from ..routes.vigAdm.ControleTerceiro import controleTercVigBlue
+    app.register_blueprint(controleTercVigBlue, url_prefix="/vig")
+
+    #Rotas relacionadas ao controle de Gerenetes com usuário vig
+    from ..routes.vigAdm.ControleGerente import controleGerVigBlue
+    app.register_blueprint(controleGerVigBlue, url_prefix="/vig")

@@ -1,8 +1,12 @@
-from flask import Blueprint, jsonify
 from ...controllers.ControlePesquisa import ControlePesquisa
+from flask import Blueprint, jsonify
+
 
 pesquisaBlue = Blueprint("pesquisaBlue", __name__)
 
+##############################################################
+# Rotas relacionadas as pesquisas do sistema
+##############################################################
 
 #Rota para pesquisa de crachas no form do cadastro de usuário
 @pesquisaBlue.route('/usuario-pesquisa/<pesquisa>/<int:id>')
@@ -60,9 +64,33 @@ def pesquisaFuncFormMov(pesquisa):
     return jsonify(respControle)
 
 
-#Rota para pesquisa de funcionários no form de inclusão de retirada de chave
+#Rota para pesquisa de chaves no form de inclusão de retirada de chave
 @pesquisaBlue.route('/chaveRet-pesquisa-mov/<pesquisa>')
 def pesquisaChaveRetFormMov(pesquisa):
     controlePesquisa = ControlePesquisa()
     respControle = controlePesquisa.pesquisaChaveRetFormMov(pesquisa.upper().strip())
+    return jsonify(respControle)
+
+
+#Rota para pesquisa de terceiros no input de cpf na inclusão de saída de terceiro
+@pesquisaBlue.route('/terceiro-pesquisa/<pesquisa>')
+def pesquisaTerceiro(pesquisa):
+    controlePesquisa = ControlePesquisa()
+    respControle = controlePesquisa.pesquisaTerceiros(pesquisa.upper().strip())
+    return jsonify(respControle)
+
+
+#Rota para pesquisa de terceiros no form de inclusão de saída de terceiro
+@pesquisaBlue.route('/terceiro-pesquisa-mov/<pesquisa>')
+def pesquisaTerceiroFormMov(pesquisa):
+    controlePesquisa = ControlePesquisa()
+    respControle = controlePesquisa.pesquisaTerceiroFormmov(pesquisa.upper().strip())
+    return jsonify(respControle)
+
+
+#Rota para pesquisa de gerente no input
+@pesquisaBlue.route('/gerente-pesquisa/<pesquisa>')
+def pesquisaGerenteInput(pesquisa):
+    controlePesquisa = ControlePesquisa()
+    respControle = controlePesquisa.pesquisaGerente(pesquisa.upper().strip())
     return jsonify(respControle)

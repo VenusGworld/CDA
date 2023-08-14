@@ -1,16 +1,20 @@
-import os
 from datetime import datetime
+import os
+
 
 class LogErro:
 
     def __init__(self) -> None:
         self.caminhoArq = ""
 
-    def geraLogErro(self, excecao, erro, arquivoErro, linhaErro, link) -> None:
+    def geraLogErro(self, excecao, erro, listaErro, link) -> None:
         self.verificaArquivoRecente(self.caminhoPasta())
         with open (f"{self.caminhoArq}", "a+") as txt:
-            txt.write(f"[{datetime.now().strftime('%d/%m/%Y %H:%M:%S')}] - Erro: {excecao} {erro} - Arquivo: {arquivoErro} - Linha: {linhaErro} - URL: {link}\n\n")
-
+            txt.write(f"[{datetime.now().strftime('%d/%m/%Y %H:%M:%S')}]\nErro: {excecao} {erro}")
+            for erro in listaErro:
+                txt.write(f"\nArquivo: {erro[0]} - Linha: {erro[1]} '{erro[3]}'")
+            txt.write(f"\nURL: {link}\n\n\n\n")
+            
 
     def caminhoPasta(self) -> str:
         caminho = os.path.dirname(os.path.realpath(__name__))

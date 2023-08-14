@@ -1,0 +1,22 @@
+.header-acomp{
+    display: flex;
+    flex-direction: row;
+    gap: 7px;
+}
+
+.cpf-invalido{
+    border: 2.5px solid #f01f1f !important;
+}
+
+.cpf-invalido-label{
+    color: #f01f1f !important;
+}
+
+.alerta-cpf{
+    color: #f01f1f;
+    font-size: 12px;
+}
+
+.none{
+    display: none;
+}

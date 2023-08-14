@@ -1,15 +1,16 @@
-from flask import session
-from ..models.dao.ManterChaveDao import ManterChaveDao
 from ..models.dao.VerificamovimentoDao import VerificaMovimentoDao
+from ..models.dao.ControleChaveDao import ControleChaveDao
+from ..models.dao.ManterChaveDao import ManterChaveDao
 from ..models.dao.ConsultaIdsDao import ConsultaIdsDao
 from ..models.dao.GeraLogDao import GeraLogDao
+from ..models.entity.Usuario import Usuario
 from ..models.entity.Chave import Chave
 from ..models.entity.Log import Log
-from ..models.entity.Usuario import Usuario
 from datetime import datetime
-        
+from flask import session
+
 """
-Classe Controller para o CRUD do usuário
+Classe Controller para o CRUD da Chave
 @author - Fabio
 @version - 1.0
 @since - 04/07/2023
@@ -43,6 +44,7 @@ class ControleManterChave:
             listaChaves.append(dicChave)
         
         return listaChaves
+    
     
     def mostraChaveDetalhadaId(self, id: int) -> Chave:
         manterChaveDao = ManterChaveDao()
@@ -78,7 +80,7 @@ class ControleManterChave:
         else:
             self.usuarioLogado.id = consultaIds.consultaIdUserLogado(session["usuarioVIG"])
             
-        if manterChaveDao.incluirChave(self.chaveNova ):
+        if manterChaveDao.incluirChave(self.chaveNova):
             self.chaveNova.id = manterChaveDao.consultaUltimoId()
             self.geraLogChave("INSERT", "")
             return True
@@ -137,6 +139,13 @@ class ControleManterChave:
         #########################################################################################
 
         manterChaveDao = ManterChaveDao()
+        controleChaveDao = ControleChaveDao()
+
+        idsMov = controleChaveDao.verificaMovAbertoChave(id)
+        for idMov in idsMov:
+            if controleChaveDao.consultaMovAbertoChave(idMov[0]):
+                return 3
+            
         verificaMovimentoDao = VerificaMovimentoDao()
         consultaIds = ConsultaIdsDao()
         self.usuarioLogado = Usuario()
@@ -160,6 +169,17 @@ class ControleManterChave:
     
 
     def incrementaCodigo(self) -> str:
+        #########################################################################################
+        # Essa função consulta o último código que tem no banco e imcrementa 1 para a próxima chave.
+        
+        # PARAMETROS:
+        #   Não tem parametros.
+        
+        # RETORNOS:
+        #   return codigo = Retorna o código com o imcrmento de um número.
+        #   return "CH0001" = Retorna "CH0001" caso não exista registro no banco.
+        #########################################################################################
+
         manterChaveDao = ManterChaveDao()
         respDao = manterChaveDao.consultaUltimoCodigo()
         if respDao:

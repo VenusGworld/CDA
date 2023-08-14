@@ -1,4 +1,12 @@
 
+
+"""
+Classe funcionário
+@author - Fabio
+@version - 1.0
+@since - 20/05/2023
+"""
+
 class Funcionario:
     id: int
     nome: str

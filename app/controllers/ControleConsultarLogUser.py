@@ -1,7 +1,7 @@
-from ..models.dao.ConsultaLogDao import ConsultaLogDao
 from ..models.dao.ManterUsuarioDao import ManterUsuarioDao
-from ..models.entity.Log import Log
+from ..models.dao.ConsultaLogUserDao import ConsultaLogUserDao
 from ..extensions.FiltrosJson import filtroDataHora
+from ..models.entity.Log import Log
 import json as js
 
 """
@@ -14,7 +14,7 @@ Classe Controller para a consulta de logs do sistema
 class ControleConsultarLogUser:
 
     def consultaLogUserInsert(self) -> list[dict]:
-        consultaLogDao = ConsultaLogDao()
+        consultaLogDao = ConsultaLogUserDao()
         respDao = consultaLogDao.consultaLogsUserInsert()
         listaLogs = []
 
@@ -33,7 +33,7 @@ class ControleConsultarLogUser:
 
 
     def consultaLogUserUpdate(self) -> list[dict]:
-        consultaLogDao = ConsultaLogDao()
+        consultaLogDao = ConsultaLogUserDao()
         respDao = consultaLogDao.consultaLogsUserUpdate()
         listaLogs = []
 
@@ -52,8 +52,27 @@ class ControleConsultarLogUser:
 
 
     def consultaLogUserDelete(self) -> list[dict]:
-        consultaLogDao = ConsultaLogDao()
+        consultaLogDao = ConsultaLogUserDao()
         respDao = consultaLogDao.consultaLogsUserDelete()
+        listaLogs = []
+
+        for log in respDao:
+            dictLog = {
+                "id": log.id_logUsua,
+                "dataHora": filtroDataHora(log.lus_dataHora),
+                "acao": log.lus_acao,
+                "resp": log.nomeUser,
+                "usuario": js.loads(log.lus_dadosAntigos.decode("utf-8"))
+            }
+
+            listaLogs.append(dictLog)
+
+        return listaLogs  
+    
+
+    def consultaLogUserActive(self) -> list[dict]:
+        consultaLogDao = ConsultaLogUserDao()
+        respDao = consultaLogDao.consultaLogsUserActive()
         listaLogs = []
 
         for log in respDao:
@@ -71,7 +90,7 @@ class ControleConsultarLogUser:
         
         
     def consultaLogUserInsertDetelhado(self, id: int):
-        consultaLogDao = ConsultaLogDao()
+        consultaLogDao = ConsultaLogUserDao()
         manterUsuarioDao = ManterUsuarioDao()
         respDao = consultaLogDao.consultaLogsUserInsert()
 

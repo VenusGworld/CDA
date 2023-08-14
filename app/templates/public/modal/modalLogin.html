@@ -4,7 +4,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Login</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" id="btnClose" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <input type="text" class="urlDest" id="urlDest" style="display: none;">
             <input type="text" class="acao" id="acao" style="display: none;">
@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" id="btnCancelar" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancelar</button>
                 <a type="submit" id="btnEnviarLogin" class="btn btn-outline-success">Confirmar</a>
             </div>
         </div>
@@ -87,6 +87,19 @@
             });
         }
         
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#btnCancelar").click(function(){
+            $("#pssd").val("") 
+            $("#user").val("")
+        });
+
+        $("#btnClose").click(function(){
+            $("#pssd").val("") 
+            $("#user").val("")
+        });
     });
 </script>
 {% endblock %}

@@ -40,7 +40,7 @@
 {% endif %}
 <section class="content">
     <div class="container-fluid p-0">
-        <div class="acoes p-1 mb-3">
+        <div class="d-flex justify-content-between p-1 mb-3">
             <div class="botao">
                 <div class="botao">
                     <a href="{{url_for('funcionarioAdmBlue.listaFuncionariosAdmModalIntegracao')}}" class="btn btn-outline-success">Atualizar base</a>
@@ -52,13 +52,6 @@
                 </div>
             </div>
         </div>
-        <div class="row mb-3">
-            <div class="pesquisa">
-                <label for="">Pesquisa: </label>
-                <input type="text" class="input-pesquisa" id="searchField">
-            </div>
-        </div>
-        </div>
         <div class="tabela p-3">
             <div id="lista-funcionarios"></div>
         </div>
@@ -68,38 +61,15 @@
 <script src="{{ url_for('static', filename='js/funcionario/dataFunc.js') }}"></script>
 <script src="{{ url_for('static', filename='js/funcionario/funcoes.js') }}"></script>
 <script>
-    if (dadosFunc.length >= 7){
-        pagination = true
-    }else{
-        pagination = false
-    }
-
-    if (window.innerHeight > 900){
-        rowsPerPage = 12
-    }else{
-        rowsPerPage = 6
-    }
-
-    var table = $('#lista-funcionarios').tableSortable({
-        data: dadosFunc,
+    new gridjs.Grid({
         columns: colunasFunc,
-        searchField: '#searchField',
-        responsive: {
-            200: {
-                columns: colunasFunc,
-                data: dadosFunc
-            },
-        },
-        rowsPerPage: rowsPerPage,
-        pagination: pagination,
-        onPaginationChange: function(nextPage, setPage) {
-            setPage(nextPage);
-        }
-    });
-
-    $('#changeRows').on('change', function() {
-        table.updateRowsPerPage(parseInt($(this).val(), 10));
-    })
+        data: dadosFunc,
+        search: true,
+        sort: true,
+        paginationAutoPageSize: true,
+        pagination: true,
+        suppressPaginationPanel: true,
+    }).render(document.getElementById("lista-funcionarios"));
 </script>
 {% endblock %}
 {% endblock %}

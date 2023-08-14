@@ -1,9 +1,8 @@
+from ...configurations.Database import DB
+from configparser import ConfigParser
 from ..entity.Usuario import Usuario
 from ..Tables import SysUser
-from ...configurations.Database import DB
-import sys
 import os
-from configparser import ConfigParser
 
 """
 Classe Dao para CRUD do usuário
@@ -87,13 +86,13 @@ class ManterUsuarioDao:
                             email=usuario.email, nome=usuario.nome,
                             grupo=usuario.grupo, complex=usuario.complex,
                             hashNovaSenha=usuario.hashSenhaNova, senhaNova=usuario.senhaNova,
-                            ativo=usuario.ativo, delete=usuario.delete)
+                            limiteNovaSenha="", ativo=usuario.ativo, delete=usuario.delete)
         else:
             sysuser = SysUser(usuario=usuario.usuario, senha=usuario.senhaCompara,
                             email=usuario.email, nome=usuario.nome,
                             grupo=usuario.grupo, complex=usuario.complex,
                             hashNovaSenha=usuario.hashSenhaNova, senhaNova=usuario.senhaNova,
-                            ativo=usuario.ativo, delete=usuario.delete)
+                            limiteNovaSenha="", ativo=usuario.ativo, delete=usuario.delete)
             
         DB.session.add(sysuser)
         DB.session.commit()

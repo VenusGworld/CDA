@@ -1,0 +1,63 @@
+<section class="modal-alert">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Editar Terceiro</h5>
+            </div>
+            {% if session.grupo != 'ADM' %}
+                <form action="{{url_for('terceiroVigBlue.editTerceiro')}}" method="POST" onsubmit="return verificaObservacao(observacaoEditar)">
+            {% else %}
+                <form action="{{url_for('terceiroAdmBlue.editTerceiro')}}" method="POST">
+            {% endif %}
+                <div class="modal-body">
+                    <div class="alert alert-danger alert-dismissible fade show none" id="alert-excluir" style="margin-left: 1rem; margin-right: 1rem; margin-top: 1rem;" role="alert">
+                        <span>Observação precisa ter mais que 15 caracteres.</span>
+                    </div>
+                    <div class="container">
+                        <div class="row mb-1">
+                            <div class="col mb-1 d-none">
+                                <input type="text" name="idTerc" id="idTerc" class="form-control upper" value="{{ context.terceiro.id }}" readonly>
+                            </div>
+                            <div class="col-2 mb-1">
+                                <label for="recipient-name" class="col-form-label">Código:</label>
+                                <input type="text" name="codigoTerc" id="codigoTerc" class="form-control upper" value="{{ context.terceiro.codigo }}" readonly>
+                            </div>
+                            <div class="col-4 mb-3">
+                                <label for="recipient-name" class="col-form-label">CPF:</label>
+                                <input type="text" name="cpfTerc" id="cpfTerc" class="form-control upper" value="{{ context.terceiro.cpf | cpf }}" readonly>
+                            </div>
+                            <div class="col mb-3">
+                                <label for="recipient-name" class="col-form-label">Nome:</label>
+                                <input type="text" name="nomeTerc" id="nomeTerc" class="form-control upper" value="{{ context.terceiro.nome }}" maxlength="45">
+                            </div>
+                        </div>
+                        {% if session.grupo != 'ADM' %}
+                            <div class="row">
+                                <span class="obs-alert">* Observação deve ser preenchida</span>
+                                <div class="col">
+                                    <label for="">Observação:</label>
+                                    <textarea class="form-control" id="observacaoEditar" name="observacaoEditar" rows="3" cols="50" maxlength="120"></textarea>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="row" style="display: none;">
+                                <div class="col">
+                                    <label for="">Observação:</label>
+                                    <textarea class="form-control" id="observacaoEditar" name="observacaoEditar" rows="3" cols="50" maxlength="120"></textarea>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    {% if session.grupo != 'ADM' %}
+                        <a href="{{url_for('terceiroVigBlue.listaTerceiros')}}" class="btn btn-outline-danger">Cancelar</a>
+                    {% else %}
+                        <a href="{{url_for('terceiroAdmBlue.listaTerceiros')}}" class="btn btn-outline-danger">Cancelar</a>
+                    {% endif %}
+                    <button type="submit" class="btn btn-outline-success" id="btnEnviarDev">Confirmar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

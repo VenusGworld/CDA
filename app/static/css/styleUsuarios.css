@@ -1,8 +1,8 @@
 .acoes {
     width: 100%;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: end;
+    align-items: end;
     margin-bottom: 0.5rem;
 }
 

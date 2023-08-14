@@ -1,9 +1,9 @@
-from ..models.entity.Usuario import Usuario
-from ..models.entity.Log import Log
+from ..models.dao.VerificamovimentoDao import VerificaMovimentoDao
 from ..models.dao.ManterUsuarioDao import ManterUsuarioDao
 from ..models.dao.ConsultaIdsDao import ConsultaIdsDao
 from ..models.dao.GeraLogDao import GeraLogDao
-from ..models.dao.VerificamovimentoDao import VerificaMovimentoDao
+from ..models.entity.Usuario import Usuario
+from ..models.entity.Log import Log
 from datetime import datetime
 from flask import session
 

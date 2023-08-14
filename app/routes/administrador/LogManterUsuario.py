@@ -1,12 +1,17 @@
-from flask import Blueprint, render_template, request, redirect, url_for, jsonify, flash, abort
-from flask_login import login_required
-from ...controllers.ControleManterUsuario import ControleManterUsuario
+from flask import Blueprint, render_template, request, abort
 from ...extensions.LogErro import LogErro
-import sys
+from flask_login import login_required
 import traceback
+import sys
+
 
 logUserAdmBlue = Blueprint("logUserAdmBlue", __name__)
 
+##############################################################
+# Rotas relacionadas aos logs do CRUD de usuário
+##############################################################
+
+#Rota para tela de log de usuários
 @logUserAdmBlue.route("/log/log-manter-usuario")
 @login_required
 def listagemLog():
@@ -17,5 +22,5 @@ def listagemLog():
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
         tracebackInfo = traceback.extract_tb(tb)
-        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo[-1][0], tracebackInfo[-1][1], request.url)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
         abort(500)

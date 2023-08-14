@@ -1,7 +1,7 @@
+from ...configurations.Database import DB
+from datetime import datetime, timedelta
 from ..entity.Usuario import Usuario
 from ..Tables import SysUser
-from ...configurations.Database import DB
-import sys
 
 """
 Classe Dao para funções do esqueci a senha
@@ -25,9 +25,11 @@ class EsqueciSenhaDao:
         #   return False = Retorna False caso ocorra erro na inserção.
         #########################################################################################
 
+        dataAtual = datetime.now()
         sysuser = SysUser.query.get(usuario.id)
         sysuser.us_hashNovaSenha = usuario.hashSenhaNova
-        sysuser.us_senhaNova = usuario.senhaNova
+        sysuser.us_novaSenha = usuario.senhaNova
+        sysuser.us_limiteNovasenha = str(dataAtual + timedelta(minutes=2))
 
         DB.session.commit()
         return True
@@ -56,7 +58,8 @@ class EsqueciSenhaDao:
             usuario.delete = sysuser.us_delete
             usuario.senhaCompara = sysuser.us_senha
             usuario.hashSenhaNova = sysuser.us_hashNovaSenha
-            usuario.senhaNova = sysuser.us_senhaNova
+            usuario.senhaNova = sysuser.us_novaSenha
+            usuario.limiteNovasenha = sysuser.us_limiteNovasenha
             return usuario
         else:
             return 0
@@ -82,6 +85,26 @@ class EsqueciSenhaDao:
             return True
         
 
+    def verificaHashTempo(self, hash: str) -> bool:
+        #########################################################################################
+        # Essa Função verifica se o hash existe.
+        
+        # PARAMETROS:
+        #   hash = Hash que foi passado pela URL do e-mail.
+        
+        # RETORNOS:
+        #   return False = Retrona False caso o hash exista;
+        #   return True = Retrona True caso o hash não exista.
+        #########################################################################################
+
+        sysuser = SysUser.query.filter(SysUser.us_hashNovaSenha==hash).first()
+
+        if sysuser:
+            return sysuser
+        else:
+            return False
+        
+
     def trocaSenha(self, hash: str, usuario: Usuario) -> bool:
         #########################################################################################
         # Essa Função troca a senha do usuário que solicitou.
@@ -99,8 +122,9 @@ class EsqueciSenhaDao:
 
         sysuser.us_senha = usuario.senha
         sysuser.us_complex = usuario.complex
-        sysuser.us_senhaNova = usuario.senhaNova
+        sysuser.us_novaSenha = usuario.senhaNova
         sysuser.us_hashNovaSenha = usuario.hashSenhaNova
+        sysuser.us_limiteNovasenha = ""
 
         DB.session.commit()
         return True

@@ -7,18 +7,18 @@ $.ajax({
     dataType: 'json',
     contentType: 'application/json',
     success: function(resp){
-        for(x in resp[1]){
+        for(x in resp.data){
             //Verifica se o usuário que está logado é do grupo ADM
-            if (resp[0].login === "ADM"){
-                var strDev = `<div style="width: 100%;display: flex;align-items: center;text-align: center;justify-content: center;"><a href="/admin/controle-chave/incluir-devolucao/${resp[1][x].id}" class="btn btn-warning btn-sm"><i class="fa-solid fa-person-walking-arrow-right"></i></a></div>`
+            if (resp.login === "ADM"){
+                var strDev = `<div style="width: 100%;display: flex;align-items: center;text-align: center;justify-content: center;"><a href="/admin/controle-chave/incluir-devolucao-modal/${resp.data[x].id}" class="btn btn-warning btn-sm"><i class="fa-solid fa-person-walking-arrow-right"></i></a></div>`
             }else{
-                var strDev = `<div style="width: 100%;display: flex;align-items: center;text-align: center;justify-content: center;"><a class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modalLogin" data-bs-acao="INCLUIR_DEV_CHAVE" data-bs-id=${resp[1][x].id} data-bs-toggle="modal" data-bs-url="/vig/controle-chave/incluir-devolucao/${resp[1][x].id}"><i class="fa-solid fa-person-walking-arrow-right"></i></a></div>`
+                var strDev = `<div style="width: 100%;display: flex;align-items: center;text-align: center;justify-content: center;"><a class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modalLogin" data-bs-acao="INCLUIR_DEV_CHAVE" data-bs-id=${resp.data[x].id} data-bs-toggle="modal" data-bs-url="/vig/controle-chave/incluir-devolucao-modal/${resp.data[x].id}"><i class="fa-solid fa-person-walking-arrow-right"></i></a></div>`
             }
            dataresp = {
-            chave: resp[1][x].nome,
-            retirada: resp[1][x].retirada,
-            responsavel: resp[1][x].responsavel,
-            devolucao: strDev,
+            chave: resp.data[x].nome,
+            retirada: resp.data[x].retirada,
+            responsavel: resp.data[x].responsavel,
+            devolucao: gridjs.html(strDev),
            }
            dadosChaveRet.push(dataresp)
         }
@@ -26,9 +26,21 @@ $.ajax({
 });
 
 
-var colunasChaveRet = {
-    "chave": "Chave",
-    "retirada": "Retirada",
-    "responsavel": "Responsavel",
-    "devolucao": "<span style='display:flex; text-align: center; justify-content: center;align-items: center;'>Devolução ?</span>",
-}
+var colunasChaveRet = [
+    {
+        id: 'chave',
+        name: 'Chave'
+    },
+    {
+        id: 'retirada',
+        name: 'Retirada'
+    },
+    {
+        id: 'responsavel',
+        name: "Responsável"
+    },
+    {
+        id: 'devolucao',
+        name: gridjs.html("<span style='display:flex; text-align: center; justify-content: center;align-items: center;'>Devolução ?</span>")
+    }
+]

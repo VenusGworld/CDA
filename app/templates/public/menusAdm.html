@@ -20,19 +20,19 @@
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="./index.html" class="nav-link {% if context.active == 'controlGer' %}active{% endif %}">
+                        <a href="{{url_for('controleGerAdmBlue.controleGerente')}}" class="nav-link {% if context.active == 'controlGer' %}active{% endif %}">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Gerentes</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="./index2.html" class="nav-link {% if context.active == 'controlTerc' %}active{% endif %}">
+                        <a href="{{url_for('controleTercAdmBlue.controleTerceiro')}}" class="nav-link {% if context.active == 'controlTerc' %}active{% endif %}">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Terceiros</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{url_for('controleChaveAdmcBlue.controleChave')}}" class="nav-link {% if context.active == 'controlChav' %}active{% endif %}">
+                        <a href="{{url_for('controleChaveAdmBlue.controleChave')}}" class="nav-link {% if context.active == 'controlChav' %}active{% endif %}">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Chaves</p>
                         </a>
@@ -49,7 +49,7 @@
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="./index.html" class="nav-link">
+                        <a href="{{url_for('terceiroAdmBlue.listaTerceiros')}}" class="nav-link {% if context.active == 'cadTerc' %}active{% endif %}">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Terceiro</p>
                         </a>

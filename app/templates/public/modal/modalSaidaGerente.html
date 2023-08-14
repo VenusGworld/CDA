@@ -1,0 +1,145 @@
+<section class="modal-alert">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Saída de Gerente</h5>
+            </div>
+            <div class="alert" id="alert-modal-dev" style="display: none; margin-left: 1rem; margin-right: 1rem; margin-top: 1rem;" role="alert">
+            </div>
+            <div class="modal-body overflow-scroll">
+                <div class="container">
+                    <div class="row">
+                        <div class="col mb-1 d-none">
+                            <input type="text" name="idMov" id="idMov" class="form-control upper" value="{{ context.movimento.id }}" readonly>
+                        </div>
+                        <div class="col mb-1">
+                            <label for="recipient-name" class="col-form-label">Gerente:</label>
+                            <input type="text" name="gerente" id="gerente" class="form-control upper" value="{{ context.movimento.gerente.nome }}" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col mb-1">
+                            <label for="recipient-name" class="col-form-label">Data Retirada:</label>
+                            <input type="date" name="dataEnt" id="dataEnt" class="form-control" value="{{ context.movimento.dataEnt | dataInput }}" readonly>
+                        </div>
+                        <div class="col mb-1">
+                            <label for="recipient-name" class="col-form-label">Hora Retirada:</label>
+                            <input type="time" name="horaEnt" id="horaEnt" class="form-control" value="{{ context.movimento.horaEnt }}" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col mb-2">
+                            <label for="recipient-name" class="col-form-label">Data Devolução:</label>
+                            <input type="date" name="dataSai" id="dataSai" class="form-control" value="{{ context.dataAtual | dataInput }}" required>
+                        </div>
+                        <div class="col mb-2">
+                            <label for="recipient-name" class="col-form-label">Hora Devolução:</label>
+                            <input type="time" name="horaSai" id="horaSai" class="form-control" value="{{ context.dataAtual | horaInput }}" tabindex="25" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                {% if session.grupo != 'ADM' %}
+                    <a href="{{url_for('controleChaveVigBlue.controleChave')}}" class="btn btn-outline-danger">Cancelar</a>
+                {% else %}
+                    <a href="{{url_for('controleChaveAdmBlue.controleChave')}}" class="btn btn-outline-danger">Cancelar</a>
+                {% endif %}
+                <button type="button" class="btn btn-outline-success" id="btnEnviarDev">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</section>
+{% block script %}
+<script>
+    function ativaResponsavel(radio){
+        var input = document.getElementById("inputResp");
+
+        if (radio.checked) {
+            radio.value = "True"
+            input.style.display = "block";
+        }else{
+            radio.value = "False"
+            input.style.display = "none";
+        }
+    }
+</script>
+<script>
+    $("#respDev").keyup(function(){
+        var nomeResp = this.value
+        if (nomeResp.length > 2){
+            
+            var responsaveis=[]
+            function carregaResponsaveis(){
+                $.getJSON(`/funcionario-pesquisa/${nomeResp}`, function(data, status, xhr){
+                    for (var i = 0; i < data.length; i++){
+                        responsaveis.push(data[i].funcionario)
+                    }
+                });
+            }
+            carregaResponsaveis();
+            
+
+            $("#respDev").autocomplete({
+                source: responsaveis,
+            });
+
+            $(".ui-helper-hidden-accessible").css("display", "none")
+        }
+    })
+</script>
+<script type="text/javascript">
+    {% if session.grupo == 'ADM' %}
+        var url = "{{url_for('controleChaveAdmBlue.insertDevolucaoChav')}}"
+        var dest = "{{url_for('controleChaveAdmBlue.controleChave')}}"
+    {% else %}
+        var url = "{{url_for('controleChaveVigBlue.insertDevolucaoChav')}}"
+        var dest = "{{url_for('controleChaveVigBlue.controleChave')}}"
+    {% endif %}
+
+    $(document).ready(function(){
+        $("#btnEnviarDev").click(function(){
+            if ($("#respDev").val().length == 0 && $("#checkResp").prop('checked')){
+                $("#alert-modal-dev").prop("style").removeProperty("opacity");
+                $("#alert-modal-dev").empty();
+                $("#alert-modal-dev").removeClass();
+                $("#alert-modal-dev").append("Preencha o responsavel pela devolução");
+                $("#alert-modal-dev").addClass("alert alert-danger alert-dismissible fade show");
+                $("#alert-modal-dev").show();
+                window.setTimeout(() => {
+                    $("#alert-modal-dev").fadeTo(500, 0).slideUp(500, () => {});
+                }, 3500);
+            }else{
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data:JSON.stringify({
+                        idMov: $("#idMov").val(),
+                        dataDev: $("#dataDev").val(),
+                        horaDev: $("#horaDev").val(),
+                        respDev: $("#respDev").val(),
+                        check: $("#checkResp").prop("checked"),
+                    }),
+                    success: function(data, status){
+                        window.location=dest
+                    },
+                    error: function(data, status){
+                        var h6 = data.responseJSON.msg;
+                        $("#alert").prop("style").removeProperty("opacity");
+                        $("#alert").empty();
+                        $("#alert").removeClass();
+                        $("#alert").append(h6);
+                        $("#alert").addClass("alert alert-danger alert-dismissible fade show");
+                        $("#alert").show();
+                        window.setTimeout(function() {
+                            $("#alert").fadeTo(500, 0).slideUp(500, function(){});
+                        }, 15000);
+                    },
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}

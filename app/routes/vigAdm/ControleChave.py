@@ -1,18 +1,18 @@
-from flask import Blueprint, render_template, redirect, request, Response, jsonify, session, url_for, abort, flash
-from flask_login import login_required
-from ...controllers.ControleLogin import ControleLogin
-from ...controllers.ControleChave import ControleCrontoleDeChave
+from flask import Blueprint, render_template, redirect, request, Response, session, url_for, abort, flash
+from ...controllers.ControleChave import CrontoleDeChave
 from ...extensions.LogErro import LogErro
+from flask_login import login_required
 from datetime import datetime
+import traceback
 import json
 import sys
-import traceback
 
-controleChaveVigcBlue = Blueprint("controleChaveVigcBlue", __name__)
+
+controleChaveVigBlue = Blueprint("controleChaveVigBlue", __name__)
 
 
 #Rota para a tela de controle de Chaves
-@controleChaveVigcBlue.route('/controle-chave', methods=["GET"])
+@controleChaveVigBlue.route('/controle-chave', methods=["GET"])
 @login_required
 def controleChave():
     try:
@@ -23,74 +23,74 @@ def controleChave():
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
         tracebackInfo = traceback.extract_tb(tb)
-        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo[-1][0], tracebackInfo[-1][1], request.url)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
         abort(500)
 
 
 #Rota para a tela de incluir retirada da Chave
-@controleChaveVigcBlue.route('/controle-chave/incluir-retirada', methods=["GET"])
+@controleChaveVigBlue.route('/controle-chave/incluir-retirada', methods=["GET"])
 @login_required
-def incluirRetirada():
+def incluirRetiradaChav():
     try:
         if session["loginVig"] or session["grupo"] == "ADM": #Verifica se o usuário está tentando acessar a pagina usando a URL
             data = datetime.now()
             context = {"titulo": "Retirada de Chave", "active": "controlChav", "data": data}
             return render_template("vigAdm/controleChave/incluirMovimentoChave.html", context=context)
         else:
-            return redirect(url_for('controleChaveVigcBlue.controleChave'))
+            return redirect(url_for('controleChaveVigBlue.controleChave'))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
         tracebackInfo = traceback.extract_tb(tb)
-        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo[-1][0], tracebackInfo[-1][1], request.url)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
         abort(500)
 
 
 #Rota para incluir a reirada da chave
-@controleChaveVigcBlue.route('/controle-chave/incluir-retirada', methods=["POST"])
+@controleChaveVigBlue.route('/controle-chave/incluir-retirada', methods=["POST"])
 @login_required
-def insertRetirada():
+def insertRetiradaChav():
     try:
-        controleChave = ControleCrontoleDeChave()
+        controleChave = CrontoleDeChave()
         if controleChave.inserirRetirada(request.form["dtRet"], request.form["hrRet"], request.form["chave"], request.form["responsavel"]):
             flash("Retirada incluida com sucesso!", "success")
-            return redirect(url_for("controleChaveVigcBlue.controleChave"))
+            return redirect(url_for("controleChaveVigBlue.controleChave"))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
         tracebackInfo = traceback.extract_tb(tb)
-        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo[-1][0], tracebackInfo[-1][1], request.url)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
         abort(500)
 
 
 #Rota para modal de inclusão de devolução
-@controleChaveVigcBlue.route('/controle-chave/incluir-devolucao/<id>', methods=["GET"])
+@controleChaveVigBlue.route('/controle-chave/incluir-devolucao-modal/<id>', methods=["GET"])
 @login_required
-def incluirDevolucao(id):
+def incluirDevolucaoChav(id):
     try:
         if session["loginVig"] or session["grupo"] == "ADM":
-            controleChave = ControleCrontoleDeChave()
+            controleChave = CrontoleDeChave()
             movimento = controleChave.consultaMovimentoDetalhado(id)
             data = datetime.now()
             context = {"active": "controlChav", "modal": 1, "movimento": movimento, "dataAtual": data}
             return render_template("vigAdm/controleChave/controleChave.html", context=context)
         else:
-            return redirect(url_for('controleChaveVigcBlue.controleChave'))
+            return redirect(url_for('controleChaveVigBlue.controleChave'))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
         tracebackInfo = traceback.extract_tb(tb)
-        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo[-1][0], tracebackInfo[-1][1], request.url)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
         abort(500)
 
 
 #Rota para inscluir a devolução de uma chave
-@controleChaveVigcBlue.route('/controle-chave/incluir-devolucao', methods=["POST"])
+@controleChaveVigBlue.route('/controle-chave/incluir-devolucao', methods=["POST"])
 @login_required
-def insertDevolucao():
+def insertDevolucaoChav():
     try:
         data = request.get_json()
-        controleChave = ControleCrontoleDeChave()
+        controleChave = CrontoleDeChave()
         controleChave.inserirDevolucao(data["idMov"], data["dataDev"], data["horaDev"], data["respDev"], data["check"])
         flash("Devolução incluida com sucesso!", "success")
         resp = Response(response=json.dumps({"success": True}), status=200, mimetype="application/json")
@@ -99,12 +99,12 @@ def insertDevolucao():
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
         tracebackInfo = traceback.extract_tb(tb)
-        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo[-1][0], tracebackInfo[-1][1], request.url)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
         abort(500)
 
 
 #Rota para tela de manutenção da chave
-@controleChaveVigcBlue.route('/controle-chave/manutencao-chave', methods=["GET"])
+@controleChaveVigBlue.route('/controle-chave/manutencao-chave', methods=["GET"])
 @login_required
 def manutencaoChave():
     try:
@@ -114,5 +114,5 @@ def manutencaoChave():
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
         tracebackInfo = traceback.extract_tb(tb)
-        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo[-1][0], tracebackInfo[-1][1], request.url)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
         abort(500)

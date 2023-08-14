@@ -1,16 +1,15 @@
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify, flash, Response, abort, session
-from flask_login import login_required
 from ...controllers.ControleManterChave import ControleManterChave
 from ...extensions.LogErro import LogErro
-import json
-import sys
-import distutils
+from flask_login import login_required
 import traceback
+import sys
+
 
 chaveVigBlue = Blueprint("chaveVigBlue", __name__)
 
 ##############################################################
-# Rotas relacionadas ao CRUD de Funcionários
+# Rotas relacionadas ao CRUD de Chaves
 ##############################################################
 
 #Rota para a tela de listagem de chaves
@@ -25,7 +24,7 @@ def listaChaves():
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
         tracebackInfo = traceback.extract_tb(tb)
-        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo[-1][0], tracebackInfo[-1][1], request.url)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
         abort(500)
 
 
@@ -38,14 +37,14 @@ def cadastroChave():
             controleManterChave = ControleManterChave()
             codigo = controleManterChave.incrementaCodigo()
             context = {"titulo": "Cadastro de Chaves", "active": "cadChave", "codigo": codigo}
-            return render_template("vigAdm/chave/incluirChave.html", context=context)
+            return render_template("vigAdm/chave/cadastroChave.html", context=context)
         else:
             return redirect(url_for("chaveVigBlue.listaChaves"))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
         tracebackInfo = traceback.extract_tb(tb)
-        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo[-1][0], tracebackInfo[-1][1], request.url)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
         abort(500)
 
 
@@ -55,14 +54,14 @@ def cadastroChave():
 def insertChave():
     try:
         controleManterChave = ControleManterChave()
-        if controleManterChave.incluirChave(request.form["codigo"], request.form["nome"].upper().strip()):
+        if controleManterChave.incluirChave(request.form["codigo"].upper().strip(), request.form["nome"].upper().strip()):
             flash("Chave incluida com sucesso!", "success")
             return redirect(url_for("chaveVigBlue.listaChaves"))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
         tracebackInfo = traceback.extract_tb(tb)
-        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo[-1][0], tracebackInfo[-1][1], request.url)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
         abort(500)
 
 
@@ -82,7 +81,7 @@ def modalEditarChave(id):
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
         tracebackInfo = traceback.extract_tb(tb)
-        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo[-1][0], tracebackInfo[-1][1], request.url)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
         abort(500)
 
 
@@ -99,7 +98,7 @@ def editChave():
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
         tracebackInfo = traceback.extract_tb(tb)
-        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo[-1][0], tracebackInfo[-1][1], request.url)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
         abort(500)
 
 
@@ -119,7 +118,7 @@ def modalDeleteChave(id):
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
         tracebackInfo = traceback.extract_tb(tb)
-        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo[-1][0], tracebackInfo[-1][1], request.url)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
         abort(500)
 
 
@@ -133,12 +132,15 @@ def deleteChave():
         if respControle == 1:
             flash("Chave excluida com sucesso!", "success")
             return redirect(url_for("chaveVigBlue.listaChaves"))
-        else:
+        elif respControle == 2:
             flash("Chave possue movimentação no sistema, então foi desativada", "success")
+            return redirect(url_for("chaveVigBlue.listaChaves"))
+        else:
+            flash("Chave não pode ser excluida pois existe movimento em aberto", "danger")
             return redirect(url_for("chaveVigBlue.listaChaves"))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
         tracebackInfo = traceback.extract_tb(tb)
-        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo[-1][0], tracebackInfo[-1][1], request.url)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
         abort(500)

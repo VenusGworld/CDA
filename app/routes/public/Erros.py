@@ -1,5 +1,4 @@
-from flask import Blueprint, jsonify, render_template
-import json
+from flask import Blueprint, render_template
 
 errosBlue = Blueprint("erros", __name__)
 
@@ -13,3 +12,13 @@ def notFound(erro):
 def serverError(erro):
     print(erro)
     return render_template("public/error/500.html"), 500
+
+
+@errosBlue.route("/error_500")
+def serverERROR():
+    return render_template("public/error/500.html"), 500
+
+
+@errosBlue.route("/error_404")
+def notFOUND():
+    return render_template("public/error/404.html"), 404

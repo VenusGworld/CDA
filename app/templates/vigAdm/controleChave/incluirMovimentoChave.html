@@ -23,14 +23,14 @@
                 <h6 class="msg-alert"></h6>
             </div>
         </div>
-        <form action="{% if session.grupo != 'ADM' %}{{ url_for('controleChaveVigcBlue.insertRetirada') }}{% else %}{{ url_for('controleChaveAdmcBlue.insertRetirada') }}{% endif %}" onsubmit="return verificaChavRespDev()" method="POST">
+        <form action="{% if session.grupo != 'ADM' %}{{ url_for('controleChaveVigBlue.insertRetiradaChav') }}{% else %}{{ url_for('controleChaveAdmBlue.insertRetiradaChav') }}{% endif %}" onsubmit="return verificaChavRespDev()" method="POST">
             <div class="row mb-2">
                 <div class="col-6">
                     <label for="">Chave:</label>
                     <input type="text" name="chave" id="chave" class="form-control upper" autocomplete="off" tabindex="1" required>
                 </div>
                 <div class="col-6">
-                    <label for="">Responsavel:</label>
+                    <label for="">Responsável:</label>
                     <input type="text" name="responsavel" id="responsavel" class="form-control upper" autocomplete="off" tabindex="1" required>
                 </div>
             </div>
@@ -46,9 +46,9 @@
             </div>
             <div class="btns">
                 {% if session.grupo != 'ADM' %}
-                    <a href="{{url_for('controleChaveVigcBlue.controleChave')}}" class="btn btn-outline-danger" type="button" name="btnCancelar" id="btnCancelar" tabindex="10">Cancelar</a>
+                    <a href="{{url_for('controleChaveVigBlue.controleChave')}}" class="btn btn-outline-danger" type="button" name="btnCancelar" id="btnCancelar" tabindex="10">Cancelar</a>
                 {% else %}
-                    <a href="{{url_for('controleChaveAdmcBlue.controleChave')}}" class="btn btn-outline-danger" type="button" name="btnCancelar" id="btnCancelar" tabindex="10">Cancelar</a>
+                    <a href="{{url_for('controleChaveAdmBlue.controleChave')}}" class="btn btn-outline-danger" type="button" name="btnCancelar" id="btnCancelar" tabindex="10">Cancelar</a>
                 {% endif %}
                 <input type="submit" class="btn btn-outline-success" id="btnGravar" value="Incluir" tabindex="9">
             </div>
@@ -56,7 +56,7 @@
     </div>
 </section>
 {% block script %}
-<script src="{{ url_for('static', filename='js/ControleChave/funcoes.js') }}"></script>
+<script src="{{ url_for('static', filename='js/controleChave/funcoes.js') }}"></script>
 <script>
     $("#chave").keyup(function(){
         var nomeChave = this.value

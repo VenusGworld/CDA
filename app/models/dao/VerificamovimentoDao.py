@@ -1,8 +1,8 @@
-from ..Tables import CDA013, CDA008, CDA012, CDA006, CDA011, CDA010, CDA001, CDA014, CDA002, CDA003
+from ..Tables import CDA013, CDA008, CDA012, CDA006, CDA011, CDA010, CDA001, CDA014, CDA002, CDA003, CDA016
 
 """
 Classe Dao para verificar movimento do usuário no sistema
-@tables - CDA013, CDA008, CDA012, CDA006, CDA011, CDA010, CDA001, CDA014
+@tables - CDA013, CDA008, CDA012, CDA006, CDA011, CDA010, CDA001, CDA014, CDA002, CDA003, CDA016
 @author - Fabio
 @version - 1.0
 @since - 07/06/2023
@@ -89,16 +89,41 @@ class VerificaMovimentoDao:
         # movimentação no sistema.
         
         # PARAMETROS:
-        #   id = ID do usuário para consulta as tabelas.
+        #   id = ID do chave para consulta as tabelas.
         
         # RETORNOS:
-        #   return True = Retorna True caso o usuário não tenha movimento;
-        #   return False = Retorna False caso o usuário tenha movimento.
+        #   return True = Retorna True caso o chave não tenha movimento;
+        #   return False = Retorna False caso o chave tenha movimento.
         #########################################################################################
 
         movimento = 0
 
         if CDA002.query.filter(CDA002.mch_idChav==id).first():
+            movimento += 1
+
+
+        if movimento == 0:
+            return False
+        else:
+            return True
+        
+
+    def verificaMovimentoTerceiro(self, id: int) -> bool:
+        #########################################################################################
+        # Essa Função consulta na tabela de movimento de terceiros para verificar se o terceiro teve 
+        # movimentação no sistema.
+        
+        # PARAMETROS:
+        #   id = ID do tercerio para consulta as tabelas.
+        
+        # RETORNOS:
+        #   return True = Retorna True caso o tercerio não tenha movimento;
+        #   return False = Retorna False caso o tercerio tenha movimento.
+        #########################################################################################
+
+        movimento = 0
+
+        if CDA016.query.filter(CDA016.id_terceiro==id).first():
             movimento += 1
 
 

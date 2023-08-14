@@ -1,8 +1,8 @@
-from flask import session
-from flask_login import login_user, current_user, logout_user
+from ..models.dao.ManterUsuarioDao import ManterUsuarioDao
+from flask_login import login_user, logout_user
 from ..models.entity.Usuario import Usuario
 from ..models.dao.LoginDao import LoginDao
-from ..models.dao.ManterUsuarioDao import ManterUsuarioDao
+from flask import session
 
 """
 Classe Controller para o Login do sistema
@@ -99,6 +99,7 @@ class ControleLogin:
                 return 1
             else: 
                 return 4
+      
             
     def loginVig(self, user: str, pssd: str) -> int:
         #########################################################################################

@@ -20,19 +20,19 @@
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="./index.html" class="nav-link {% if context.active == 'controlGer' %}active{% endif %}">
+                        <a href="{{url_for('controleGerVigBlue.controleGerente')}}" class="nav-link {% if context.active == 'controlGer' %}active{% endif %}">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Gerentes</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="./index2.html" class="nav-link {% if context.active == 'controlTerc' %}active{% endif %}">
+                        <a href="{{url_for('controleTercVigBlue.controleTerceiro')}}" class="nav-link {% if context.active == 'controlTerc' %}active{% endif %}">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Terceiros</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{url_for('controleChaveVigcBlue.controleChave')}}" class="nav-link {% if context.active == 'controlChav' %}active{% endif %}">
+                        <a href="{{url_for('controleChaveVigBlue.controleChave')}}" class="nav-link {% if context.active == 'controlChav' %}active{% endif %}">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Chaves</p>
                         </a>
@@ -49,7 +49,7 @@
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="./index.html" class="nav-link {% if context.active == 'cadTerc' %}active{% endif %}">
+                        <a href="{{url_for('terceiroVigBlue.listaTerceiros')}}" class="nav-link {% if context.active == 'cadTerc' %}active{% endif %}">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Terceiro</p>
                         </a>

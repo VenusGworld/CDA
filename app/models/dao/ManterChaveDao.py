@@ -1,6 +1,6 @@
+from ...configurations.Database import DB
 from ..entity.Chave import Chave
 from ..Tables import CDA005
-from ...configurations.Database import DB
 
 """
 Classe Dao para o manter Chave
@@ -91,3 +91,5 @@ class ManterChaveDao:
         id = DB.session.query(CDA005.id_chave).order_by(CDA005.id_chave.desc()).first()
 
         return id[0]
+    
+    

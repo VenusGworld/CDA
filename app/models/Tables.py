@@ -1,14 +1,13 @@
+from sqlalchemy import Column, LargeBinary, Integer, String, Boolean, DateTime
 from ..configurations.Database import DB
 from flask_login import UserMixin
-from sqlalchemy import Column, LargeBinary, Integer, String, Boolean, DateTime
 from datetime import datetime
 
 '''
 @author Fabio
-@version 3.0
-@since 20/06/2023
+@version 4.0
+@since 27/06/2023
 '''
-
 
 #Tabela de Usuários
 class SysUser(UserMixin, DB.Model):
@@ -20,11 +19,12 @@ class SysUser(UserMixin, DB.Model):
     us_grupo = Column(String(5),  nullable=False)
     us_complex = Column(String(36), nullable=False)
     us_hashNovaSenha = Column(String(10), nullable=False)
-    us_senhaNova = Column(Boolean, nullable=False)
+    us_novaSenha = Column(Boolean, nullable=False)
+    us_limiteNovasenha = Column(String(30), nullable=False)
     us_ativo = Column(Boolean, nullable=False)
     us_delete = Column(Boolean, nullable=False)
     
-    def __init__(self, nome: str, email: str, usuario: str, senha: str, grupo: str, complex: str, hashNovaSenha: str, senhaNova: bool, ativo: bool, delete: bool):
+    def __init__(self, nome: str, email: str, usuario: str, senha: str, grupo: str, complex: str, hashNovaSenha: str, senhaNova: bool, limiteNovaSenha, ativo: bool, delete: bool):
         #Função para instanciar um objeto para adcionar no banco
         self.us_nome = nome
         self.us_email = email
@@ -33,7 +33,8 @@ class SysUser(UserMixin, DB.Model):
         self.us_grupo = grupo
         self.us_complex = complex
         self.us_hashNovaSenha = hashNovaSenha
-        self.us_senhaNova = senhaNova
+        self.us_novaSenha = senhaNova
+        self.us_limiteNovasenha = limiteNovaSenha
         self.us_ativo = ativo
         self.us_delete = delete
 
@@ -141,23 +142,21 @@ class CDA006(DB.Model):
     lmge_observacao = Column(String(120), nullable=False)
     lmge_dadosAntigos = Column(LargeBinary)
     lmge_dadosNovos = Column(LargeBinary)
-    lmge_idMov = Column(Integer, nullable=False)
     lmge_idUsua = Column(Integer, nullable=False)
 
-    def __init__(self, dataHora: datetime, acao: str, observacao: str, dadoAntigos: bytes, dadosNovos: bytes, idMov: int, idUsu: int):
+    def __init__(self, dataHora: datetime, acao: str, observacao: str, dadosAntigos: bytes, dadosNovos: bytes, idUsua: int):
         #Função para instanciar um objeto para adcionar no banco
         self.lmge_dataHora = dataHora
         self.lmge_acao = acao
         self.lmge_observacao = observacao
-        self.lmge_dadosAntigos = dadoAntigos
+        self.lmge_dadosAntigos = dadosAntigos
         self.lmge_dadosNovos = dadosNovos
-        self.lmge_idMov = idMov
-        self.lmge_idUsua = idUsu
+        self.lmge_idUsua = idUsua
 
 
 #Tabela de Terceiro
 class CDA009(DB.Model):
-    id_Terceiro = Column(Integer, primary_key=True, nullable=False)
+    id_terceiro = Column(Integer, primary_key=True, nullable=False)
     te_codigo = Column(String(6), nullable=False)
     te_nome = Column(String(45), nullable=False)
     te_cpf = Column(String(11), nullable=False)
@@ -181,28 +180,27 @@ class CDA004(DB.Model):
     mte_empresa = Column(String(45))
     mte_veiculo = Column(String(45))
     mte_placa = Column(String(10))
-    mte_visitado = Column(String(45), nullable=False)
     mte_motivo = Column(String(45), nullable=False)
-    mte_dataSaid = Column(String(8), nullable=False)
-    mte_horaSaid = Column(String(5), nullable=False)
+    mte_dataSaid = Column(String(8))
+    mte_horaSaid = Column(String(5))
     mte_delete = Column(Boolean, nullable=False)
-    mte_idTerc = Column(Boolean, nullable=False)
+    mte_idFunc = Column(Integer, nullable=False)
 
-    def __init__(self, dataEntrada: str, horaEntrada: str, empresa: str, veiculo: str, placa: str, visitado: str, motivo: str, detele: str, idTerc: int):
+    def __init__(self, dataEntrada: str, horaEntrada: str, empresa: str, veiculo: str, placa: str, motivo: str, detele: bool, idFunc: int):
         #Função para instanciar um objeto para adcionar no banco
         self.mte_dataEntra = dataEntrada
         self.mte_horaEntra = horaEntrada
         self.mte_empresa = empresa
         self.mte_veiculo = veiculo
-        self.placa = placa
+        self.mte_placa = placa
         self.mte_motivo = motivo
         self.mte_delete = detele
-        self.mte_idTerc = idTerc
+        self.mte_idFunc = idFunc
 
 
 #Tabela de Log Movimento de Terceiro
 class CDA008(DB.Model):
-    id_LogTerc = Column(Integer, primary_key=True, nullable=False)
+    id_logTerc = Column(Integer, primary_key=True, nullable=False)
     lmte_dataHora = Column(DateTime, nullable=False)
     lmte_acao = Column(String(45), nullable=False)
     lmte_observacao = Column(String(120), nullable=False)
@@ -311,8 +309,20 @@ class CDA014(DB.Model):
         self.lte_idUsua = idUsua
 
 
-#Tabelas de Parametros
+#Tabela de Parametros
 class CDA015(DB.Model):
     id_parametros = Column(Integer, primary_key=True, nullable=False)
     par_codigo = Column(String(10), nullable=False)
     par_valor = Column(String(10), nullable=False)
+
+
+#Tabela de ligação Terceiro e Movimento Terceiro
+class CDA016(DB.Model): 
+    id = Column(Integer, primary_key=True, nullable=False)
+    id_terceiro = Column(Integer, nullable=False)
+    id_movTerc = Column(Integer, nullable=False)
+
+    def __init__(self, idTerc: int, idMovTerc: int):
+        #Função para instanciar um objeto para adcionar no banco
+        self.id_terceiro = idTerc
+        self.id_movTerc = idMovTerc

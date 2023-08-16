@@ -1,6 +1,6 @@
 [default]
 DEBUG = true
-SQLALCHEMY_DATABASE_URI = ''
+SQLALCHEMY_DATABASE_URI = 'sqlite:///D:/VS Code - Windows/Flask/Portaria/Port.db'
 SECRET_KEY = 'pbkdf2:sha256:260000$9C1lotTLZookpgaC$cd1fb937818bee2ec8c5a8a1f8e7f3b40c49ddd452a63ca1bec553c2d03724da'
 SQLALCHEMY_TRACK_MODIFICATIONS = false
 FLASK_RUN_HOST='0.0.0.0'

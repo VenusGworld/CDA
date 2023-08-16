@@ -16,3 +16,12 @@ def filtroDataHora(date, fmt=None):
 
 def filtroNome(nome):
     return nome[:15]
+
+
+def filtroCpf(cpf):
+    if len(cpf) < 11:
+        cpf = "--"
+    elif len(cpf) == 11:
+        cpf = cpf[0:3] + "." + cpf[3:6] + "." + cpf[6:9] + "-" + cpf[9:]
+
+    return cpf

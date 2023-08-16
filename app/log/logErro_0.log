@@ -8,3 +8,25 @@ WHERE sys_user.us_usuario = ?
 
 [25/06/2023 15:25:31] - Erro: <class 'ValueError'> Invalid salt - Arquivo: D:\VS Code - Windows\Flask\Portaria\venvWin\lib\site-packages\bcrypt\__init__.py - Linha: 84 - URL: http://127.0.0.1:5000/login
 
+[15/08/2023 22:05:55]
+Erro: <class 'ValueError'> Invalid salt
+Arquivo: d:\VS Code - Windows\Flask\Portaria\app\routes\public\Autenticacao.py - Linha: 22 'respLogin = controleLogin.login(request.form["user"].upper().strip(), request.form["pssd"].upper().strip())'
+Arquivo: d:\VS Code - Windows\Flask\Portaria\app\controllers\ControleLogin.py - Linha: 37 'return self.loginAdm(usuario)'
+Arquivo: d:\VS Code - Windows\Flask\Portaria\app\controllers\ControleLogin.py - Linha: 93 'if usuario.verificarSenha():'
+Arquivo: d:\VS Code - Windows\Flask\Portaria\app\models\entity\Usuario.py - Linha: 156 'hash = bcrypt.hashpw(self._senha.encode('utf-8'), bytes(self._complex, 'utf-8'))'
+Arquivo: D:\VS Code - Windows\Flask\Portaria\venvWin\lib\site-packages\bcrypt\__init__.py - Linha: 84 'return _bcrypt.hashpass(password, salt)'
+URL: http://192.168.138.22:6560/login
+
+
+
+[15/08/2023 22:10:36]
+Erro: <class 'ValueError'> Invalid salt
+Arquivo: d:\VS Code - Windows\Flask\Portaria\app\routes\public\Autenticacao.py - Linha: 22 'respLogin = controleLogin.login(request.form["user"].upper().strip(), request.form["pssd"].upper().strip())'
+Arquivo: d:\VS Code - Windows\Flask\Portaria\app\controllers\ControleLogin.py - Linha: 37 'return self.loginAdm(usuario)'
+Arquivo: d:\VS Code - Windows\Flask\Portaria\app\controllers\ControleLogin.py - Linha: 79 'if usuario.verificarSenha():'
+Arquivo: d:\VS Code - Windows\Flask\Portaria\app\models\entity\Usuario.py - Linha: 156 'hash = bcrypt.hashpw(self._senha.encode('utf-8'), bytes(self._complex, 'utf-8'))'
+Arquivo: D:\VS Code - Windows\Flask\Portaria\venvWin\lib\site-packages\bcrypt\__init__.py - Linha: 84 'return _bcrypt.hashpass(password, salt)'
+URL: http://192.168.138.22:6560/login
+
+
+

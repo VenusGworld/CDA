@@ -3,7 +3,7 @@ from .configurations import Database
 from .configurations import Auth
 from .configurations import Configuration
 from .configurations import Blueprint
-from .configurations.Scheduler import Scheduler
+#from .configurations.Scheduler import Scheduler
 from flask_sock import Sock
 
 

@@ -1,4 +1,5 @@
 from ..models.dao.ManterChaveDao import ManterChaveDao
+from ..models.dao.ManterFuncionarioDao import ManterFuncionarioDao
 from ..models.dao.PesquisaDao import PesquisaDao
 from ..extensions.FiltrosJson import filtroCpf
 
@@ -276,5 +277,23 @@ class ControlePesquisa:
             return listaGerente
             
         
+    def pesquisaGerenteSaiFormMov(self, pesquisa: str) -> bool:
+        #########################################################################################
+        # Essa função recebe um código da chave que foi digitado e verifica se ela já foi devolvida.
+        
+        # PARAMETROS:
+        #   pesquisa = Código da chave que foi digitado no input.
+        
+        # RETORNOS:
+        #   return True = Retorna True caso a chave foi devolvida;
+        #   return False = Retorna False caso a chave ainda não foi devolvida.
+        #########################################################################################
 
+        manterFuncionarioDao = ManterFuncionarioDao()
+        gerente = manterFuncionarioDao.mostarFuncionarioDetalhadoCracha(pesquisa)
+        pesquisaDao = PesquisaDao()
+        if pesquisaDao.pesquisaGerenteSaiFormMovDao(gerente.id):
+            return False
+        else:
+            return True
     

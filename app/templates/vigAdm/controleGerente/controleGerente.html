@@ -43,9 +43,9 @@
         <div class="d-flex justify-content-between p-1 mb-3">
             <div class="botao">
                 {% if session.grupo != 'ADM' %}
-                    <a href="{{url_for('controleChaveVigBlue.manutencaoChave')}}" class="btn btn-outline-secondary">Manutenção</a>
+                    <a href="{{url_for('controleGerVigBlue.manutencaoGerente')}}" class="btn btn-outline-secondary">Manutenção</a>
                 {% else %}
-                    <a href="{{url_for('controleChaveAdmBlue.manutencaoChave')}}" class="btn btn-outline-secondary">Manutenção</a>
+                    <a href="{{url_for('controleGerAdmBlue.manutencaoGerente')}}" class="btn btn-outline-secondary">Manutenção</a>
                 {% endif %}
             </div>
             <div class="botao">

@@ -4,13 +4,14 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Saída de Gerente</h5>
             </div>
-            <div class="alert" id="alert-modal-dev" style="display: none; margin-left: 1rem; margin-right: 1rem; margin-top: 1rem;" role="alert">
+            <div class="alert" id="alert-modal" style="display: none; margin-left: 1rem; margin-right: 1rem; margin-top: 1rem;" role="alert">
             </div>
             <div class="modal-body overflow-scroll">
                 <div class="container">
                     <div class="row">
                         <div class="col mb-1 d-none">
                             <input type="text" name="idMov" id="idMov" class="form-control upper" value="{{ context.movimento.id }}" readonly>
+                            <input type="text" name="crachaGer" id="crachaGer" class="form-control upper" value="{{ context.movimento.gerente.cracha }}" readonly>
                         </div>
                         <div class="col mb-1">
                             <label for="recipient-name" class="col-form-label">Gerente:</label>
@@ -19,21 +20,21 @@
                     </div>
                     <div class="row">
                         <div class="col mb-1">
-                            <label for="recipient-name" class="col-form-label">Data Retirada:</label>
+                            <label for="recipient-name" class="col-form-label">Data Entrada:</label>
                             <input type="date" name="dataEnt" id="dataEnt" class="form-control" value="{{ context.movimento.dataEnt | dataInput }}" readonly>
                         </div>
                         <div class="col mb-1">
-                            <label for="recipient-name" class="col-form-label">Hora Retirada:</label>
+                            <label for="recipient-name" class="col-form-label">Hora Entrada:</label>
                             <input type="time" name="horaEnt" id="horaEnt" class="form-control" value="{{ context.movimento.horaEnt }}" readonly>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col mb-2">
-                            <label for="recipient-name" class="col-form-label">Data Devolução:</label>
+                            <label for="recipient-name" class="col-form-label">Data Saída:</label>
                             <input type="date" name="dataSai" id="dataSai" class="form-control" value="{{ context.dataAtual | dataInput }}" required>
                         </div>
                         <div class="col mb-2">
-                            <label for="recipient-name" class="col-form-label">Hora Devolução:</label>
+                            <label for="recipient-name" class="col-form-label">Hora Saída:</label>
                             <input type="time" name="horaSai" id="horaSai" class="form-control" value="{{ context.dataAtual | horaInput }}" tabindex="25" required>
                         </div>
                     </div>
@@ -41,9 +42,9 @@
             </div>
             <div class="modal-footer justify-content-between">
                 {% if session.grupo != 'ADM' %}
-                    <a href="{{url_for('controleChaveVigBlue.controleChave')}}" class="btn btn-outline-danger">Cancelar</a>
+                    <a href="{{url_for('controleGerVigBlue.controleGerente')}}" class="btn btn-outline-danger">Cancelar</a>
                 {% else %}
-                    <a href="{{url_for('controleChaveAdmBlue.controleChave')}}" class="btn btn-outline-danger">Cancelar</a>
+                    <a href="{{url_for('controleGerAdmBlue.controleGerente')}}" class="btn btn-outline-danger">Cancelar</a>
                 {% endif %}
                 <button type="button" class="btn btn-outline-success" id="btnEnviarDev">Confirmar</button>
             </div>
@@ -90,25 +91,42 @@
 </script>
 <script type="text/javascript">
     {% if session.grupo == 'ADM' %}
-        var url = "{{url_for('controleChaveAdmBlue.insertDevolucaoChav')}}"
-        var dest = "{{url_for('controleChaveAdmBlue.controleChave')}}"
+        var url = "{{url_for('controleGerAdmBlue.insertSaidaGer')}}"
+        var dest = "{{url_for('controleGerAdmBlue.controleGerente')}}"
     {% else %}
-        var url = "{{url_for('controleChaveVigBlue.insertDevolucaoChav')}}"
-        var dest = "{{url_for('controleChaveVigBlue.controleChave')}}"
+        var url = "{{url_for('controleGerVigBlue.insertSaidaGer')}}"
+        var dest = "{{url_for('controleGerVigBlue.controleGerente')}}"
     {% endif %}
 
     $(document).ready(function(){
         $("#btnEnviarDev").click(function(){
-            if ($("#respDev").val().length == 0 && $("#checkResp").prop('checked')){
-                $("#alert-modal-dev").prop("style").removeProperty("opacity");
-                $("#alert-modal-dev").empty();
-                $("#alert-modal-dev").removeClass();
-                $("#alert-modal-dev").append("Preencha o responsavel pela devolução");
-                $("#alert-modal-dev").addClass("alert alert-danger alert-dismissible fade show");
-                $("#alert-modal-dev").show();
+            let dataEnt = new Date($("#dataEnt").val() + " 00:00");
+            let dataSai = new Date($("#dataSai").val() + " 00:00");
+            let horaEnt = $("#horaEnt").val();
+            let horaSai = $("#horaSai").val();
+
+            if (dataEnt.getTime() > dataSai.getTime()){
+                $("#alert-modal").prop("style").removeProperty("opacity");
+                $("#alert-modal").empty();
+                $("#alert-modal").removeClass();
+                $("#alert-modal").append("Data de saída menor que a data de entrada!");
+                $("#alert-modal").addClass("alert alert-danger alert-dismissible fade show");
+                $("#alert-modal").show();
                 window.setTimeout(() => {
-                    $("#alert-modal-dev").fadeTo(500, 0).slideUp(500, () => {});
+                    $("#alert-modal").fadeTo(500, 0).slideUp(500, () => {});
                 }, 3500);
+
+            } else if (dataEnt.getTime() === dataSai.getTime() && horaSai < horaEnt){
+                $("#alert-modal").prop("style").removeProperty("opacity");
+                $("#alert-modal").empty();
+                $("#alert-modal").removeClass();
+                $("#alert-modal").append("Hora de saída menor que a hora de entrada!");
+                $("#alert-modal").addClass("alert alert-danger alert-dismissible fade show");
+                $("#alert-modal").show();
+                window.setTimeout(() => {
+                    $("#alert-modal").fadeTo(500, 0).slideUp(500, () => {});
+                }, 3500);
+
             }else{
                 $.ajax({
                     url: url,
@@ -117,10 +135,9 @@
                     contentType: 'application/json',
                     data:JSON.stringify({
                         idMov: $("#idMov").val(),
-                        dataDev: $("#dataDev").val(),
-                        horaDev: $("#horaDev").val(),
-                        respDev: $("#respDev").val(),
-                        check: $("#checkResp").prop("checked"),
+                        dataSai: $("#dataSai").val(),
+                        horaSai: $("#horaSai").val(),
+                        crachaGer: $("#crachaGer").val()
                     }),
                     success: function(data, status){
                         window.location=dest

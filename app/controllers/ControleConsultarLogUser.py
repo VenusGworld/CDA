@@ -92,13 +92,14 @@ class ControleConsultarLogUser:
     def consultaLogUserInsertDetelhado(self, id: int):
         consultaLogDao = ConsultaLogUserDao()
         manterUsuarioDao = ManterUsuarioDao()
-        respDao = consultaLogDao.consultaLogsUserInsert()
+        respDao = consultaLogDao.consultaLogsUserDetalhado(id)
+        
+        logUser = Log()
+        logUser.id = respDao.id_logUsua
+        logUser.dataHora = respDao.lus_dataHora
+        logUser.acao = respDao.lus_acao
+        logUser.converteDictDadosAntigos(respDao.lus_dadosAntigos)
+        logUser.converteDictDadosNovos(respDao.lus_dadosNovos)
+        logUser.usuario = manterUsuarioDao.mostarUsuarioDetalhado(respDao.lus_idUsua)
 
-        for log in respDao:
-            logUser = Log()
-            logUser.id = log.id_logUsua
-            logUser.dataHora = log.lus_dataHora
-            logUser.acao = log.lus_acao
-            logUser.converteDictDadosAntigos(log.lus_dadosAntigos)
-            logUser.converteDictDadosNovos(log.lus_dadosNovos)
-            logUser.usuario = manterUsuarioDao.mostarUsuarioDetalhado(log.lus_idUsua)
+        return logUser

@@ -1,9 +1,9 @@
 from ..models.dao.ManterFuncionarioDao import ManterFuncionarioDao
 from ..models.dao.ControleGerenteDao import ControleGerenteDao
 from ..models.entity.MovimentoGerente import MovimentoGerente
+from ..extensions.FiltrosJson import filtroData, filtroNome
 from ..models.dao.ConsultaIdsDao import ConsultaIdsDao
 from ..models.entity.Funcionario import Funcionario
-from ..extensions.FiltrosJson import filtroData
 from ..models.dao.GeraLogDao import GeraLogDao
 from ..models.entity.Usuario import Usuario
 from ..models.entity.Log import Log
@@ -43,6 +43,30 @@ class ControleDeGerente:
         return True
     
 
+    def inserirSaida(self, id: int, dataSai: str, horaSai: str, cracha: str) -> bool:
+        self.movimentoGerNovo = MovimentoGerente()
+        controleGerenteDao = ControleGerenteDao()
+        manterFuncionarioDao = ManterFuncionarioDao()
+        self.usuarioLogado = Usuario()
+
+        self.movimentoGerNovo = controleGerenteDao.consultaMovimentoDetalhado(id)
+        self.movimentoGerNovo.dataSai = dataSai.replace("-", "")
+        self.movimentoGerNovo.horaSai = horaSai
+        self.movimentoGerNovo.gerente = manterFuncionarioDao.mostarFuncionarioDetalhadoCracha(cracha)
+
+        if controleGerenteDao.inserirSaida(self.movimentoGerNovo):
+            consultaIds = ConsultaIdsDao()
+            if session["grupo"] == "ADM":
+                self.usuarioLogado.id = consultaIds.consultaIdUserLogado(session["usuario"])
+            else:
+                self.usuarioLogado.id = consultaIds.consultaIdUserLogado(session["usuarioVIG"])
+
+            self.movimentoGerNovo.id = consultaIds.consultaIdFinalMovGer()
+            self.geraLogControleGerente("SAIDA", "")
+
+        return True
+    
+
     def consultaGerentesEntrada(self) -> list[dict]:
         controleGerenteDao = ControleGerenteDao()
         respDao = controleGerenteDao.consultaGerentesEntrada()
@@ -50,13 +74,29 @@ class ControleDeGerente:
         for gerente in respDao:
             dictMov = {
                 "id": gerente.id_movGere,
-                "nome": gerente.nomeGer,
+                "nome": filtroNome(gerente.nomeGer),
                 "entrada": f"{filtroData(gerente.mge_dataEntra)} {gerente.mge_horaEntra}"
             }
             movimentosGerente.append(dictMov)
         
         return movimentosGerente
     
+
+    def listaGerentesManut(self) -> list[dict]:
+        controleGerenteDao = ControleGerenteDao()
+        respDao = controleGerenteDao.consultaGerentesManut()
+        movimentosGerente = []
+        for gerente in respDao:
+            dictMov = {
+                "id": gerente.id_movGere,
+                "nome": filtroNome(gerente.nomeGer),
+                "entrada": f"{filtroData(gerente.mge_dataEntra)} {gerente.mge_horaEntra}",
+                "saida": f"{filtroData(gerente.mge_dataSaid)} {gerente.mge_horaSaid}"
+            }
+            movimentosGerente.append(dictMov)
+        
+        return movimentosGerente
+
 
     def consultaMovimentoDetalhado(self, id: int) -> MovimentoGerente:
         controleGerenteDao = ControleGerenteDao()

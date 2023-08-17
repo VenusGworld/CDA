@@ -163,14 +163,14 @@ class Usuario:
     def toJson(self) -> dict:
         json = {
             "id": self._id,
-            "us_nome": self._nome,
-            "us_email": self._email,
-            "us_usuario": self._usuario,
-            "us_senha": self._senha,
-            "us_grupo": self._grupo,
-            "us_complex": self._complex,
-            "us_ativo": self._ativo,
-            "us_delete": self._delete
+            "nome": self._nome,
+            "email": self._email,
+            "usuario": self._usuario,
+            "senha": self._senha,
+            "grupo": self._grupo,
+            "complex": self._complex,
+            "ativo": self._ativo,
+            "delete": self._delete
         }
 
         return json

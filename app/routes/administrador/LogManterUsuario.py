@@ -1,3 +1,4 @@
+from ...controllers.ControleConsultarLogUser import ControleConsultarLogUser
 from flask import Blueprint, render_template, request, abort
 from ...extensions.LogErro import LogErro
 from flask_login import login_required
@@ -12,11 +13,28 @@ logUserAdmBlue = Blueprint("logUserAdmBlue", __name__)
 ##############################################################
 
 #Rota para tela de log de usuários
-@logUserAdmBlue.route("/log/log-manter-usuario")
+@logUserAdmBlue.route("/log/log-manter-usuario", methods=["GET"])
 @login_required
 def listagemLog():
     try:
         context = {"titulo": "Logs Manter Usuário", "active": "logUser"}
+        return render_template("administrador/logUsuario/cosultaLogUser.html", context=context)
+    except:
+        log = LogErro()
+        tipoExcecao, valorExcecao, tb = sys.exc_info()
+        tracebackInfo = traceback.extract_tb(tb)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
+        abort(500)
+
+
+#Rota para tela com modal para visualização detalhada dos logs do usuário
+@logUserAdmBlue.route("/log/log-manter-usuario/<id>", methods=["GET"])
+@login_required
+def vizualizarLog(id):
+    try:
+        controleConsultarLogUser = ControleConsultarLogUser()
+        log = controleConsultarLogUser.consultaLogUserInsertDetelhado(int(id))
+        context = {"titulo": "Logs Manter Usuário", "active": "logFunc", "modal": 1, "log": log}
         return render_template("administrador/logUsuario/cosultaLogUser.html", context=context)
     except:
         log = LogErro()

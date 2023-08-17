@@ -1,0 +1,48 @@
+{% extends "public/base.html" %}
+{% block content %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styleUsuarios.css') }}">
+{% endblock %}
+{% include "public/header.html" %}
+<section class="content">
+    <div class="container-fluid p-0">
+        <div class="acoes p-1 mb-1">
+            <div class="dropdown">
+                <a class="btn btn-secondary dropdown" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-sliders"></i>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <div class="container">
+                        <div class="row" style="width: 13rem;">
+                            <div class="col mb-2">
+                                <label for="">Meses Select:</label>
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row" style="width: 13rem;">
+                            <div class="col">
+                                <a href="javascript:history.back()" class="btn btn-outline-primary" type="button">OK</a>
+                            </div>
+                        </div>
+                    </div>
+                </ul>
+            </div>
+        </div>
+        <div class="tabela p-3 m-2">
+            <div id="lista-logs-mensagem"></div>
+        </div>
+    </div>
+</section>
+{% block script %}
+<script src="{{ url_for('static', filename='js/logMensagem/dataLogMen.js') }}"></script>
+<script>
+    new gridjs.Grid({
+        columns: colunasLogMen,
+        data: dadosLogMen,
+        search: true,
+        sort: true,
+        pagination: true,
+    }).render(document.getElementById("lista-logs-mensagem"));
+</script>
+{% endblock %}
+{% endblock %}

@@ -73,3 +73,21 @@ section.modal-alert {
         font-size: 15px;
     }
 /* Termino Modal para integração*/
+
+
+.container-border{
+    border: 1px groove #ddd !important;
+    margin: 0 2.5em 0 0 !important;
+    -webkit-box-shadow: 0px 0px 0px 0px #000;
+    box-shadow: 0px 0px 0px 0px #000; 
+    height: auto;
+}
+
+.titulo-container{
+    font-size: 1.1em !important;
+    text-align: left !important;
+    margin-bottom: -15px;
+    padding: 55px -10px 15px 15px;
+    width: auto;
+    position: relative;
+}

@@ -94,3 +94,11 @@ def pesquisaGerenteInput(pesquisa):
     controlePesquisa = ControlePesquisa()
     respControle = controlePesquisa.pesquisaGerente(pesquisa.upper().strip())
     return jsonify(respControle)
+
+
+#Rota para verificar se o gerente que foi informado na entrda não está em um movimento aberto
+@pesquisaBlue.route('/gerenteSai-pesquisa-mov/<pesquisa>')
+def pesquisaGerSaiFormMov(pesquisa):
+    controlePesquisa = ControlePesquisa()
+    respControle = controlePesquisa.pesquisaGerenteSaiFormMov(pesquisa.strip())
+    return jsonify(respControle)

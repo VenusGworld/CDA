@@ -298,15 +298,14 @@ class CDA013(DB.Model):
 class CDA014(DB.Model):
     id_logMens = Column(Integer, primary_key=True, nullable=False)
     lme_dataHora = Column(DateTime, nullable=False)
-    lme_mensagem = Column(LargeBinary)
+    lme_mensagem = Column(String(253), nullable=False)
     lme_idUsua = Column(Integer, nullable=False)
 
-    def __init__(self, dataHora: datetime, acao: str, mensagem: bytes, idUsua: int):
+    def __init__(self, dataHora: datetime, mensagem: bytes, idUsua: int):
         #Função para instanciar um objeto para adcionar no banco
-        self.lus_dataHora = dataHora
-        self.lus_acao = acao
+        self.lme_dataHora = dataHora
         self.lme_mensagem = mensagem
-        self.lte_idUsua = idUsua
+        self.lme_idUsua = idUsua
 
 
 #Tabela de Parametros

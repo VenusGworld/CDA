@@ -10,11 +10,11 @@ $.ajax({
         for(x in resp.data){
             //Verifica se o usuário que está logado é do grupo ADM
             if (resp.login === "ADM"){
-                var excluir = `<a href="/admin/terceiro/excluir-terceiro-modal/${resp.data[x].id}" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash-can"></i></a>`
-                var editar = `<a href="/admin/terceiro/editar-terceiro-modal/${resp.data[x].id}" class="btn btn-warning btn-sm"><i class="fa-regular fa-pen-to-square"></i></a>`
+                var excluir = `<a href="/admin/terceiro/excluir-terceiro-modal/${resp.data[x].id}" title="EXCLUIR" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash-can"></i></a>`
+                var editar = `<a href="/admin/terceiro/editar-terceiro-modal/${resp.data[x].id}" title="EDITAR" class="btn btn-warning btn-sm"><i class="fa-regular fa-pen-to-square"></i></a>`
             }else{
-                var excluir = `<a class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalLogin" data-bs-acao="EXCLUIR_TERCEIRO" data-bs-id=${resp.data[x].id} data-bs-url="/vig/terceiro/excluir-terceiro-modal/${resp.data[x].id}" data-bs-toggle="modal"><i class="fa-solid fa-trash-can"></i></a>`
-                var editar = `<a class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modalLogin" data-bs-acao="EDITAR_TERCEIRO" data-bs-id=${resp.data[x].id} data-bs-url="/vig/terceiro/editar-terceiro-modal/${resp.data[x].id}" data-bs-toggle="modal"><i class="fa-regular fa-pen-to-square"></i></a>`
+                var excluir = `<a class="btn btn-danger btn-sm" data-bs-toggle="modal" title="EXCLLUIR" data-bs-target="#modalLogin" data-bs-acao="EXCLUIR_TERCEIRO" data-bs-id=${resp.data[x].id} data-bs-url="/vig/terceiro/excluir-terceiro-modal/${resp.data[x].id}" data-bs-toggle="modal"><i class="fa-solid fa-trash-can"></i></a>`
+                var editar = `<a class="btn btn-warning btn-sm" data-bs-toggle="modal" title="EDITAR" data-bs-target="#modalLogin" data-bs-acao="EDITAR_TERCEIRO" data-bs-id=${resp.data[x].id} data-bs-url="/vig/terceiro/editar-terceiro-modal/${resp.data[x].id}" data-bs-toggle="modal"><i class="fa-regular fa-pen-to-square"></i></a>`
             }
            dataresp = {
             codigo: resp.data[x].codigo,

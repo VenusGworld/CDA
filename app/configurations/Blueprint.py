@@ -65,6 +65,18 @@ def rotasAdm(app):
     from ..routes.vigAdm.ControleGerente import controleGerVigBlue
     app.register_blueprint(controleGerVigBlue, url_prefix="/admin", name="controleGerAdmBlue")
 
+    #Rotas recionadas ao enviar mensagem
+    from ..routes.administrador.Mensagem import mensagemAdmBlue
+    app.register_blueprint(mensagemAdmBlue, url_prefix="/admin")
+
+    #Rotas relaciondas ao log de Funcionário
+    from ..routes.administrador.LogManterFunc import logFuncAdmBlue
+    app.register_blueprint(logFuncAdmBlue, url_prefix="/admin")
+
+    #Rotas relaciondas ao log de Funcionário
+    from ..routes.administrador.LogMensagem import logMenAdmBlue
+    app.register_blueprint(logMenAdmBlue, url_prefix="/admin")
+
 
 
 #Adicionando as rotas relcionadas ao Tec. de Segurança

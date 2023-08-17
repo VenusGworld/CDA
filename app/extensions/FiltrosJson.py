@@ -18,6 +18,10 @@ def filtroNome(nome):
     return nome[:15]
 
 
+def filtroMensagem(mensagem):
+    return mensagem[:20]
+
+
 def filtroCpf(cpf):
     if len(cpf) < 11:
         cpf = "--"

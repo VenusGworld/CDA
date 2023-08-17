@@ -1,0 +1,23 @@
+.none{
+    display: none !important;
+}
+
+.upper{
+    text-transform: uppercase;
+}
+
+.checkbox-group {
+    margin-left: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.checkbox-item {
+    flex-basis: calc(18.50% - 10px);
+    margin-right: 5px;
+    margin-bottom: 2px;
+}
+
+.check-maquina{
+    font-weight: 470 !important;
+}

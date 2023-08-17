@@ -115,6 +115,11 @@
 
     $(document).ready(function(){
         $("#btnEnviarDev").click(function(){
+            let dataRet = new Date($("#dataRet").val());
+            let dataDev = new Date($("#dataDev").val());
+            let horaRet = $("#horaRet").val();
+            let horaDev = $("#horaDev").val();
+
             if ($("#respDev").val().length == 0 && $("#checkResp").prop('checked')){
                 $("#alert-modal-dev").prop("style").removeProperty("opacity");
                 $("#alert-modal-dev").empty();
@@ -125,6 +130,29 @@
                 window.setTimeout(() => {
                     $("#alert-modal-dev").fadeTo(500, 0).slideUp(500, () => {});
                 }, 3500);
+
+            }else if ( dataDev.getTime() < dataRet.getTime()){
+                $("#alert-modal-dev").prop("style").removeProperty("opacity");
+                $("#alert-modal-dev").empty();
+                $("#alert-modal-dev").removeClass();
+                $("#alert-modal-dev").append("Data de devolução menor que a data de retirada!");
+                $("#alert-modal-dev").addClass("alert alert-danger alert-dismissible fade show");
+                $("#alert-modal-dev").show();
+                window.setTimeout(() => {
+                    $("#alert-modal-dev").fadeTo(500, 0).slideUp(500, () => {});
+                }, 3500);
+                
+            }else if( dataDev.getTime() === dataRet.getTime() && horaDev < horaRet ){
+                $("#alert-modal-dev").prop("style").removeProperty("opacity");
+                $("#alert-modal-dev").empty();
+                $("#alert-modal-dev").removeClass();
+                $("#alert-modal-dev").append("Hora de devolução menor que a hora de retirada!");
+                $("#alert-modal-dev").addClass("alert alert-danger alert-dismissible fade show");
+                $("#alert-modal-dev").show();
+                window.setTimeout(() => {
+                    $("#alert-modal-dev").fadeTo(500, 0).slideUp(500, () => {});
+                }, 3500);
+
             }else{
                 $.ajax({
                     url: url,

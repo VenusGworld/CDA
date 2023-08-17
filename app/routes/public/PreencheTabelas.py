@@ -1,12 +1,14 @@
 from ...controllers.ControleManterFuncionario import ControleManterFuncionario
 from ...controllers.ControleConsultarLogUser import ControleConsultarLogUser
+from ...controllers.ControleConsultarLogFunc import ControleConsultarLogFunc
+from ...controllers.ControleConsultarLogMen import ControleConsultarLogMen
 from ...controllers.ControleManterTerceiro import ControleManterTerceiro
 from ...controllers.ControleManterUsuario import ControleManterUsuario
 from ...controllers.ControleManterChave import ControleManterChave
-from flask import Blueprint, jsonify, session, request, Response
 from ...controllers.ControleTerceiro import ControleTerceiro
 from ...controllers.ControleGerente import ControleDeGerente
 from ...controllers.ControleChave import CrontoleDeChave
+from flask import Blueprint, session, request, Response
 from flask_login import login_required
 import json
 
@@ -69,7 +71,7 @@ def listaChavesAPI():
 #Rota para preencher a lista de logs de usuários
 @preencheTabelasBlue.route('/lista-logs-usuario', methods=["POST"])
 @login_required
-def listaLogsUserInsertAPI():
+def listaLogsUserAPI():
     data = request.get_json()
     controleConsultaLogUser = ControleConsultarLogUser()
     if data["tipo"] == "INSERT":
@@ -112,4 +114,43 @@ def listaGerestesEntradaAPI():
     controlegerente = ControleDeGerente()
     respControle = controlegerente.consultaGerentesEntrada()
     resp = Response(response=json.dumps({"login": session["grupo"], "data": respControle}), status=200, mimetype="application/json")
+    return resp
+
+
+#Rotapara para preencher a lista de manutenção de Movimento de Gerentes
+@preencheTabelasBlue.route('/lista-gerentes-manutencao', methods=["POST"])
+@login_required
+def listaGerManutAPI():
+    controleDeGerente = ControleDeGerente()
+    respControle = controleDeGerente.listaGerentesManut()
+    resp = Response(response=json.dumps({"login": session["grupo"], "data": respControle}), status=200, mimetype="application/json")
+    return resp
+
+
+#Rota para preencher a lista de logs de usuários
+@preencheTabelasBlue.route('/lista-logs-funcionarios', methods=["POST"])
+@login_required
+def listaLogsFuncAPI():
+    data = request.get_json()
+    controleConsultaLogFunc = ControleConsultarLogFunc()
+    if data["tipo"] == "INSERT":
+        respControle = controleConsultaLogFunc.consultaLogFuncInsert()
+    elif data["tipo"] == "UPDATE":
+        respControle = controleConsultaLogFunc.consultaLogFuncUpdate()
+    elif data["tipo"] == "ACTIVE":
+        respControle = controleConsultaLogFunc.consultaLogFuncActive()
+    else:
+        respControle = controleConsultaLogFunc.consultaLogFuncDelete()
+    
+    resp = Response(response=json.dumps(respControle), status=200, mimetype="application/json")
+    return resp
+
+
+#Rota para preencher a lista de logs de MEnsagens
+@preencheTabelasBlue.route('/lista-logs-mensagens', methods=["POST"])
+@login_required
+def listaLogsMenAPI():
+    controleConsultarLogMen = ControleConsultarLogMen()
+    respControle = controleConsultarLogMen.consultaLogMen()
+    resp = Response(response=json.dumps(respControle), status=200, mimetype="application/json")
     return resp

@@ -23,7 +23,7 @@
                 <h6 class="msg-alert"></h6>
             </div>
         </div>
-        <form action="{% if session.grupo != 'ADM' %}{{ url_for('controleGerVigBlue.insertEntradaGer') }}{% else %}{{ url_for('controleGerAdmBlue.insertEntradaGer') }}{% endif %}" onsubmit="return verificaChavRespDev()" method="POST">
+        <form action="{% if session.grupo != 'ADM' %}{{ url_for('controleGerVigBlue.insertEntradaGer') }}{% else %}{{ url_for('controleGerAdmBlue.insertEntradaGer') }}{% endif %}" onsubmit="return verificaSaidaGerente()" method="POST">
             <div class="row mb-3">
                 <div class="col-6">
                     <label for="">Nome:</label>
@@ -50,7 +50,7 @@
     </div>
 </section>
 {% block script %}
-<script src="{{ url_for('static', filename='js/controleChave/funcoes.js') }}"></script>
+<script src="{{ url_for('static', filename='js/controleGerente/funcoes.js') }}"></script>
 <script>
     $("#gerente").keyup(function(){
         var nomeGer = this.value

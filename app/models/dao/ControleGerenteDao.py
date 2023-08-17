@@ -13,10 +13,19 @@ Classe Dao para funções do contole de Gerenete
 class ControleGerenteDao:
 
     def inserirEntrada(self, movimento: MovimentoGerente) -> bool:
-        movimentoEnt = CDA003(dataEntrada=movimento.dataEnt, horaEntrada=movimento.horaEnt,
+        mov = CDA003(dataEntrada=movimento.dataEnt, horaEntrada=movimento.horaEnt,
                               delete=movimento.delete, idFunc=movimento.gerente.id)
         
-        DB.session.add(movimentoEnt)
+        DB.session.add(mov)
+        DB.session.commit()
+        return True
+    
+
+    def inserirSaida(self, movimento: MovimentoGerente) -> bool:
+        mov = CDA003.query.get(movimento.id)
+        mov.mge_dataSaid = movimento.dataSai
+        mov.mge_horaSaid = movimento.horaSai
+
         DB.session.commit()
         return True
     
@@ -47,3 +56,11 @@ class ControleGerenteDao:
         mov = CDA003.query.filter(CDA003.id_movGere==id).first()
 
         return mov.mge_idFunc
+    
+
+    def consultaGerentesManut(self) -> CDA003:
+        movimentos = DB.session.query(CDA003.id_movGere, CDA003.mge_dataEntra, CDA003.mge_horaEntra, CDA003.mge_dataSaid, CDA003.mge_horaSaid, CDA007.fu_nome.label("nomeGer"))\
+            .join(CDA007, CDA007.id_funcionarios==CDA003.mge_idFunc)\
+                .filter(CDA003.mge_dataSaid!=None, CDA003.mge_horaSaid!=None,CDA003.mge_delete!=True)
+        
+        return movimentos

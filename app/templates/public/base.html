@@ -65,7 +65,11 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <div class="user-menu">
-                        <h6>{{ session.nome }}</h6>
+                        {% if session.grupo == 'VIG' %}
+                            <h6>VIG</h6>
+                        {% else %}
+                            <h6>{{ session.nome }}</h6>
+                        {% endif %}
                         <a href="/logout">
                             <i class="fa-solid fa-right-from-bracket" id="logout"></i>
                         </a>

@@ -19,11 +19,11 @@ $.ajax({
             retirada: resp.data[x].retirada,
             devolucao: resp.data[x].devolucao,
             respRet: resp.data[x].respRet,
-            acoes: `<div style="width: 100%;display: flex;align-items: center;text-align: center;justify-content: space-evenly;">
-            <a href="/admin/controle-chave/incluir-devolucao/" class="btn btn-primary btn-sm"><i class="fa-regular fa-eye"></i></a>
-            <a href="/admin/controle-chave/incluir-devolucao/" class="btn btn-warning btn-sm"><i class="fa-regular fa-pen-to-square"></i></a>
-            <a href="/admin/controle-chave/incluir-devolucao/" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash-can"></i></a>
-            </div>`
+            acoes: gridjs.html(`<div style="width: 100%;display: flex;align-items: center;text-align: center;justify-content: space-evenly;">
+            <a href="/admin/controle-chave/incluir-devolucao/" title="VISUALIZAR" class="btn btn-primary btn-sm"><i class="fa-regular fa-eye"></i></a>
+            <a href="/admin/controle-chave/incluir-devolucao/" title="EDITAR" class="btn btn-warning btn-sm"><i class="fa-regular fa-pen-to-square"></i></a>
+            <a href="/admin/controle-chave/incluir-devolucao/" title="EXCLUIR" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash-can"></i></a>
+            </div>`)
            }
            dadosChaveManut.push(dataresp)
         }
@@ -31,10 +31,25 @@ $.ajax({
 });
 
 
-var colunasChaveManut = {
-    "chave": "Chave",
-    "retirada": "Retirada",
-    "devolucao": "Devolução",
-    "respRet": "Responsável Ret.",
-    "acoes": "<span style='display:flex; text-align: center; justify-content: center;align-items: center;'>Ações</span>"
-}
+var colunasChaveManut = [
+    {
+        id: 'chave',
+        name: 'Chave'
+    },
+    {
+        id: 'retirada',
+        name: 'Retirada'
+    },
+    {
+        id: 'devolucao',
+        name: "Devolução"
+    },
+    {
+        id: 'respRet',
+        name: "Responsável Ret."
+    },
+    {
+        id: 'acoes',
+        name: gridjs.html("<span style='display:flex; text-align: center; justify-content: center;align-items: center;'>Ações</span>")
+    }
+]

@@ -3,6 +3,7 @@
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styleUsuarios.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styleControleTerceiro.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
 {% endblock %}
 {% include "public/header.html" %}
 <section class="content">
@@ -139,7 +140,7 @@
             $(".ui-helper-hidden-accessible").css("display", "none")
         }
     }
-</script>
+</script>  
 <script>
     let isSubmitting = false;
 

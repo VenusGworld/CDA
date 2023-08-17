@@ -1,0 +1,164 @@
+{% extends "public/base.html" %}
+{% block content %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleMensagem.css') }}">
+{% endblock %}
+{% include "public/header.html" %}
+<section class="content">
+    <div class="container-fluid p-2">
+        <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+            <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+            </symbol>
+            <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+            </symbol>
+            <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+            </symbol>
+        </svg>
+        <div id="alert" class="alert alert-danger alert-dismissible d-flex align-items-center none" role="alert">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+            <div id="msg">
+                <h6></h6>
+            </div>
+        </div>
+        <form id="formMensagem">
+            <div class="row mb-2">
+                <div class="col">
+                    <label for="">Mensagem:</label>
+                    <textarea class="form-control upper" maxlength="253" autofocus style="height: 100px" name="mensagem" id="mensagem" cols="15" rows="10"></textarea>
+                </div>
+            </div>
+            <div class="form-check form-check-inline mb-2">
+                <label for="todos">Todos </label>
+                <input class="form-check-input" type="checkbox" id="todos" onchange="marcaTodosCheck()">
+            </div>
+            <div class="row mb-2" id="maquinas">
+                {% for grupo in context.grupos.grupos %}
+                    <div class="d-flex ms-3 ps-3">
+                        <label for="master_{{ grupo.nome }}">{{ grupo.nome }}</label>
+                        <input class="form-check-input" type="checkbox" id="master_{{ grupo.nome }}" onchange="marcaCheck({{ grupo.nome }}, '{{ grupo.nome }}')">
+                    </div>
+                    <div class="col mb-4 ms-3" id="{{ grupo.nome }}">
+                        <div class="checkbox-group">
+                            {% for maquina in grupo.maquinas  %}
+                            <div class="checkbox-item">
+                                <label class="check-maquina">
+                                    <input class="form-check-input" type="checkbox" id="maq_{{ maquina }}" value="{{ maquina }}">{{ maquina }}
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="d-flex justify-content-end">
+                <input type="submit" class="btn btn-outline-success" id="btnGravar" value="Enviar" tabindex="9">
+            </div>
+        </form>
+    </div>
+</section>
+<section class="modal-alert d-none" id="modal-alert">
+    <div class="modal-dialog" style="width: 30rem;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Aviso</h5>
+            </div>
+            <div class="alert" id="alert-modal" style="display: none; margin-left: 1rem; margin-right: 1rem; margin-top: 1rem;" role="alert">
+            </div>
+            <div class="modal-body overflow-scroll">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-3">
+                            <i class="fa-solid fa-circle-check" style="font-size: 4rem; color: #008000;"></i>
+                        </div>
+                        <div class="col">
+                            <h4 style="font-size: 17px;">Mensagem enviada com sucesso!</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-outline-success" id="btnEnviarMen">OK</button>
+            </div>
+        </div>
+    </div>
+</section>
+{% block script %}
+<script>
+    $(document).ready(function(){
+        $("#btnEnviarMen").click(function(){
+            $("#modal-alert").addClass("d-none");
+        })
+    })
+</script>
+<script>
+    function marcaTodosCheck(div, idInput){
+        const masterCheckbox = document.getElementById(`todos`);
+        const dependentCheckboxes = document.querySelectorAll(`input[type="checkbox"]`);
+        const isChecked = masterCheckbox.checked;
+
+        dependentCheckboxes.forEach(function(checkbox) {
+            checkbox.checked = isChecked;
+        });
+    }
+
+    function marcaCheck(div, idInput){
+        const masterCheckbox = document.getElementById(`master_${idInput}`);
+        const dependentCheckboxes = div.querySelectorAll(`input[id^="maq_"]`);
+        const isChecked = masterCheckbox.checked;
+
+        dependentCheckboxes.forEach(function(checkbox) {
+            checkbox.checked = isChecked;
+        });
+    }
+</script>
+<script>
+    let isSubmitting = false;
+
+    document.getElementById('formMensagem').addEventListener('submit', function(event) {
+        event.preventDefault(); // Previne a submissão padrão do formulário
+        if (!isSubmitting) { // Verifica se já não está sendo submetido
+            isSubmitting = true; // Ativa a variável para evitar novas submissões
+            enviarFormulario(event.target);
+        }
+    });
+
+    function enviarFormulario(form){
+        const inputsData = [];
+        const div = document.getElementById("maquinas");
+        const inputs = div.querySelectorAll('input[id^="maq_"]');
+
+        inputs.forEach((input) => {
+            console.log(input);
+            if (input.checked){
+                inputsData.push(input.value);
+            }
+        });
+
+        var url = "{{url_for('mensagemAdmBlue.sendMensagem')}}"
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            async: false,
+            dataType: 'json',
+            contentType: 'application/json;charset=UTF-8',
+            data:JSON.stringify({
+                mensagem: $("#mensagem").val(), 
+                destinos: inputsData,
+            }), 
+            success: function(resp){
+                isSubmitting = false;
+                $("#modal-alert").removeClass("d-none");
+            },
+            error: function(resp){
+                window.location = '/error_500';
+                isSubmitting = false;
+            }
+        });
+    }
+</script>
+{% endblock %}
+{% endblock %}

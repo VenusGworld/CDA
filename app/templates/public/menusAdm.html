@@ -113,29 +113,29 @@
                     <li class="nav-item">
                         <a href="./index3.html" class="nav-link {% if context.active == 'logTerc' %}active{% endif %}">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Manter Terceiro</p>
+                            <p>Terceiro</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="./index3.html" class="nav-link {% if context.active == 'logChave' %}active{% endif %}">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Manter Chaves</p>
+                            <p>Chaves</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="./index3.html" class="nav-link {% if context.active == 'logFunc' %}active{% endif %}">
+                        <a href="{{url_for('logFuncAdmBlue.listagemLog')}}" class="nav-link {% if context.active == 'logFunc' %}active{% endif %}">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Manter Funcionário</p>
+                            <p>Funcionário</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="{{url_for('logUserAdmBlue.listagemLog')}}" class="nav-link {% if context.active == 'logUser' %}active{% endif %}">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Manter Usuário</p>
+                            <p>Usuário</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="./index3.html" class="nav-link {% if context.active == 'logMsg' %}active{% endif %}">
+                        <a href="{{url_for('logMenAdmBlue.listagemLog')}}" class="nav-link {% if context.active == 'logMsg' %}active{% endif %}">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Mensagem</p>
                         </a>
@@ -143,7 +143,7 @@
                 </ul>
             </li>
             <li class="nav-item">
-                <a href="/dashboard" class="nav-link {% if context.active == 'mansagem' %}active{% endif %}">
+                <a href="{{url_for('mensagemAdmBlue.enviarMensagem')}}" class="nav-link {% if context.active == 'mansagem' %}active{% endif %}">
                     <i class="fa-solid fa-message icon-space"></i>
                     <p class="font-p">
                         Mensagem

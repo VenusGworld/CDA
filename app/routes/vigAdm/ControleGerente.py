@@ -4,8 +4,8 @@ from ...extensions.LogErro import LogErro
 from flask_login import login_required
 from datetime import datetime
 import traceback
-import json
 import sys
+import json
 
 
 controleGerVigBlue = Blueprint("controleGerVigBlue", __name__)
@@ -76,6 +76,40 @@ def incluirSaidaGer(id):
             return render_template("vigAdm/controleGerente/controleGerente.html", context=context)
         else:
             return redirect(url_for('controleGerVigBlue.controleGerente'))
+    except:
+        log = LogErro()
+        tipoExcecao, valorExcecao, tb = sys.exc_info()
+        tracebackInfo = traceback.extract_tb(tb)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
+        abort(500)
+
+
+#Rota para inclusão de saída de gerente
+@controleGerVigBlue.route('/controle-gerente/incluir-saida', methods=["POST"])
+@login_required
+def insertSaidaGer():
+    try:
+        data = request.get_json()
+        controleGerente = ControleDeGerente()
+        controleGerente.inserirSaida(data["idMov"], data["dataSai"], data["horaSai"], data["crachaGer"])
+        flash("Saída incluida com sucesso!", "success")
+        resp = Response(response=json.dumps({"success": True}), status=200, mimetype="application/json")
+        return resp
+    except:
+        log = LogErro()
+        tipoExcecao, valorExcecao, tb = sys.exc_info()
+        tracebackInfo = traceback.extract_tb(tb)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
+        abort(500)
+
+
+#Rota para tela de manutenção de movimentação de gerentes
+@controleGerVigBlue.route('/controle-gerente/manutencao-gerente', methods=["GET"])
+@login_required
+def manutencaoGerente():
+    try:
+        context = {"titulo": "Manutenção entrada e saída de Gerente", "active": "controlGer"}
+        return render_template("vigAdm/controleGerente/manutencaoGerente.html", context=context)
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()

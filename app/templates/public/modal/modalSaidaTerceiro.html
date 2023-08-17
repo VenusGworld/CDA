@@ -6,6 +6,8 @@
             </div>
             <div class="modal-body">
                 <div class="container">
+                    <div class="alert" id="alert-modal" style="display: none; margin-left: 1rem; margin-right: 1rem; margin-top: 1rem;" role="alert">
+                    </div>
                     <div class="row">
                         <div class="col mb-1 d-none">
                             <input type="text" name="idMov" id="idMov" class="form-control upper" value="{{ context.movimento.id }}" readonly>
@@ -22,15 +24,15 @@
                     <div class="row">
                         <div class="col-5 mb-1">
                             <label for="recipient-name" class="col-form-label">Empresa:</label>
-                            <input type="text" name="dataRet" id="dataRet" class="form-control" value="{{ context.movimento.empresa }}" readonly>
+                            <input type="text" name="empresa" id="empresa" class="form-control" value="{{ context.movimento.empresa }}" readonly>
                         </div>
                         <div class="col mb-1">
                             <label for="recipient-name" class="col-form-label">Veículo:</label>
-                            <input type="text" name="horaRet" id="horaRet" class="form-control" value="{{ context.movimento.veiculo }}" readonly>
+                            <input type="text" name="veiculo" id="veiculo" class="form-control" value="{{ context.movimento.veiculo }}" readonly>
                         </div>
                         <div class="col mb-1">
                             <label for="recipient-name" class="col-form-label">Placa:</label>
-                            <input type="text" name="dataRet" id="dataRet" class="form-control" value="{{ context.movimento.placa }}" readonly>
+                            <input type="text" name="placa" id="placa" class="form-control" value="{{ context.movimento.placa }}" readonly>
                         </div>
                     </div>
                     <div class="row">
@@ -39,21 +41,21 @@
                         </div>
                         <div class="col-5 mb-1">
                             <label for="recipient-name" class="col-form-label">Pessoa Visitada:</label>
-                            <input type="text" name="dataRet" id="dataRet" class="form-control" value="{{ context.movimento.pessoaVisit.nome }}" readonly>
+                            <input type="text" name="pessoaVisit" id="pessoaVisit" class="form-control" value="{{ context.movimento.pessoaVisit.nome }}" readonly>
                         </div>
                         <div class="col mb-1">
                             <label for="recipient-name" class="col-form-label">Motivo:</label>
-                            <input type="text" name="horaRet" id="horaRet" class="form-control" value="{{ context.movimento.motivo }}" readonly>
+                            <input type="text" name="motivo" id="motivo" class="form-control" value="{{ context.movimento.motivo }}" readonly>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col mb-1">
                             <label for="recipient-name" class="col-form-label">Data Entrada:</label>
-                            <input type="date" name="dataRet" id="dataRet" class="form-control" value="{{ context.movimento.dataEnt | dataInput }}" readonly>
+                            <input type="date" name="dataEnt" id="dataEnt" class="form-control" value="{{ context.movimento.dataEnt | dataInput }}" readonly>
                         </div>
                         <div class="col mb-1">
                             <label for="recipient-name" class="col-form-label">Hora Entrada:</label>
-                            <input type="time" name="horaRet" id="horaRet" class="form-control" value="{{ context.movimento.horaEnt }}" readonly>
+                            <input type="time" name="horaEnt" id="horaEnt" class="form-control" value="{{ context.movimento.horaEnt }}" readonly>
                         </div>
                     </div>
                     <div class="row">
@@ -144,51 +146,80 @@
 </script>
 <script type="text/javascript">
     {% if session.grupo == 'ADM' %}
-        var url = "{{url_for('controleTercAdmBlue.insertSaidaTerc')}}"
-        var dest = "{{url_for('controleTercAdmBlue.controleTerceiro')}}"
+        let url = "{{url_for('controleTercAdmBlue.insertSaidaTerc')}}"
+        let dest = "{{url_for('controleTercAdmBlue.controleTerceiro')}}"
     {% else %}
-        var url = "{{url_for('controleTercVigBlue.insertSaidaTerc')}}"
-        var dest = "{{url_for('controleTercVigBlue.controleTerceiro')}}"
+        let url = "{{url_for('controleTercVigBlue.insertSaidaTerc')}}"
+        let dest = "{{url_for('controleTercVigBlue.controleTerceiro')}}"
     {% endif %}
 
     $(document).ready(function(){
         $("#btnEnviarDev").click(function(){
-            const inputsData = [];
-            const inputs = document.querySelectorAll('input[id^="cpf"]');
+            let inputsData = [];
+            let inputs = document.querySelectorAll('input[id^="cpf"]');
+            let dataEnt = new Date($("#dataEnt").val());
+            let dataSai = new Date($("#dataSaid").val());
+            let horaEnt = $("#horaEnt").val();
+            let horaSai = $("#horaSaid").val();
 
             inputs.forEach((input) => {
                 inputsData.push({"cpf": input.value});
             });
 
-            $.ajax({
-            url: url,
-            type: 'POST',
-            dataType: 'json',
-            contentType: 'application/json',
-            data:JSON.stringify({
-                idMov: $("#idMov").val(),
-                dataSaid: $("#dataSaid").val(),
-                horaSaid: $("#horaSaid").val(),
-                cpf: $("#tercCpf").val(),
-                cracha: $("#cracha").val(),
-                acomps: inputsData,
-            }),
-            success: function(data, status){
-                window.location=dest
-            },
-            error: function(data, status){
-                var h6 = data.responseJSON.msg;
-                $("#alert").prop("style").removeProperty("opacity");
-                $("#alert").empty();
-                $("#alert").removeClass();
-                $("#alert").append(h6);
-                $("#alert").addClass("alert alert-danger alert-dismissible fade show");
-                $("#alert").show();
-                window.setTimeout(function() {
-                    $("#alert").fadeTo(500, 0).slideUp(500, function(){});
-                }, 15000);
-            },
-            });
+            if (dataEnt.getTime() > dataSai.getTime()){
+                $("#alert-modal").prop("style").removeProperty("opacity");
+                $("#alert-modal").empty();
+                $("#alert-modal").removeClass();
+                $("#alert-modal").append("Data de saída menor que a data de entrada!");
+                $("#alert-modal").addClass("alert alert-danger alert-dismissible fade show");
+                $("#alert-modal").show();
+                window.setTimeout(() => {
+                    $("#alert-modal").fadeTo(500, 0).slideUp(500, () => {});
+                }, 3500);
+
+            } else if (dataEnt.getTime() == dataSai.getTime() && horaSai < horaEnt){
+                $("#alert-modal").prop("style").removeProperty("opacity");
+                $("#alert-modal").empty();
+                $("#alert-modal").removeClass();
+                $("#alert-modal").append("Hora de saída menor que a hora de entrada!");
+                $("#alert-modal").addClass("alert alert-danger alert-dismissible fade show");
+                $("#alert-modal").show();
+                window.setTimeout(() => {
+                    $("#alert-modal").fadeTo(500, 0).slideUp(500, () => {});
+                }, 3500);
+
+            }else{
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data:JSON.stringify({
+                        idMov: $("#idMov").val(),
+                        dataSaid: $("#dataSaid").val(),
+                        horaSaid: $("#horaSaid").val(),
+                        cpf: $("#tercCpf").val(),
+                        cracha: $("#cracha").val(),
+                        acomps: inputsData,
+                    }),
+                    success: function(data, status){
+                        window.location=dest
+                    },
+                    error: function(data, status){
+                        var h6 = data.responseJSON.msg;
+                        $("#alert").prop("style").removeProperty("opacity");
+                        $("#alert").empty();
+                        $("#alert").removeClass();
+                        $("#alert").append(h6);
+                        $("#alert").addClass("alert alert-danger alert-dismissible fade show");
+                        $("#alert").show();
+                        window.setTimeout(function() {
+                            $("#alert").fadeTo(500, 0).slideUp(500, function(){});
+                        }, 15000);
+                    },
+                });
+            }
+            
         });
     });
 </script>

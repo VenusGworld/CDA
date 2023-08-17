@@ -1,10 +1,10 @@
-from ..Tables import CDA013, CDA011, CDA001, CDA010, CDA012, CDA008, CDA006
+from ..Tables import CDA013, CDA011, CDA001, CDA010, CDA012, CDA008, CDA006, CDA014
 from ...configurations.Database import DB
 from app.models.entity.Log import Log
 
 """
 Classe Dao para gerar log
-@tables - CDA013, CDA011, CDA001, CDA010, CDA012, CDA008, CDA006
+@tables - CDA013, CDA011, CDA001, CDA010, CDA012, CDA008, CDA006, CDA014
 @author - Fabio
 @version - 4.0
 @since - 05/06/2023
@@ -153,6 +153,22 @@ class GeraLogDao:
         return True
     
 
+    def inserirLogMensagem(self, log: Log) -> bool:
+        #########################################################################################
+        # Essa Função insere o log no banco.
+        
+        # PARAMETROS:
+        #   log = Instancia da classe Log com os dados para inserir o log.
+        
+        # RETORNOS:
+        #   return True = Retorna True caso foi inserido com sucesso.
+        #########################################################################################
+
+        logMensagem = CDA014(dataHora=log.dataHora, mensagem=log.observacao, idUsua=log.usuario.id)
+    
+        DB.session.add(logMensagem)
+        DB.session.commit()
+        return True
     
 
         

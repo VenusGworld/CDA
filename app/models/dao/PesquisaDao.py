@@ -1,9 +1,9 @@
-from ..Tables import CDA005, CDA007, CDA002, CDA009, SysUser
+from ..Tables import CDA005, CDA007, CDA002, CDA009, CDA003, SysUser
 from ldap3 import Server, Connection, SAFE_SYNC, SUBTREE
 
 """
 Classe Dao para pesquisas do sistema
-@tables - CDA005, CDA007, CDA002, CDA009, SysUser
+@tables - CDA005, CDA007, CDA002, CDA009, CDA003, SysUser
 @author - Fabio
 @version - 1.0
 @since - 05/06/2023
@@ -48,7 +48,7 @@ class PesquisaDao:
     
     
     def pesquisaMaquinasFormDao(self) -> list:
-        conn = Connection(Server(''),
+        conn = Connection(Server('LDAP:'),
                             auto_bind=True,
                             user="{}\\{}".format("", ""),
                             password="",
@@ -99,3 +99,9 @@ class PesquisaDao:
         gerentes = CDA007.query.filter(CDA007.fu_cracha.like(f"%{cracha}%"), CDA007.fu_delete!=True, CDA007.fu_ativo!=True, CDA007.fu_gerente==True)
 
         return gerentes
+    
+
+    def pesquisaGerenteSaiFormMovDao(self, id: int) -> CDA003:
+        movimento = CDA003.query.filter(CDA003.mge_idFunc==id, CDA003.mge_dataSaid==None, CDA003.mge_horaSaid==None, CDA003.mge_delete!=True).first()
+
+        return movimento

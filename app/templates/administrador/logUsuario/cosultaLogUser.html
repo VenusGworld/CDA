@@ -4,6 +4,9 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/styleUsuarios.css') }}">
 {% endblock %}
 {% include "public/header.html" %}
+{% if context.modal == 1 %}
+    {% include "public/modalLog/modalLogInsertUser.html" %}
+{% endif %}
 <section class="content">
     <div class="container-fluid p-0">
         <ul class="nav nav-tabs" id="myTab" role="tablist">

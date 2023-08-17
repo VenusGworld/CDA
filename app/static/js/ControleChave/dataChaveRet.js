@@ -10,9 +10,9 @@ $.ajax({
         for(x in resp.data){
             //Verifica se o usuário que está logado é do grupo ADM
             if (resp.login === "ADM"){
-                var strDev = `<div style="width: 100%;display: flex;align-items: center;text-align: center;justify-content: center;"><a href="/admin/controle-chave/incluir-devolucao-modal/${resp.data[x].id}" class="btn btn-warning btn-sm"><i class="fa-solid fa-person-walking-arrow-right"></i></a></div>`
+                var strDev = `<div style="width: 100%;display: flex;align-items: center;text-align: center;justify-content: center;"><a href="/admin/controle-chave/incluir-devolucao-modal/${resp.data[x].id}" class="btn btn-warning btn-sm" title="DEVOLUÇÃO"><i class="fa-solid fa-person-walking-arrow-right"></i></a></div>`
             }else{
-                var strDev = `<div style="width: 100%;display: flex;align-items: center;text-align: center;justify-content: center;"><a class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modalLogin" data-bs-acao="INCLUIR_DEV_CHAVE" data-bs-id=${resp.data[x].id} data-bs-toggle="modal" data-bs-url="/vig/controle-chave/incluir-devolucao-modal/${resp.data[x].id}"><i class="fa-solid fa-person-walking-arrow-right"></i></a></div>`
+                var strDev = `<div style="width: 100%;display: flex;align-items: center;text-align: center;justify-content: center;"><a class="btn btn-warning btn-sm" title="DEVOLUÇÃO" data-bs-toggle="modal" data-bs-target="#modalLogin" data-bs-acao="INCLUIR_DEV_CHAVE" data-bs-id=${resp.data[x].id} data-bs-toggle="modal" data-bs-url="/vig/controle-chave/incluir-devolucao-modal/${resp.data[x].id}"><i class="fa-solid fa-person-walking-arrow-right"></i></a></div>`
             }
            dataresp = {
             chave: resp.data[x].nome,

@@ -10,11 +10,11 @@ $.ajax({
         for(x in resp.data){
             //Verifica se o usuário que está logado é do grupo ADM
             if (resp.login === "ADM"){
-                var excluir = `<a href="/admin/chave/excluir-chave-modal/${resp.data[x].id}" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash-can"></i></a>`
-                var editar = `<a href="/admin/chave/editar-chave-modal/${resp.data[x].id}" class="btn btn-warning btn-sm"><i class="fa-regular fa-pen-to-square"></i></a>`
+                var excluir = `<a href="/admin/chave/excluir-chave-modal/${resp.data[x].id}" title="EXCLUIR" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash-can"></i></a>`
+                var editar = `<a href="/admin/chave/editar-chave-modal/${resp.data[x].id}" title="EDITAR" class="btn btn-warning btn-sm"><i class="fa-regular fa-pen-to-square"></i></a>`
             }else{
-                var excluir = `<a class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalLogin" data-bs-acao="EXCLUIR_CHAVE" data-bs-id=${resp.data[x].id} data-bs-url="/vig/chave/excluir-chave-modal/${resp.data[x].id}" data-bs-toggle="modal"><i class="fa-solid fa-trash-can"></i></a>`
-                var editar = `<a class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modalLogin" data-bs-acao="EDITAR_CHAVE" data-bs-id=${resp.data[x].id} data-bs-url="/vig/chave/editar-chave-modal/${resp.data[x].id}" data-bs-toggle="modal"><i class="fa-regular fa-pen-to-square"></i></a>`
+                var excluir = `<a class="btn btn-danger btn-sm" title="EXCLUIR" data-bs-toggle="modal" data-bs-target="#modalLogin" data-bs-acao="EXCLUIR_CHAVE" data-bs-id=${resp.data[x].id} data-bs-url="/vig/chave/excluir-chave-modal/${resp.data[x].id}" data-bs-toggle="modal"><i class="fa-solid fa-trash-can"></i></a>`
+                var editar = `<a class="btn btn-warning btn-sm" title="EDITAR" data-bs-toggle="modal" data-bs-target="#modalLogin" data-bs-acao="EDITAR_CHAVE" data-bs-id=${resp.data[x].id} data-bs-url="/vig/chave/editar-chave-modal/${resp.data[x].id}" data-bs-toggle="modal"><i class="fa-regular fa-pen-to-square"></i></a>`
             }
            dataresp = {
             codigo: resp.data[x].codigo,

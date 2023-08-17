@@ -3,7 +3,7 @@ from ..Tables import CDA013, SysUser
 
 """
 Classe Dao para funções de consulta de logs
-@tables - SysUser
+@tables - SysUser, CDA013
 @author - Fabio
 @version - 1.0
 @since - 07/07/2023
@@ -46,3 +46,11 @@ class ConsultaLogUserDao:
                     .order_by(CDA013.lus_dataHora)
 
         return logs
+    
+
+    def consultaLogsUserDetalhado(self, id: int) -> CDA013:
+        log = DB.session.query(CDA013.id_logUsua, CDA013.lus_acao, CDA013.lus_dataHora, CDA013.lus_dadosNovos, CDA013.lus_dadosAntigos, CDA013.lus_idUsua)\
+            .filter(CDA013.id_logUsua==id)\
+                .first()
+
+        return log

@@ -43,3 +43,15 @@ def _jinja2_filter_cpf(cpf, fmt=None):
         cpf = cpf[0:3] + "." + cpf[3:6] + "." + cpf[6:9] + "-" + cpf[9:]
 
     return cpf
+
+
+
+#Filtro para Data input
+@filtrosBlue.app_template_filter('dataTime')
+def _jinja2_filter_dataTime(date, fmt=None):
+    if type(date) == str:
+        date = dateutil.parser.parse(date)
+
+    native = date.replace(tzinfo=None)
+    format='%d/%m/%Y %H:%M:%S'
+    return native.strftime(format) 

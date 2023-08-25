@@ -4,32 +4,30 @@ from ..models.entity.Usuario import Usuario
 from ..models.dao.LoginDao import LoginDao
 from flask import session
 
-"""
-Classe Controller para o Login do sistema
-@author - Fabio
-@version - 1.0
-@since - 23/05/2023
-"""
-
 class ControleLogin:
+    """
+    Classe Controller para funções relacionadas ao login no sistema
+    @author - Fabio
+    @version - 1.0
+    @since - 23/05/2023
+    """
     
     def login(self, user: str, pssd: str) -> int:
-        #########################################################################################
-        # Essa função recebe o usuário e a senha para autenticação no sistema.
-        
-        # PARAMETROS:
-        #   user = Usuário informado no form de login;
-        #   pssd = Senha informada no form de login.
-        
-        # RETORNOS:
-        #   return 1 = Retorna 1 se o usuário existe e está correto e usuário Administrador;
-        #   return 2 = Retorna 2 se o usuário existe e está correto e usuário Tec. Segurança;
-        #   return 3 = Retorna 3 se o usuário existe e está correto e usuário Vigilante;
-        #   return 4 = Retorna 4 se a senha/usuário estão incorretos;
-        #   return 5 = Retorna 5 se o usuário está inativo ou deletado;
-        #   return 6 = Retorna 6 se o usuário não existe;
-        #########################################################################################
-        
+        """
+        Realiza o processo de login do usuário.
+
+        :param user: O nome de usuário.
+        :param pssd: A senha do usuário.
+
+        :return: Um código indicando o resultado do processo de login.
+            1 - Login bem-sucedido para grupo "ADM".
+            2 - Login bem-sucedido para grupo "TEC".
+            3 - Login bem-sucedido para grupo "VIG".
+            4 - Senha/Usuário estão incorretos.
+            5 - Usuário inativo ou deletado.
+            6 - Usuário não encontrado.
+        """
+
         usuario = Usuario()
         usuario.usuario = user
         usuario.senha = pssd
@@ -39,9 +37,12 @@ class ControleLogin:
             loginDao = LoginDao()
             userResp = loginDao.consultaUsuario(usuario)
             if userResp != 0:
-                if usuario.delete != True and usuario.ativo != True: #Verifica se o usuário está inativo ou deletado
-                    if usuario.verificarSenha(): #Verfica a senha digitada
-                        self.verficaTrocaSenha(usuario) #Verifica se usuário que está logando solicitou troca de senha
+                #Verifica se o usuário está inativo ou deletado
+                if usuario.delete != True and usuario.ativo != True: 
+                    #Verfica a senha digitada
+                    if usuario.verificarSenha(): 
+                        #Verifica se usuário que está logando solicitou troca de senha
+                        self.verficaTrocaSenha(usuario) 
                         login_user(userResp)
                         session["nome"] = usuario.nome
                         session["usuario"] = usuario.usuario
@@ -61,23 +62,23 @@ class ControleLogin:
     
 
     def loginAdm(self, usuario: Usuario) -> int:
-        #########################################################################################
-        # Essa função recebe o usuário ADMIN e vefica o usuário e senha digitado, mas se não existir
-        # ele é adicionado no banco.
-        
-        # PARAMETROS:
-        #   usuario = Instancia da classe Usuario com usuário e senha.
-        
-        # RETORNOS:
-        #   return 1 = Retorna 1 se o usuário existe e está correto e usuário Administrador;
-        #   return 4 = Retorna 4 se a senha/usuário estão incorretos.
-        #########################################################################################
+        """
+        Realiza o processo de login para o usuário administrador (ADMIN).
+
+        :param usuario: A instância do usuário.
+
+        :return: Um código indicando o resultado do processo de login ADMIN.
+            1 - Login ADMIN bem-sucedido.
+            4 - Senha ADMIN incorreta.
+        """
 
         loginDao = LoginDao()
-        userResp = loginDao.consultaUsuario(usuario) #Verifica se o ADMIN já existe
+        #Verifica se o ADMIN já existe
+        userResp = loginDao.consultaUsuario(usuario) 
         if userResp != 0:
             if usuario.verificarSenha():
-                self.verficaTrocaSenha(usuario) #Verifica se usuário que está logando solicitou troca de senha 
+                #Verifica se usuário que está logando solicitou troca de senha
+                self.verficaTrocaSenha(usuario)  
                 login_user(userResp)
                 session["nome"] = usuario.nome
                 session["usuario"] = usuario.usuario
@@ -91,7 +92,8 @@ class ControleLogin:
             controleManterUsuario.inserirUsuario(usuario)
             userResp = loginDao.consultaUsuario(usuario)
             if usuario.verificarSenha():
-                self.verficaTrocaSenha(usuario) #Verifica se usuário que está logando solicitou troca de senha
+                #Verifica se usuário que está logando solicitou troca de senha
+                self.verficaTrocaSenha(usuario) 
                 login_user(userResp)
                 session["nome"] = usuario.nome
                 session["usuario"] = usuario.usuario
@@ -102,22 +104,20 @@ class ControleLogin:
       
             
     def loginVig(self, user: str, pssd: str) -> int:
-        #########################################################################################
-        # Essa função recebe o usuário e a senha para autenticação na hora da movimentação no 
-        # sistema.
-        
-        # PARAMETROS:
-        #   user = Usuário informado no form de login;
-        #   pssd = Senha informada no form de login.
-        
-        # RETORNOS:
-        #   return 1 = Retorna 1 se o usuário existe e está correto e usuário Administrador;
-        #   return 2 = Retorna 2 se o usuário existe e está correto e usuário Tec. Segurança;
-        #   return 3 = Retorna 3 se o usuário existe e está correto e usuário Vigilante;
-        #   return 4 = Retorna 4 se a senha/usuário estão incorretos;
-        #   return 5 = Retorna 5 se o usuário está inativo ou deletado;
-        #   return 6 = Retorna 6 se o usuário não existe;
-        #########################################################################################
+        """
+        Realiza o processo de login na hora da movimentação no sistema dos usuários vigilantes (VIG).
+
+        :param user: O nome de usuário.
+        :param pssd: A senha do usuário.
+
+        :return: Um código indicando o resultado do processo de login VIG.
+            1 - Login bem-sucedido para grupo "ADM".
+            2 - Login bem-sucedido para grupo "TEC".
+            3 - Login bem-sucedido para grupo "VIG".
+            4 - Senha/Usuário estão incorretos.
+            5 - Usuário inativo ou deletado.
+            6 - Usuário não encontrado.
+        """
         
         usuario = Usuario()
         usuario.usuario = user
@@ -125,9 +125,12 @@ class ControleLogin:
         loginDao = LoginDao()
         userResp = loginDao.consultaUsuario(usuario)
         if userResp != 0:
-            if usuario.delete != True and usuario.ativo != True: #Verifica se o usuário está inativo ou deletado
-                if usuario.verificarSenha(): #Verfica a senha digitada
-                    self.verficaTrocaSenha(usuario) #Verifica se usuário que está logando solicitou troca de senha
+            #Verifica se o usuário está inativo ou deletado
+            if usuario.delete != True and usuario.ativo != True: 
+                #Verfica a senha digitada
+                if usuario.verificarSenha(): 
+                    #Verifica se usuário que está logando solicitou troca de senha
+                    self.verficaTrocaSenha(usuario) 
                     login_user(userResp)
                     session["usuarioVIG"] = usuario.usuario
                     if usuario.grupo == "ADM":
@@ -145,17 +148,15 @@ class ControleLogin:
 
 
     def verficaTrocaSenha(self, usuario: Usuario) -> None:
-        #########################################################################################
-        # Essa Função recebe o usuário que está efetuando o login no sistema, e verifica se foi
-        # solicitado a troca de senha, caso tenha solicitado o sistema retira a solicitação.
-        
-        # PARAMETROS:
-        #   usuario = Instancia da classe Usuario com usuário e senha.
-        
-        # RETORNOS:
-        #   Não tem retorno.
-        #########################################################################################
+        """
+        Essa Função recebe o usuário que está efetuando o login no sistema, e verifica se foi
+        solicitado a troca de senha, caso tenha solicitado o sistema retira a solicitação.
 
+        :param usuario: Objeto do tipo Usuario.
+
+        :return: Nenhum valor é retornado.
+        """
+        
         loginDao = LoginDao()
         if loginDao.verficaTrocaSenha(usuario):
             loginDao.atulizaTrocaSenha(usuario)
@@ -164,15 +165,11 @@ class ControleLogin:
 
 
     def logout(self) -> None:
-        #########################################################################################
-        # Essa Função que efetua o logout do usuário no sistema.
-        
-        # PARAMETROS:
-        #   Não tem parametros.
-        
-        # RETORNOS:
-        #   Não tem retornos.
-        #########################################################################################
+        """
+        Realiza o logout do usuário.
+
+        :return: Nenhum valor é retornado.
+        """
         
         logout_user()
         session.clear()

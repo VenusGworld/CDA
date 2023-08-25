@@ -33,8 +33,14 @@ def listagemLog():
 def vizualizarLog(id):
     try:
         controleConsultarLogUser = ControleConsultarLogUser()
-        log = controleConsultarLogUser.consultaLogUserInsertDetelhado(int(id))
-        context = {"titulo": "Logs Manter Usuário", "active": "logFunc", "modal": 1, "log": log}
+        log = controleConsultarLogUser.consultaLogUsertDetelhado(int(id))
+        if log.acao == "INSERT":
+            modal = 1
+        elif log.acao == "UPDATE":
+            modal = 2
+        elif log.acao in ["DELETE", "ACTIVE"]:
+            modal = 3
+        context = {"titulo": "Logs Manter Usuário", "active": "logFunc", "modal": modal, "log": log}
         return render_template("administrador/logUsuario/cosultaLogUser.html", context=context)
     except:
         log = LogErro()

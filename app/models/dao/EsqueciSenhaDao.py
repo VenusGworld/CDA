@@ -3,27 +3,23 @@ from datetime import datetime, timedelta
 from ..entity.Usuario import Usuario
 from ..Tables import SysUser
 
-"""
-Classe Dao para funções do esqueci a senha
-@tables - SysUser
-@author - Fabio
-@version - 1.0
-@since - 13/06/2023
-"""
-
 class EsqueciSenhaDao:
+    """
+    Classe Dao para funções do esqueci a senha
+    @tables - SysUser
+    @author - Fabio
+    @version - 1.0
+    @since - 13/06/2023
+    """
 
     def insereHash(self, usuario: Usuario) -> bool:
-        #########################################################################################
-        # Essa Função insere a solicitação de troca de senha para o usuário.
-        
-        # PARAMETROS:
-        #   usuario = Instancia da classe Usuario com os dados do usuário.
-        
-        # RETORNOS:
-        #   return True = Retorna True caso foi inserido com sucesso;
-        #   return False = Retorna False caso ocorra erro na inserção.
-        #########################################################################################
+        """
+        Insere o hash e informações da nova senha de um usuário no banco de dados.
+
+        :param usuario: Objeto do usuário contendo as informações do hash e nova senha.
+
+        :return: True se a operação for bem-sucedida, False em caso contrário.
+        """
 
         dataAtual = datetime.now()
         sysuser = SysUser.query.get(usuario.id)
@@ -37,16 +33,13 @@ class EsqueciSenhaDao:
 
 
     def verificaUsuario(self, usuario: Usuario):
-        #########################################################################################
-        # Essa Função verifica se o usuário e e-mail digitado existe no banco.
-        
-        # PARAMETROS:
-        #   usuario = Instancia da classe Usuario com usuário e senha.
-        
-        # RETORNOS:
-        #   return usuario = Retrona instancia do usuário com todos os dados;
-        #   return 0 = Retrona 0 caso não encontre o usuário.
-        #########################################################################################
+        """
+        Verifica a existência de um usuário no banco de dados com base no nome de usuário e e-mail.
+
+        :param usuario: Objeto do usuário contendo nome de usuário e e-mail para verificação.
+
+        :return: Objeto do usuário com informações do banco de dados se encontrado, ou 0 se não encontrado.
+        """
 
         sysuser = SysUser.query.filter(SysUser.us_usuario==usuario.usuario, SysUser.us_email==usuario.email, SysUser.us_ativo==False, SysUser.us_delete==False).first()
         if sysuser:
@@ -66,16 +59,13 @@ class EsqueciSenhaDao:
 
 
     def verificaHash(self, hash: str) -> bool:
-        #########################################################################################
-        # Essa Função verifica se o hash existe.
-        
-        # PARAMETROS:
-        #   hash = Hash que foi passado pela URL do e-mail.
-        
-        # RETORNOS:
-        #   return False = Retrona False caso o hash exista;
-        #   return True = Retrona True caso o hash não exista.
-        #########################################################################################
+        """
+        Verifica a existência de um hash de solicitação de uma nova senha no banco de dados.
+
+        :param hash: Hash a ser verificado.
+
+        :return: False se o hash estiver presente e válido, True se não estiver presente.
+        """
 
         sysuser = SysUser.query.filter(SysUser.us_hashNovaSenha==hash).first()
 
@@ -86,16 +76,13 @@ class EsqueciSenhaDao:
         
 
     def verificaHashTempo(self, hash: str) -> bool:
-        #########################################################################################
-        # Essa Função verifica se o hash existe.
-        
-        # PARAMETROS:
-        #   hash = Hash que foi passado pela URL do e-mail.
-        
-        # RETORNOS:
-        #   return False = Retrona False caso o hash exista;
-        #   return True = Retrona True caso o hash não exista.
-        #########################################################################################
+        """
+        Verifica a existência de um hash de senha nova no banco de dados. Se existir, verifica a validade do link de troca de senha.
+
+        :param hash: Hash a ser verificado.
+
+        :return: Instância do objeto SysUser se o hash estiver presente e válido, ou False se não estiver presente.
+        """
 
         sysuser = SysUser.query.filter(SysUser.us_hashNovaSenha==hash).first()
 
@@ -106,17 +93,14 @@ class EsqueciSenhaDao:
         
 
     def trocaSenha(self, hash: str, usuario: Usuario) -> bool:
-        #########################################################################################
-        # Essa Função troca a senha do usuário que solicitou.
-        
-        # PARAMETROS:
-        #   hash = Hash que foi passado pela URL do e-mail;
-        #   usuario = Instancia da classe Usuario com a nova senha;
-        
-        # RETORNOS:
-        #   return False = Retorna True caso foi alterado com sucesso;
-        #   return True = Retorna False caso ocorra erro na alteração.
-        #########################################################################################
+        """
+        Atualiza a senha do usuário com base no hash.
+
+        :param hash: Hash associado à redefinição de senha.
+        :param usuario: Instância do objeto Usuario contendo a nova senha e informações relacionadas.
+
+        :return: True se a atualização for bem-sucedida, False se o hash não for encontrado.
+        """
 
         sysuser = SysUser.query.filter(SysUser.us_hashNovaSenha==hash).first()
 

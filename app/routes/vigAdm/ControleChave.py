@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, request, Response, session, url_for, abort, flash
-from ...controllers.ControleChave import CrontoleDeChave
+from ...controllers.ControleDeChave import ControleDeChave
 from ...extensions.LogErro import LogErro
 from flask_login import login_required
 from datetime import datetime
@@ -51,7 +51,7 @@ def incluirRetiradaChav():
 @login_required
 def insertRetiradaChav():
     try:
-        controleChave = CrontoleDeChave()
+        controleChave = ControleDeChave()
         if controleChave.inserirRetirada(request.form["dtRet"], request.form["hrRet"], request.form["chave"], request.form["responsavel"]):
             flash("Retirada incluida com sucesso!", "success")
             return redirect(url_for("controleChaveVigBlue.controleChave"))
@@ -69,7 +69,7 @@ def insertRetiradaChav():
 def incluirDevolucaoChav(id):
     try:
         if session["loginVig"] or session["grupo"] == "ADM":
-            controleChave = CrontoleDeChave()
+            controleChave = ControleDeChave()
             movimento = controleChave.consultaMovimentoDetalhado(id)
             data = datetime.now()
             context = {"active": "controlChav", "modal": 1, "movimento": movimento, "dataAtual": data}
@@ -90,7 +90,7 @@ def incluirDevolucaoChav(id):
 def insertDevolucaoChav():
     try:
         data = request.get_json()
-        controleChave = CrontoleDeChave()
+        controleChave = ControleDeChave()
         controleChave.inserirDevolucao(data["idMov"], data["dataDev"], data["horaDev"], data["respDev"], data["check"])
         flash("Devolução incluida com sucesso!", "success")
         resp = Response(response=json.dumps({"success": True}), status=200, mimetype="application/json")

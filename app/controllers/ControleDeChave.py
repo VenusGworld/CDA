@@ -11,23 +11,32 @@ from ..models.entity.Log import Log
 from datetime import datetime
 from flask import session
 
-"""
-Classe Controller para o controle de Chave
-@author - Fabio
-@version - 1.0
-@since - 23/05/2023
-"""
-
-class CrontoleDeChave:
+class ControleDeChave:
+    """
+    Classe Controller para as funções relacionadas ao controle de chaves
+    @author - Fabio
+    @version - 1.0
+    @since - 23/05/2023
+    """
 
     def inserirRetirada(self, dataRet: str, horaRet: str, codChave: str, crachaFun: str) -> bool:
+        """
+        Insere um registro de retirada de chave no sistema.
+
+        :param dataRet: Data da retirada da chave no formato 'YYYY-MM-DD'.
+        :param horaRet: Hora da retirada da chave no formato 'HH:MM'.
+        :param codChave: Código da chave a ser retirada.
+        :param crachaFun: Crachá do funcionário que está retirando a chave.
+        :return: True se a inserção for bem-sucedida, False caso contrário.
+        """
+        
         self.movimentoChaveNovo = MovimentoChave()
         controleChaveDao = ControleChaveDao()
         manterFuncionarioDao = ManterFuncionarioDao()
         manterChaveDao = ManterChaveDao()
         self.usuarioLogado = Usuario()
-        funcionario = manterFuncionarioDao.mostarFuncionarioDetalhadoCracha(list(crachaFun.split())[0])
-        chave = manterChaveDao.mostrarChaveDetalhadaCodigo(list(codChave.split())[0])
+        funcionario = manterFuncionarioDao.consultarFuncionarioDetalhadoCracha(list(crachaFun.split())[0])
+        chave = manterChaveDao.consultarChaveDetalhadaCodigo(list(codChave.split())[0])
         self.movimentoChaveNovo.dataRet = dataRet.replace("-", "")
         self.movimentoChaveNovo.horaRet = horaRet
         self.movimentoChaveNovo.chave = chave
@@ -51,6 +60,16 @@ class CrontoleDeChave:
         
     
     def inserirDevolucao(self, id: int, dataDev: str, horaDev: str, respDev: str, checkbox: bool) -> bool:
+        """
+        Insere um registro de devolução de chave no sistema.
+
+        :param id: O ID do registro de movimento de chave a ser atualizado.
+        :param dataDev: Data da devolução da chave no formato 'YYYY-MM-DD'.
+        :param horaDev: Hora da devolução da chave no formato 'HH:MM'.
+        :param respDev: Crachá do responsável pela devolução da chave.
+        :param checkbox: Indica se a mesma pessoa que retirou a chave está realizando a devolução.
+        """
+        
         self.movimentoChaveNovo = MovimentoChave()
         controleChaveDao = ControleChaveDao()
         manterFuncionarioDao = ManterFuncionarioDao()
@@ -59,7 +78,7 @@ class CrontoleDeChave:
         self.movimentoChaveNovo.dataDev = dataDev.replace("-", "")
         self.movimentoChaveNovo.horaDev = horaDev
         if checkbox:
-            self.movimentoChaveNovo.respDev = manterFuncionarioDao.mostarFuncionarioDetalhadoCracha(list(respDev.split())[0])
+            self.movimentoChaveNovo.respDev = manterFuncionarioDao.consultarFuncionarioDetalhadoCracha(list(respDev.split())[0])
         else:
             self.movimentoChaveNovo.respDev = self.movimentoChaveNovo.respRet
         
@@ -76,11 +95,25 @@ class CrontoleDeChave:
         
 
     def consultaMovimentoDetalhado(self, id: int) -> MovimentoChave:
+        """
+        Consulta e retorna os detalhes de um registro de movimento de chave específico.
+
+        :param id: O ID do registro de movimento de chave a ser consultado.
+
+        :return: Um objeto MovimentoChave contendo detalhes do registro de movimento de chave.
+        """
         controleChaveDao = ControleChaveDao()
         return controleChaveDao.consultaMovimentoChaveDetalhado(id)
 
 
     def listaChavesRetiradas(self) -> list[dict]:
+        """
+        Consulta e retorna uma lista de chaves que foram retiradas.
+
+        :return: Uma lista de dicionários contendo informações sobre as chaves retiradas.
+            Cada dicionário possui chaves "id", "nome", "retirada" e "responsavel".
+        """
+        
         controleChaveDao = ControleChaveDao()
         respDao = controleChaveDao.consultaChavesRetiradas()
         listaChave = []
@@ -98,6 +131,13 @@ class CrontoleDeChave:
     
     
     def listaChavesManut(self) -> list[dict]:
+        """
+        Consulta e retorna uma lista de chaves que foram retiradas e devolvidas para manutenção.
+
+        :return: Uma lista de dicionários contendo informações sobre as chaves retiradas e devolvidas.
+            Cada dicionário possui chaves "id", "nome", "retirada", "devolucao" e "respRet".
+        """
+        
         controleChaveDao = ControleChaveDao()
         respDao = controleChaveDao.consultaChavesManut()
         listaChave = []
@@ -116,6 +156,15 @@ class CrontoleDeChave:
 
 
     def geraLogControleChave(self, acao: str, observacao: str) -> None:
+        """
+        Gera um registro de log para ações relacionadas ao controle de chaves.
+
+        :param acao: Ação realizada (RETIRADA, DEVOLUCAO, UPDATE, DELETE).
+        :param observacao: Observações adicionais sobre a ação (obrigatorio para usuários do grupo VIG).
+
+        :return: Nenhum valor é retornado.
+        """
+
         log = Log()
         log.acao = acao
         log.dataHora = datetime.now()

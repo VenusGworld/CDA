@@ -101,7 +101,7 @@ def insertFuncionarioAdm():
 def editarFuncionarioAdm(id):
     try:
         controleManterFuncionario = ControleManterFuncionario()
-        funcionario = controleManterFuncionario.mostraFuncionarioDetalhado(id)
+        funcionario = controleManterFuncionario.consultaFuncionarioDetalhado(id)
         context = {"titulo": "Alterar Funcionário", "action": f"{url_for('funcionarioAdmBlue.editFuncionarioAdm')}", "botao": "Editar", "funcionario": funcionario, "active": "cadFunc"}
         return render_template("administrador/funcionario/cadastroFuncionario.html", context=context)
     except:

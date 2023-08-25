@@ -7,30 +7,24 @@ from ..models.entity.Log import Log
 from datetime import datetime
 from flask import session
 
-"""
-Classe Controller para o CRUD do usuário
-@author - Fabio
-@version - 1.0
-@since - 23/05/2023
-"""
-
 class ControleManterUsuario:
+    """
+    Classe Controller para funções recionadas ao CRUD de usuário
+    @author - Fabio
+    @version - 1.0
+    @since - 23/05/2023
+    """
 
-    def mostarUsuarios(self) -> list[dict]:
-        #########################################################################################
-        # Essa função recupera os dados dos usuários de um objeto "ManterUsuarioDao" e cria uma 
-        # lista de dicionários, onde cada dicionário representa um usuário e contém seu ID, nome 
-        # e grupo.
-        
-        # PARAMETROS:
-        #   Não tem parametros.
-        
-        # RETORNOS:
-        #   return listaDados = Retorna uma lista com dicinário dos usuário que retornaram do banco.
-        #########################################################################################
+    def consultarUsuarios(self) -> list[dict]:
+        """
+        Consulta e retorna uma lista de dicionários contendo informações resumidas de todos os usuários.
+
+        :return: Uma lista de dicionários contendo informações sobre os usuários.
+            Cada dicionário possui chaves "id", "nome", "usuario" e "grupo".
+        """
         
         manterUsuarioDao = ManterUsuarioDao()
-        usuarios = manterUsuarioDao.mostarUsuarios()
+        usuarios = manterUsuarioDao.consultarUsuarios()
         listaDados = []
         for usuario in usuarios:
             dicUser = {
@@ -45,39 +39,33 @@ class ControleManterUsuario:
         return listaDados
     
 
-    def mostarUsuarioDetalhado(self, id: int) -> Usuario:
-        #########################################################################################
-        # Essa função recebe um ID como entarda e utiliza-o para buscar informações detalhadas
-        # sobre um usuário específico a partir de um objeto "ManterUsuarioDao".
-        
-        # PARAMETROS:
-        #   id = ID do usuário que foi slecionado.
-        
-        # RETORNOS:
-        #   return usuario = Retorna as informações detalhadas do usuário solicitado.
-        #########################################################################################
+    def consultarUsuarioDetalhado(self, id: int) -> Usuario:
+        """
+        Consulta os detalhes de um usuário específico.
+
+        :param id: O ID do usuário a ser consultado.
+
+        :return: Um objeto Usuario contendo as informações detalhadas do usuário.
+        """
 
         manterUsuarioDao = ManterUsuarioDao()
-        usuario = manterUsuarioDao.mostarUsuarioDetalhado(id)
+        usuario = manterUsuarioDao.consultarUsuarioDetalhado(id)
         
         return usuario
 
     
     def incluirUsuario(self, nome: str, user: str, email: str, grupo: str, senha: str) -> bool:
-        #########################################################################################
-        # Essa função recebe os dados do usuário a ser incluido.
-        
-        # PARAMETROS:
-        #   nome = Nome do usuário informado no form de cadastro;
-        #   user = Username do usuário informado no form de cadastro;
-        #   email = E-mail do usuário informado no form de cadastro;
-        #   grupo = Grupo do usuário informado no form de cadastro;
-        #   senha = Senha do usuário informado no form de cadastro.
-        
-        # RETORNOS:
-        #   return True = Retorna True em caso de sucesso na inclusão do usuário;
-        #   return False = Retorna False em caso de fracasso na inclusão do usuário.
-        #########################################################################################
+        """
+        Inclui um novo usuário no sistema.
+
+        :param nome: O nome do novo usuário.
+        :param user: O nome de usuário do novo usuário.
+        :param email: O endereço de e-mail do novo usuário.
+        :param grupo: O grupo ao qual o novo usuário pertence (ADM, TEC, VIG).
+        :param senha: A senha inicial do novo usuário.
+
+        :return: True se a inclusão for bem-sucedida, False caso contrário.
+        """
 
         self.usuarioNovo = Usuario()
         self.usuarioNovo.nome = nome
@@ -93,34 +81,28 @@ class ControleManterUsuario:
         self.usuarioLogado = Usuario()
 
         manterUsuarioDao = ManterUsuarioDao()
-        if manterUsuarioDao.inserirUsuario(self.usuarioNovo): #Verifica o retorno do banco
+        if manterUsuarioDao.inserirUsuario(self.usuarioNovo):
             consultaIdUser = ConsultaIdsDao()
-            #Consulta id do usuário logado
             self.usuarioLogado.id = consultaIdUser.consultaIdUserLogado(session["usuario"])
-            #Consulta o ultimo id da tabela
             self.usuarioNovo.id = consultaIdUser.consultaIdFinalUser()
-            #Gera Log
             self.geraLogUsuario("INSERT")
-            return True
-        else:
-            return False
+        
+        return True
+        
         
     def editarUsuario(self, id: int, nome: str, user: str, email: str, grupo: str, senha: str) -> bool:
-        #########################################################################################
-        # Essa função recebe os dados de um usuário existente para a alterção.
-        
-        # PARAMETROS:
-        #   id = ID do usuário que foi selecionado para a alterção;
-        #   nome = Nome do usuário informado no form de alteração;
-        #   user = Username do usuário informado no form de alteração;
-        #   email = E-mail do usuário informado no form de alteração;
-        #   grupo = Grupo do usuário informado no form de alteração;
-        #   senha = Senha do usuário informado no form de alteração.
-        
-        # RETORNOS:
-        #   return True = Retorna True em caso de sucesso na alteração do usuário;
-        #   return False = Retorna False em caso de fracasso na alteração do usuário.
-        #########################################################################################
+        """
+        Edita as informações de um usuário existente no sistema.
+
+        :param id: O ID do usuário a ser editado.
+        :param nome: O novo nome do usuário.
+        :param user: O novo nome de usuário do usuário.
+        :param email: O novo endereço de e-mail do usuário.
+        :param grupo: O novo grupo ao qual o usuário pertence (ADM, TEC, VIG).
+        :param senha: A nova senha do usuário.
+
+        :return: True se a edição for bem-sucedida, False caso contrário.
+        """
 
         self.usuarioNovo = Usuario()
         self.usuarioLogado = Usuario()
@@ -128,7 +110,7 @@ class ControleManterUsuario:
         manterUsuarioDao = ManterUsuarioDao()
         consultaIdUser = ConsultaIdsDao()    
 
-        self.usuarioAntigo = manterUsuarioDao.mostarUsuarioDetalhado(id)
+        self.usuarioAntigo = manterUsuarioDao.consultarUsuarioDetalhado(id)
 
         self.usuarioNovo.id = id
         self.usuarioNovo.nome = nome
@@ -145,29 +127,23 @@ class ControleManterUsuario:
             self.usuarioNovo.gerarSenha(senha.upper())
 
         if manterUsuarioDao.editarUsuario(self.usuarioNovo):
-            #Consulta id do usuário logado
             self.usuarioLogado.id = consultaIdUser.consultaIdUserLogado(session["usuario"])
-            #Gera Log
             self.geraLogUsuario("UPDATE")
-            return True
-        else:
-            return False
         
-    
+        return True
+        
+        
     def excluirUsuario(self, id: int) -> int:
-        #########################################################################################
-        # Essa função recebe o id do usuário a ser excluido, mas caso o usuário já tenha efetuado
-        # alguma movimentação no sistema ele é desativado.
-        
-        # PARAMETROS:
-        #   id = ID do usário que foi selecionado para a exclusão ou desativação.
-        
-        # RETORNOS:
-        #   return 1 = Retorna 1 caso o usuário que foi selecionada seja o mesmo usuário que está
-        #     logado;
-        #   return 2 = Retorna 2 em caso de sucesso na exclusão/desativação do usuário;
-        #   return 0 = Retorna 0 em caso de fracasso na exclusão/desativação do usuário.
-        #########################################################################################
+        """
+        Exclui ou Inativa um usuário do sistema.
+
+        :param id: O ID do usuário a ser excluído.
+
+        :return: Um código de retorno indicando o resultado da ação:
+            - 1: Tentativa de excluir o próprio usuário logado.
+            - 2: usuário excluído com sucesso.
+            - 3: usuário inativado (quando usuário tem movimentação no sistema).
+        """
 
         manterUsuarioDao = ManterUsuarioDao()
         verificaMovimentoDao = VerificaMovimentoDao()
@@ -175,7 +151,7 @@ class ControleManterUsuario:
         self.usuarioLogado = Usuario()
         self.usuarioAntigo = Usuario()
 
-        self.usuarioAntigo = manterUsuarioDao.mostarUsuarioDetalhado(id)
+        self.usuarioAntigo = manterUsuarioDao.consultarUsuarioDetalhado(id)
 
         self.usuarioLogado.id = consultaIdUser.consultaIdUserLogado(session["usuario"])
         
@@ -195,15 +171,13 @@ class ControleManterUsuario:
 
 
     def geraLogUsuario(self, acao: str) -> None:
-        #########################################################################################
-        # Essa função gera log do INSERT, UPDATE e DELETE do usuário.
-        
-        # PARAMETROS:
-        #   acao = Ação que foi efetuada.
-        
-        # RETORNOS:
-        #   Não tem retorno.
-        #########################################################################################
+        """
+        Gera um registro de log para ações relacionadas ao manter usuário.
+
+        :param acao: Ação realizada (INSERT, UPDATE, DELETE).
+
+        :return: Nenhum valor é retornado.
+        """
 
         log = Log()
         log.acao = acao

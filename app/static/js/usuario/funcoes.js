@@ -54,7 +54,7 @@ function validarUsuarioeSenha(campo1, campo2){
 }
 
 
-function mostarSenha(button){
+function mostrarSenha(button){
     var inputSenha = document.getElementById("senha");
     var inputConfirm = document.getElementById("senhaConfirm");
 

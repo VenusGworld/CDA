@@ -9,30 +9,24 @@ from ..models.entity.Log import Log
 from datetime import datetime
 from flask import session
 
-"""
-Classe Controller para o CRUD da Chave
-@author - Fabio
-@version - 1.0
-@since - 04/07/2023
-"""
-
 class ControleManterChave:
+    """
+    Classe Controller para as funções relacionadas ao CRUD de chave
+    @author - Fabio
+    @version - 1.0
+    @since - 04/07/2023
+    """
 
-    def mostraChaves(self) -> list[dict]:
-        #########################################################################################
-        # Essa função recupera os dados das chaves de um objeto "ManterChaveDao" e cria uma 
-        # lista de dicionários, onde cada dicionário representa uma chave e contém seu ID, código 
-        # e nome.
-        
-        # PARAMETROS:
-        #   Não tem parametros.
-        
-        # RETORNOS:
-        #   return listaChaves = Retorna uma lista com dicinário das chaves que retornaram do banco.
-        #########################################################################################
+    def consultaChaves(self) -> list[dict]:
+        """
+        Consulta e retorna uma lista de dicionários contendo informações resumidas de todas as chaves.
+
+        :return: Lista de dicionários contendo informações das chaves.
+            Cada dicionário possui chaves "id", "codigo" e "nome".
+        """
         
         manterChaveDao = ManterChaveDao()
-        respDao = manterChaveDao.mostraChaves()
+        respDao = manterChaveDao.consultaChaves()
         listaChaves = []
         for chave in respDao:
             dicChave ={
@@ -46,25 +40,31 @@ class ControleManterChave:
         return listaChaves
     
     
-    def mostraChaveDetalhadaId(self, id: int) -> Chave:
+    def consultaChaveDetalhadaId(self, id: int) -> Chave:
+        """
+        Consulta detalhes de uma chave pelo ID.
+
+        :param id: O ID da chave a ser consultada.
+
+        :return: Um objeto Chave contendo os detalhes da chave consultada.
+        """
+        
         manterChaveDao = ManterChaveDao()
-        chave = manterChaveDao.mostrarChaveDetalhadaId(id)
+        chave = manterChaveDao.consultarChaveDetalhadaId(id)
 
         return chave
     
 
     def incluirChave(self, codigo: str, nome: str) -> bool:
-        #########################################################################################
-        # Essa função recebe os dados da chave a ser incluida.
-        
-        # PARAMETROS:
-        #   nome = Nome da chave informado no form de cadastro;
-        #   codigo = Código da chave gerado pelo sistma.
-        
-        # RETORNOS:
-        #   return True = Retorna True em caso de sucesso na inclusão da chave.
-        #########################################################################################
+        """
+        Inclui uma nova chave no sistema.
 
+        :param codigo: O código da nova chave.
+        :param nome: O nome da nova chave.
+
+        :return: True se a inclusão for bem-sucedida, False caso contrário.
+        """
+        
         manterChaveDao = ManterChaveDao()
         self.chaveNova = Chave()
         consultaIds = ConsultaIdsDao()
@@ -75,6 +75,7 @@ class ControleManterChave:
         self.chaveNova .ativo = False
         self.chaveNova .delete = False
 
+        #Verifica se o usuário que efetuou a acão é do grupo ADM
         if session["grupo"] == "ADM":
             self.usuarioLogado.id = consultaIds.consultaIdUserLogado(session["usuario"])
         else:
@@ -83,30 +84,28 @@ class ControleManterChave:
         if manterChaveDao.incluirChave(self.chaveNova):
             self.chaveNova.id = manterChaveDao.consultaUltimoId()
             self.geraLogChave("INSERT", "")
-            return True
+        
+        return True
         
     
     def editarChave(self, id: int, codigo: str, nome: str, observacao: str) -> bool:
-        #########################################################################################
-        # Essa função recebe os dados de uma chave existente para a alterção.
-        
-        # PARAMETROS:
-        #   id = ID da chave que foi selecionado para a alterção;
-        #   codigo = Código da chave informado no form de alteração;
-        #   nome = Nome da chave informado no form de alteração;
-        #   observacao = Observação da alteração da chave informado no form de alteração.
-        
-        # RETORNOS:
-        #   return True = Retorna True em caso de sucesso na alteração da chave.
-        #########################################################################################
+        """
+        Edita os detalhes de uma chave com base no ID fornecido.
+
+        :param id: O ID da chave a ser editada.
+        :param codigo: O novo código da chave.
+        :param nome: O novo nome da chave.
+        :param observacao: A observação relacionada à edição da chave (obrigatorio para usuários do grupo VIG).
+
+        :return: True se a edição for bem-sucedida, False caso contrário.
+        """
 
         manterChaveDao = ManterChaveDao()
         consultaIds = ConsultaIdsDao()
         self.usuarioLogado = Usuario()
         self.chaveNova = Chave()
         self.chaveAntiga = Chave()
-
-        self.chaveAntiga = manterChaveDao.mostrarChaveDetalhadaId(id)
+        self.chaveAntiga = manterChaveDao.consultarChaveDetalhadaId(id)
         
         self.chaveNova.id = id
         self.chaveNova.codigo = codigo
@@ -114,6 +113,7 @@ class ControleManterChave:
         self.chaveNova.ativo = False
         self.chaveNova.delete = False
 
+        #Verifica se o usuário que efetuou a acão é do grupo ADM
         if session["grupo"] == "ADM":
             self.usuarioLogado.id = consultaIds.consultaIdUserLogado(session["usuario"])
         else:
@@ -122,27 +122,28 @@ class ControleManterChave:
         if manterChaveDao.editarChave(self.chaveNova):
             self.geraLogChave("UPDATE", observacao)
 
-            return True
+        return True
         
     
     def excluirChave(self, id: int, observacao: str) -> int:
-        #########################################################################################
-        # Essa função recebe o id da chave a ser excluida, mas caso a chave já tenha sido usada 
-        # para movimentação no sistema ela é desativada.
-        
-        # PARAMETROS:
-        #   id = ID do usário que foi selecionado para a exclusão ou desativação.
-        
-        # RETORNOS:
-        #   return 1 = Retorna 2 em caso de sucesso na exclusão/desativação do usuário.;
-        #   return 2 = Retorna 2 em caso de sucesso na exclusão/desativação do usuário.
-        #########################################################################################
+        """
+        Exclui uma chave com base no ID fornecido.
+
+        :param id: O ID da chave a ser excluída.
+        :param observacao: A observação relacionada à exclusão da chave (obrigatorio para usuários do grupo VIG).
+
+        :return: Um código indicando o resultado da operação:
+            - 1 se a chave foi excluída com sucesso.
+            - 2 se a chave foi inativada com sucesso.
+            - 3 se existem movimentos em aberto associados à chave.
+        """
 
         manterChaveDao = ManterChaveDao()
         controleChaveDao = ControleChaveDao()
-
+        #Consulta os ids dos movimentos
         idsMov = controleChaveDao.verificaMovAbertoChave(id)
         for idMov in idsMov:
+            #Verifica se existe algum movimento em abeto
             if controleChaveDao.consultaMovAbertoChave(idMov[0]):
                 return 3
             
@@ -151,8 +152,9 @@ class ControleManterChave:
         self.usuarioLogado = Usuario()
         self.chaveAntiga = Chave()
 
-        self.chaveAntiga = manterChaveDao.mostrarChaveDetalhadaId(id)
+        self.chaveAntiga = manterChaveDao.consultarChaveDetalhadaId(id)
 
+        #Verifica se o usuário que efetuou a acão é do grupo ADM
         if session["grupo"] == "ADM":
             self.usuarioLogado.id = consultaIds.consultaIdUserLogado(session["usuario"])
         else:
@@ -169,16 +171,11 @@ class ControleManterChave:
     
 
     def incrementaCodigo(self) -> str:
-        #########################################################################################
-        # Essa função consulta o último código que tem no banco e imcrementa 1 para a próxima chave.
-        
-        # PARAMETROS:
-        #   Não tem parametros.
-        
-        # RETORNOS:
-        #   return codigo = Retorna o código com o imcrmento de um número.
-        #   return "CH0001" = Retorna "CH0001" caso não exista registro no banco.
-        #########################################################################################
+        """
+        Incrementa o código da chave com base no último código existente.
+
+        :return: O próximo código de chave a ser usado.
+        """
 
         manterChaveDao = ManterChaveDao()
         respDao = manterChaveDao.consultaUltimoCodigo()
@@ -193,15 +190,14 @@ class ControleManterChave:
     
 
     def geraLogChave(self, acao: str, observacao: str) -> None:
-        #########################################################################################
-        # Essa função gera log do INSERT, UPDATE e DELETE da chave.
-        
-        # PARAMETROS:
-        #   acao = Ação que foi efetuada.
-        
-        # RETORNOS:
-        #   Não tem retorno.
-        #########################################################################################
+        """
+        Gera um registro de log para ações relacionadas ao manter chave.
+
+        :param acao: Ação realizada (INSERT, UPDATE, DELETE).
+        :param observacao: Observações adicionais sobre a ação (obrigatorio para usuários do grupo VIG).
+
+        :return: Nenhum valor é retornado.
+        """
 
         log = Log()
         log.acao = acao

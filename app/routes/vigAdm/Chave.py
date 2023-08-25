@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify, flash, Response, abort, session
-from ...controllers.ControleManterChave import ControleManterChave
+from ...controllers.ControleDeChave import ControleDeChave
 from ...extensions.LogErro import LogErro
 from flask_login import login_required
 import traceback
@@ -34,8 +34,8 @@ def listaChaves():
 def cadastroChave():
     try:
         if session["loginVig"] or session["grupo"] == "ADM":
-            controleManterChave = ControleManterChave()
-            codigo = controleManterChave.incrementaCodigo()
+            controleDeChave = ControleDeChave()
+            codigo = controleDeChave.incrementaCodigo()
             context = {"titulo": "Cadastro de Chaves", "active": "cadChave", "codigo": codigo}
             return render_template("vigAdm/chave/cadastroChave.html", context=context)
         else:
@@ -53,8 +53,8 @@ def cadastroChave():
 @login_required
 def insertChave():
     try:
-        controleManterChave = ControleManterChave()
-        if controleManterChave.incluirChave(request.form["codigo"].upper().strip(), request.form["nome"].upper().strip()):
+        controleDeChave = ControleDeChave()
+        if controleDeChave.incluirChave(request.form["codigo"].upper().strip(), request.form["nome"].upper().strip()):
             flash("Chave incluida com sucesso!", "success")
             return redirect(url_for("chaveVigBlue.listaChaves"))
     except:
@@ -71,8 +71,8 @@ def insertChave():
 def modalEditarChave(id):
     try:
         if session["loginVig"] or session["grupo"] == "ADM":
-            controleManterChave = ControleManterChave()
-            chave = controleManterChave.mostraChaveDetalhadaId(id)
+            controleDeChave = ControleDeChave()
+            chave = controleDeChave.consultaChaveDetalhadaId(id)
             context = {"titulo": "Listagem de Chaves", "active": "cadChave", "modal": 2, "chave": chave}
             return render_template("vigAdm/chave/listaChaves.html", context=context)
         else:
@@ -90,8 +90,8 @@ def modalEditarChave(id):
 @login_required
 def editChave():
     try:
-        controleManterChave = ControleManterChave()
-        if controleManterChave.editarChave(int(request.form["idChav"]), request.form["codigoChav"], request.form["nomeChave"].upper().strip(), request.form["observacaoEditar"].upper().strip()):
+        controleDeChave = ControleDeChave()
+        if controleDeChave.editarChave(int(request.form["idChav"]), request.form["codigoChav"], request.form["nomeChave"].upper().strip(), request.form["observacaoEditar"].upper().strip()):
             flash("Chave alterada com sucesso!", "success")
             return redirect(url_for("chaveVigBlue.listaChaves"))
     except:
@@ -108,8 +108,8 @@ def editChave():
 def modalDeleteChave(id):
     try:
         if session["loginVig"] or session["grupo"] == "ADM":
-            controleManterChave = ControleManterChave()
-            chave = controleManterChave.mostraChaveDetalhadaId(id)
+            controleDeChave = ControleDeChave()
+            chave = controleDeChave.consultaChaveDetalhadaId(id)
             context = {"titulo": "Listagem de Chaves", "active": "cadChave", "modal": 1, "chave": chave}
             return render_template("vigAdm/chave/listaChaves.html", context=context)
         else:
@@ -127,8 +127,8 @@ def modalDeleteChave(id):
 @login_required
 def deleteChave():
     try:
-        controleManterChave = ControleManterChave()
-        respControle = controleManterChave.excluirChave(int(request.form["idExcluir"]), request.form["observacaoExcluir"].upper().strip())
+        controleDeChave = ControleDeChave()
+        respControle = controleDeChave.excluirChave(int(request.form["idExcluir"]), request.form["observacaoExcluir"].upper().strip())
         if respControle == 1:
             flash("Chave excluida com sucesso!", "success")
             return redirect(url_for("chaveVigBlue.listaChaves"))

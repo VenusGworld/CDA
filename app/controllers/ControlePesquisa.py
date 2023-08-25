@@ -3,28 +3,25 @@ from ..models.dao.ManterFuncionarioDao import ManterFuncionarioDao
 from ..models.dao.PesquisaDao import PesquisaDao
 from ..extensions.FiltrosJson import filtroCpf
 
-"""
-Classe Controller para as pesquisas do sistema
-@author - Fabio
-@version - 1.0
-@since - 20/06/2023
-"""
-
 class ControlePesquisa:
+    """
+    Classe Controller para as pesquisas do sistema
+    @author - Fabio
+    @version - 1.0
+    @since - 20/06/2023
+    """
 
     def pesquisaChave(self, pesquisa: str) -> list[dict]:
-        #########################################################################################
-        # Essa função recebe uma string para pesquisa de chaves no input, ela verifica
-        # se o que foi digitado o código retorna a(s) chave(s) correspondente(s) ao código, se foi o 
-        # nome retorna a(s) chave(s) correspondente(s) ao nome.
+        """
+        Essa função recebe uma string para pesquisa de chaves no input, ela verifica
+        se o que foi digitado o código retorna a(s) chave(s) correspondente(s) ao código, se foi o 
+        nome retorna a(s) chave(s) correspondente(s) ao nome.
+
+        :param pesquisa: Nome ou Código da chave que foi digitado no input.
         
-        # PARAMETROS:
-        #   pesquisa = Nome ou Código da chave que foi digitado no input.
-        
-        # RETORNOS:
-        #   return listaChave = Retorna uma lista com dicionário contendo as chave(s) correspondente(s)
-        #     a pesquisa.
-        #########################################################################################
+        :return Retorna uma lista com dicionário contendo as chave(s) correspondente(s) a pesquisa.
+            Cada dicionário possui chave "chave".
+        """
 
         pesquisaDao = PesquisaDao()
         listaChave = []
@@ -43,18 +40,16 @@ class ControlePesquisa:
       
         
     def pesquisaFuncionario(self, pesquisa: str) -> list[dict]:
-        #########################################################################################
-        # Essa função recebe uma string para pesquisa de funcionários no input, se o que foi 
-        # digitado for crácha retorna o(s) funcionário(s) correspondente(s) ao crácha, se foi o 
-        # nome retorna o(s) funcionário(s) correspondente(s) ao nome.
-        
-        # PARAMETROS:
-        #   pesquisa = Nome ou Crácha do funcionário que foi digitado no input.
-        
-        # RETORNOS:
-        #   return listaFuncionarios = Retorna uma lista com dicionário contendo os funcionário(s) 
-        #     correspondente(s) a pesquisa.
-        #########################################################################################
+        """
+        Essa função recebe uma string para pesquisa de funcionários no input, se o que foi 
+        digitado for Crachá retorna o(s) funcionário(s) correspondente(s) ao Crachá, se foi o 
+        nome retorna o(s) funcionário(s) correspondente(s) ao nome.
+
+        :param pesquisa: Nome ou Crachá do funcionário que foi digitado no input.
+
+        :return: Retorna uma lista com dicionário contendo os funcionário(s) correspondente(s) a pesquisa.
+            Cada dicionário possui chave "funcionario".
+        """
 
         pesquisaDao = PesquisaDao()
         listaFuncionarios = []
@@ -73,18 +68,15 @@ class ControlePesquisa:
         
 
     def pesquisaTerceiros(self, pesquisa: str) -> list[dict]:
-        #########################################################################################
-        # Essa função recebe uma string para pesquisa de funcionários no input, se o que foi 
-        # digitado for crácha retorna o(s) funcionário(s) correspondente(s) ao crácha, se foi o 
-        # nome retorna o(s) funcionário(s) correspondente(s) ao nome.
-        
-        # PARAMETROS:
-        #   pesquisa = Nome ou Crácha do funcionário que foi digitado no input.
-        
-        # RETORNOS:
-        #   return listaFuncionarios = Retorna uma lista com dicionário contendo os funcionário(s) 
-        #     correspondente(s) a pesquisa.
-        #########################################################################################
+        """
+        Essa função recebe uma string para pesquisa de terceiros no input, e retorna os 
+        cpfs do terceiro.
+
+        :parm pesquisa: CPF do terceiro que foi digitado no input.
+
+        :return: Retorna uma lista com dicionário contendo os terceiro(s) correspondente(s) a pesquisa.
+            Cada dicionário possui chave "terceiro".
+        """
 
         pesquisaDao = PesquisaDao()
         listaCPFs = []
@@ -99,17 +91,16 @@ class ControlePesquisa:
 
 
     def pesquisaCracha(self, pesquisa: str, id: int) -> bool:
-        #########################################################################################
-        # Essa função recebe um crácha que foi digitado e verifica se ele já está vinculado a um
-        # funcionário.
-        
-        # PARAMETROS:
-        #   pesquisa = Crácha do funcionário que foi digitado no input.
-        
-        # RETORNOS:
-        #   return True = Retorna True caso o crácha já está vinculado;
-        #   return False = Retorna False caso o crácha não esteja vinculado.
-        #########################################################################################
+        """
+        Essa função recebe um Crachá que foi digitado e verifica se ele já está vinculado a um
+        funcionário.
+
+        :parm pesquisa: Crachá do funcionário que foi digitado no input.
+
+        :return: Um boolean de retorno que indica o resultado da operação:
+            - True: Retorna True caso o Crachá já está vinculado.
+            - False: Retorna False caso o Crachá não esteja vinculado.
+        """
 
         pesquisaDao = PesquisaDao()
         if pesquisaDao.pesquisaCrachaFormDao(pesquisa, id):
@@ -119,17 +110,16 @@ class ControlePesquisa:
        
         
     def pesquisaMaquina(self, pesquisa: str) -> bool:
-        #########################################################################################
-        # Essa função recebe o nome da máquina que foi digitado e verifica se ela existe no AD
-        # (se está no dóminio).
-        
-        # PARAMETROS:
-        #   pesquisa = Nome da máquina que foi digitado no input.
-        
-        # RETORNOS:
-        #   return True = Retorna True caso a máquina existe;
-        #   return False = Retorna False caso a máquina não exista.
-        #########################################################################################
+        """
+        Essa função recebe o nome da máquina que foi digitado e verifica se ela existe no AD
+        (se está no dóminio).
+
+        :parm pesquisa: Nome da máquina que foi digitado no input.
+
+        :return: Um boolean de retorno que indica o resultado da operação:
+            - True: Retorna True caso a máquina existe.
+            - False: Retorna False caso a máquina não exista.
+        """
 
         pesquisaDao = PesquisaDao()
         listaMaquinas = pesquisaDao.pesquisaMaquinasFormDao()
@@ -145,17 +135,16 @@ class ControlePesquisa:
         
 
     def pesquisaUsuario(self, pesquisa: str, id: int) -> bool:
-        #########################################################################################
-        # Essa função recebe um crácha que foi digitado e verifica se ele já está vinculado a um
-        # funcionário.
-        
-        # PARAMETROS:
-        #   pesquisa = Crácha do funcionário que foi digitado no input.
-        
-        # RETORNOS:
-        #   return True = Retorna True caso o crácha já está vinculado;
-        #   return False = Retorna False caso o crácha não esteja vinculado.
-        #########################################################################################
+        """
+        Essa função recebe um usuário e um id, e verifica se exsite outro usuário igual no sistema.
+
+        :parm pesquisa: Crachá do funcionário que foi digitado no input.
+        :parm id: O ID do usuário(na inserção recebe 0, e na alteração recebe o ID do próprio usuário).
+
+        :return: Um boolean de retorno que indica o resultado da operação:
+            - True: Retorna True caso o usuário já exista.
+            - False: Retorna False caso o usuário não eixista.
+        """
 
         pesquisaDao = PesquisaDao()
         if pesquisaDao.pesquisaUsuarioFormDao(pesquisa, id):
@@ -165,16 +154,15 @@ class ControlePesquisa:
         
 
     def pesquisaChaveFormMov(self, pesquisa: str) -> bool:
-        #########################################################################################
-        # Essa função recebe um código da chave que foi digitado e verifica se ela existe.
-        
-        # PARAMETROS:
-        #   pesquisa = Código da chave que foi digitado no input.
-        
-        # RETORNOS:
-        #   return True = Retorna True caso a chave exista;
-        #   return False = Retorna False caso a chave não exista.
-        #########################################################################################
+        """
+        Essa função recebe um código da chave que foi digitado e verifica se ela existe.
+
+        :parm pesquisa: Código da chave que foi digitado no input.
+
+        :return: Um boolean de retorno que indica o resultado da operação:
+            - True: Retorna True caso a chave exista;
+            - False: Retorna False caso a chave não exista.
+        """
 
         pesquisaDao = PesquisaDao()
         if pesquisaDao.pesquisaChaveFormMovDao(pesquisa):
@@ -184,16 +172,15 @@ class ControlePesquisa:
         
 
     def pesquisaFuncFormMov(self, pesquisa: str) -> bool:
-        #########################################################################################
-        # Essa função recebe um crácha do funcionário que foi digitado e verifica se ele existe.
-        
-        # PARAMETROS:
-        #   pesquisa = Crácha do funcionário que foi digitado no input.
-        
-        # RETORNOS:
-        #   return True = Retorna True caso o funcionário exista;
-        #   return False = Retorna False caso o funcionário não exista.
-        #########################################################################################
+        """
+        Essa função recebe um Crachá do funcionário que foi digitado e verifica se ele existe.
+
+        :parm pesquisa: Crachá do funcionário que foi digitado no input.
+
+        :return: Um boolean de retorno que indica o resultado da operação:
+            - True: Retorna True caso o funcionário exista.
+            - False: Retorna False caso o funcionário não exista.
+        """
 
         pesquisaDao = PesquisaDao()
         if pesquisaDao.pesquisaFuncFormMovDao(pesquisa):
@@ -203,19 +190,18 @@ class ControlePesquisa:
         
 
     def pesquisaChaveRetFormMov(self, pesquisa: str) -> bool:
-        #########################################################################################
-        # Essa função recebe um código da chave que foi digitado e verifica se ela já foi devolvida.
-        
-        # PARAMETROS:
-        #   pesquisa = Código da chave que foi digitado no input.
-        
-        # RETORNOS:
-        #   return True = Retorna True caso a chave foi devolvida;
-        #   return False = Retorna False caso a chave ainda não foi devolvida.
-        #########################################################################################
+        """
+        Essa função recebe um código da chave que foi digitado e verifica se ela já foi devolvida.
+
+        :parm pesquisa: Código da chave que foi digitado no input.
+
+        :return: Um boolean de retorno que indica o resultado da operação:
+            - True: Retorna True caso a chave foi devolvida.
+            - False: Retorna False caso a chave ainda não foi devolvida.
+        """
 
         manterchaveDao = ManterChaveDao()
-        chave = manterchaveDao.mostrarChaveDetalhadaCodigo(pesquisa)
+        chave = manterchaveDao.consultarChaveDetalhadaCodigo(pesquisa)
         pesquisaDao = PesquisaDao()
         if pesquisaDao.pesquisaChaveRetFormMovDao(chave.id):
             return False
@@ -224,18 +210,16 @@ class ControlePesquisa:
         
 
     def pesquisaTerceiroFormmov(self, pesquisa: str) -> dict:
-        #########################################################################################
-        # Essa função recebe uma string para pesquisa de funcionários no input, se o que foi 
-        # digitado for crácha retorna o(s) funcionário(s) correspondente(s) ao crácha, se foi o 
-        # nome retorna o(s) funcionário(s) correspondente(s) ao nome.
-        
-        # PARAMETROS:
-        #   pesquisa = Nome ou Crácha do funcionário que foi digitado no input.
-        
-        # RETORNOS:
-        #   return listaFuncionarios = Retorna uma lista com dicionário contendo os funcionário(s) 
-        #     correspondente(s) a pesquisa.
-        #########################################################################################
+        """
+        Essa função recebe uma string para pesquisa de funcionários no input, se o que foi 
+        digitado for Crachá retorna o(s) funcionário(s) correspondente(s) ao Crachá, se foi o 
+        nome retorna o(s) funcionário(s) correspondente(s) ao nome.
+
+        :parm pesquisa: Nome ou Crachá do funcionário que foi digitado no input.
+
+        :return: Retorna uma lista com dicionário contendo os funcionário(s) correspondente(s) a pesquisa.
+            Cada dicionário possui chave "nome".
+        """
 
         pesquisaDao = PesquisaDao()
         respDao = pesquisaDao.pesquisaCpfTercFormMov(pesquisa)
@@ -248,29 +232,27 @@ class ControlePesquisa:
         
 
     def pesquisaGerente(self, pesquisa: str) -> list[dict]:
-        #########################################################################################
-        # Essa função recebe uma string para pesquisa de funcionários no input, se o que foi 
-        # digitado for crácha retorna o(s) funcionário(s) correspondente(s) ao crácha, se foi o 
-        # nome retorna o(s) funcionário(s) correspondente(s) ao nome.
-        
-        # PARAMETROS:
-        #   pesquisa = Nome ou Crácha do funcionário que foi digitado no input.
-        
-        # RETORNOS:
-        #   return listaFuncionarios = Retorna uma lista com dicionário contendo os funcionário(s) 
-        #     correspondente(s) a pesquisa.
-        #########################################################################################
+        """
+        Essa função recebe uma string para pesquisa de gerentes no input, se o que foi 
+        digitado for Crachá retorna o(s) gerente(s) correspondente(s) ao Crachá, se foi o 
+        nome retorna o(s) gerente(s) correspondente(s) ao nome.
+
+        :parm pesquisa: Nome ou Crachá do gerente que foi digitado no input.
+
+        :return: Retorna uma lista com dicionário contendo os gerente(s) correspondente(s) a pesquisa.
+            Cada dicionário possui chave "gerente".
+        """
 
         pesquisaDao = PesquisaDao()
         listaGerente = []
         if pesquisa.isdigit():
-            respDao = pesquisaDao.pesquisaGerCrachaMoveDao(pesquisa)
+            respDao = pesquisaDao.pesquisaGerCrachaMovDao(pesquisa)
             for gerente in respDao:
                 dictGer = {"gerente": f"{gerente.fu_cracha} - {gerente.fu_nome}"}
                 listaGerente.append(dictGer)
             return listaGerente
         else:
-            respDao = pesquisaDao.pesquisaGerNomeMoveDao(pesquisa)
+            respDao = pesquisaDao.pesquisaGerNomeMovDao(pesquisa)
             for gerente in respDao:
                 dictGer = {"gerente": f"{gerente.fu_cracha} - {gerente.fu_nome}"}
                 listaGerente.append(dictGer)
@@ -278,19 +260,18 @@ class ControlePesquisa:
             
         
     def pesquisaGerenteSaiFormMov(self, pesquisa: str) -> bool:
-        #########################################################################################
-        # Essa função recebe um código da chave que foi digitado e verifica se ela já foi devolvida.
-        
-        # PARAMETROS:
-        #   pesquisa = Código da chave que foi digitado no input.
-        
-        # RETORNOS:
-        #   return True = Retorna True caso a chave foi devolvida;
-        #   return False = Retorna False caso a chave ainda não foi devolvida.
-        #########################################################################################
+        """
+        Essa função recebe um Crachá do gerente que foi digitado e verifica se ele tem algum movimento aberto.
+
+        :parm pesquisa: Crachá do gerenete que foi digitado no input.
+
+        :return: Um boolean de retorno que indica o resultado da operação:
+            - True = Retorna True caso o gerente não tenha movimento em aberto.
+            - False = Retorna False caso o gerente tenha movimento em aberto.
+        """
 
         manterFuncionarioDao = ManterFuncionarioDao()
-        gerente = manterFuncionarioDao.mostarFuncionarioDetalhadoCracha(pesquisa)
+        gerente = manterFuncionarioDao.consultarFuncionarioDetalhadoCracha(pesquisa)
         pesquisaDao = PesquisaDao()
         if pesquisaDao.pesquisaGerenteSaiFormMovDao(gerente.id):
             return False

@@ -35,7 +35,7 @@ def cadastroTerceiro():
     try:
         if session["loginVig"] or session["grupo"] == "ADM":
             controleManterFuncionario = ControleManterTerceiro()
-            codigo = controleManterFuncionario.incrementaCodigo()
+            codigo = controleManterFuncionario.incrementaCodigoTerc()
             context = {"titulo": "Cadastro de Terceiro", "active": "cadTerc", "codigo": codigo}
             return render_template("vigAdm/terceiro/cadastroTerceiro.html", context=context)
         else:
@@ -72,7 +72,7 @@ def modalEditarTerceiro(id):
     try:
         if session["loginVig"] or session["grupo"] == "ADM":
             controleManterFuncionario = ControleManterTerceiro()
-            terceiro = controleManterFuncionario.mostraTerceiroDetalhadoId(int(id))
+            terceiro = controleManterFuncionario.consultaTerceiroDetalhadoId(int(id))
             context = {"titulo": "Listagem de Terceiros", "active": "cadTerc", "modal": 2, "terceiro": terceiro}
             return render_template("vigAdm/terceiro/listaTerceiros.html", context=context)
         else:
@@ -109,7 +109,7 @@ def modalDeleteTerceiro(id):
     try:
         if session["loginVig"] or session["grupo"] == "ADM":
             controleManterFuncionario = ControleManterTerceiro()
-            terceiro = controleManterFuncionario.mostraTerceiroDetalhadoId(int(id))
+            terceiro = controleManterFuncionario.consultaTerceiroDetalhadoId(int(id))
             context = {"titulo": "Listagem de Terceiros", "active": "cadTerc", "modal": 1, "terceiro": terceiro}
             return render_template("vigAdm/terceiro/listaTerceiros.html", context=context)
         else:

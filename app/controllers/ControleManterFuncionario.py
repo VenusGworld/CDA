@@ -10,23 +10,23 @@ from flask import session
 
 
 class ControleManterFuncionario:
+    """
+    Classe Controller para funções relacionadas ao CRUD de funcionário
+    @author - Fabio
+    @version - 1.0
+    @since - 23/06/2023
+    """
 
-    def mostarFuncionarios(self) -> list[dict]:
-        #########################################################################################
-        # Essa função recupera os dados dos funcionários de um objeto "ManterFuncionarioDao" 
-        # e cria uma lista de dicionários, onde cada dicionário representa um funcionário 
-        # e contém seu ID, cracha, nome, maquina e se é gerente ou não.
-        
-        # PARAMETROS:
-        #   Não tem parametros.
-        
-        # RETORNOS:
-        #   return listaFuncionarios = Retorna uma lista com dicinário dos funcionários 
-        #     que retornaram do banco.
-        #########################################################################################
+    def consultarFuncionarios(self) -> list[dict]:
+        """
+        Consulta e retorna uma lista de dicionários contendo informações resumidas de todos os funcionários.
+
+        :return: Uma lista de dicionários, cada um contendo informações resumidas de um funcionário.
+            Cada dicionário possui chaves "id", "cracha", "nome", "maquina" e "gerente".
+        """
 
         manterFuncionarioDao = ManterFuncionarioDao()
-        respDao = manterFuncionarioDao.mostarFuncionarios()
+        respDao = manterFuncionarioDao.consultarFuncionarios()
         listaFuncionarios = []
         for funcionario in respDao:
             dicFunc ={
@@ -42,38 +42,32 @@ class ControleManterFuncionario:
         return listaFuncionarios
 
 
-    def mostraFuncionarioDetalhado(self, id: int) -> Funcionario:
-        #########################################################################################
-        # Essa função recebe um ID como entarda e utiliza-o para buscar informações detalhadas
-        # sobre um funcionário específico a partir de um objeto "ManterUsuarioDao".
-        
-        # PARAMETROS:
-        #   id = ID do funcionário que foi slecionado.
-        
-        # RETORNOS:
-        #   return funcionario = Retorna as informações detalhadas do funcionário solicitado.
-        #########################################################################################
+    def consultaFuncionarioDetalhado(self, id: int) -> Funcionario:
+        """
+        Consulta detalhes de um funcionário com base no ID.
+
+        :param id: O ID do funcionário a ser consultado.
+
+        :return: Um objeto da classe Funcionario contendo os detalhes do funcionário.
+        """
 
         manterFuncionarioDao = ManterFuncionarioDao()
-        funcionario = manterFuncionarioDao.mostarFuncionarioDetalhado(id)
+        funcionario = manterFuncionarioDao.consultarFuncionarioDetalhado(id)
 
         return funcionario
     
 
     def incluirFuncionario(self, nome: str, cracha: str, maquina: str, gerente: bool) -> bool:
-        #########################################################################################
-        # Essa função recebe os dados do funcionário a ser incluido.
-        
-        # PARAMETROS:
-        #   nome = Nome do funcionário informado no form de cadastro;
-        #   cracha = Cracha do funcionário informado no form de cadastro;
-        #   maquina = O nome da máquina do funcionário informado no form de cadastro;
-        #   gerente = Um idenfificador para saber se o funcionário é gerente.
-        
-        # RETORNOS:
-        #   return True = Retorna True em caso de sucesso na inclusão do funcionário;
-        #   return False = Retorna False em caso de fracasso na inclusão do funcionário.
-        #########################################################################################
+        """
+        Inclui um novo funcionário no sistema.
+
+        :param nome: O nome do novo funcionário.
+        :param cracha: O número do crachá do novo funcionário.
+        :param maquina: A máquina associada ao novo funcionário.
+        :param gerente: Indica se o novo funcionário é um gerente ou não (True ou False).
+
+        :return: True se a inclusão for bem-sucedida, False caso contrário.
+        """
 
         self.funcionarioNovo = Funcionario()
         self.usuarioLogado = Usuario()
@@ -88,34 +82,28 @@ class ControleManterFuncionario:
 
         manterFuncionarioDao = ManterFuncionarioDao()
         consultaIdUser = ConsultaIdsDao()
-        if manterFuncionarioDao.inserirFuncionario(self.funcionarioNovo): #Verifica o retorno do banco
+        if manterFuncionarioDao.inserirFuncionario(self.funcionarioNovo):
             consultaIdUser = ConsultaIdsDao()
-            #Consulta id do usuário logado
             self.usuarioLogado.id = consultaIdUser.consultaIdUserLogado(session["usuario"])
-            #Consulta o ultimo id da tabela
             self.funcionarioNovo.id = consultaIdUser.consultaIdFinalFunc()
-            #Gera Log
             self.geraLogFuncionario("INSERT")
-            return True
-        else:
-            return False
+        
+        return True
+        
     
 
-    def editarFuncionario(self, id: int, nome: str, cracha: str, maquina: str, gerente: bool):
-        #########################################################################################
-        # Essa função recebe os dados de um funcionário existente para a alterção.
-        
-        # PARAMETROS:
-        #   id = ID do funcionário que foi selecionado para a alterção;
-        #   nome = Nome do funcionário informado no form de alterção;
-        #   cracha = Cracha do funcionário informado no form de alterção;
-        #   maquina = Nome da máquina do funcionário informado no form de alterção;
-        #   gerente = Um idenfificador para saber se o funcionário é gerente.
-        
-        # RETORNOS:
-        #   return True = Retorna True em caso de sucesso na alteração do funcionário.
-        #########################################################################################
+    def editarFuncionario(self, id: int, nome: str, cracha: str, maquina: str, gerente: bool) -> bool:
+        """
+        Edita as informações de um funcionário existente no sistema com base no ID fornecido.
 
+        :param id: O ID do funcionário a ser editado.
+        :param nome: O novo nome do funcionário.
+        :param cracha: O novo número do crachá do funcionário.
+        :param maquina: A nova máquina associada ao funcionário.
+        :param gerente: Indica se o funcionário é um gerente ou não (True ou False).
+
+        :return: True se a edição for bem-sucedida, False caso contrário.
+        """
 
         self.funcionarioNovo = Funcionario()
         self.usuarioLogado = Usuario()
@@ -123,7 +111,7 @@ class ControleManterFuncionario:
         manterFuncionarioDao = ManterFuncionarioDao()
         consultaIdUser = ConsultaIdsDao()
 
-        self.funcionarioAntigo = manterFuncionarioDao.mostarFuncionarioDetalhado(id)
+        self.funcionarioAntigo = manterFuncionarioDao.consultarFuncionarioDetalhado(id)
 
         self.funcionarioNovo.id = id
         self.funcionarioNovo.cracha = cracha
@@ -134,25 +122,22 @@ class ControleManterFuncionario:
         self.funcionarioNovo.delete = False
 
         if manterFuncionarioDao.editarFuncionario(self.funcionarioNovo):
-            #Consulta id do usuário logado
             self.usuarioLogado.id = consultaIdUser.consultaIdUserLogado(session["usuario"])
-            #Gera Log
             self.geraLogFuncionario("UPDATE")
-            return True
+        
+        return True
 
 
     def excluirFuncionario(self, id: int) -> int:
-        #########################################################################################
-        # Essa função recebe o id do usuário a ser excluido, mas caso o usuário já tenha efetuado
-        # alguma movimentação no sistema ele é desativado.
-        
-        # PARAMETROS:
-        #   id = ID do usário que foi selecionado para a exclusão ou desativação.
-        
-        # RETORNOS:
-        #   return 1 = Retorna 1 em caso de sucesso na exclusão do funcionário;
-        #   return 2 = Retorna 2 em caso de sucesso na inativação do funcionário.
-        #########################################################################################
+        """
+        Exclui ou Inativa um funcionário do sistema com base no ID fornecido.
+
+        :param id: O ID do funcionário a ser excluído.
+
+        :return: Um código indicando o resultado da operação:
+            - 1: Funcionário excluído com sucesso.
+            - 2: Funcionário inativado com sucesso (quando funcionário tem movimentação no sistema).
+        """
 
         manterFuncionarioDao = ManterFuncionarioDao()
         verificaMovimento = VerificaMovimentoDao()
@@ -160,7 +145,7 @@ class ControleManterFuncionario:
         self.usuarioLogado = Usuario()
         self.funcionarioAntigo = Funcionario()
 
-        self.funcionarioAntigo = manterFuncionarioDao.mostarFuncionarioDetalhado(id)
+        self.funcionarioAntigo = manterFuncionarioDao.consultarFuncionarioDetalhado(id)
 
         self.usuarioLogado.id = consultaIdUser.consultaIdUserLogado(session["usuario"])
 
@@ -175,15 +160,13 @@ class ControleManterFuncionario:
 
 
     def geraLogFuncionario(self, acao: str):
-        #########################################################################################
-        # Essa função gera log do INSERT, UPDATE e DELETE do funcionário.
-        
-        # PARAMETROS:
-        #   acao = Ação que foi efetuada.
-        
-        # RETORNOS:
-        #   Não tem retorno.
-        #########################################################################################
+        """
+        Gera um registro de log para ações relacionadas ao manter funcionario.
+
+        :param acao: Ação realizada (INSERT, UPDATE, DELETE).
+
+        :return: Nenhum valor é retornado.
+        """
 
         log = Log()
         log.acao = acao

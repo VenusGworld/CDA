@@ -87,3 +87,4 @@ function verificaCrachaMaquina(){
         return true;
     }
 }
+

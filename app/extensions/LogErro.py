@@ -3,9 +3,16 @@ import os
 
 
 class LogErro:
+    """
+    Classe para funções relacionadas ao gerar logs de erros no sistema
+    @author - Fabio
+    @version - 1.0
+    @since - 22/06/2023
+    """
 
     def __init__(self) -> None:
         self.caminhoArq = ""
+
 
     def geraLogErro(self, excecao, erro, listaErro, link) -> None:
         self.verificaArquivoRecente(self.caminhoPasta())

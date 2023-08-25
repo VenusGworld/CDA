@@ -1,15 +1,14 @@
 from ...configurations.Database import DB
 from ..Tables import CDA011, SysUser
 
-"""
-Classe Dao para funções de consulta de logs
-@tables - SysUser, CDA011
-@author - Fabio
-@version - 1.0
-@since - 16/08/2023
-"""
-
 class ConsultaLogFuncDao:
+    """
+    Classe Dao para funções de consulta de logs
+    @tables - SysUser, CDA011
+    @author - Fabio
+    @version - 1.0
+    @since - 16/08/2023
+    """
 
     def consultaLogsFuncInsert(self) -> CDA011:
         logs = DB.session.query(CDA011.id_logFunc, CDA011.lfu_acao, CDA011.lfu_dataHora, CDA011.lfu_dadosNovos, SysUser.us_nome.label("nomeUser"))\

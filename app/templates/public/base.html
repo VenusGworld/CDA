@@ -43,6 +43,7 @@
     <script type="text/javascript" src="{{ url_for('static', filename='plugins/adminlte/demo.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='plugins/pagination/table-sortable.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='plugins/grid/gridjs.umd.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='plugins/ag-grid/ag-grid-community.min.js') }}"></script>
     
     <script>
         $.widget.bridge('uibutton', $.ui.button)
@@ -95,7 +96,7 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <div class="brand-link">
                 <img class="brand-image img-circle elevation-3" src="{{ url_for('static', filename='img/logo6.png') }}" id="icon" alt="User Icon"/>
-                <span class="brand-text font-weight-light">Controle</span>
+                <span class="brand-text font-weight-light">CDA</span>
             </div>
             {% if session.grupo == 'ADM' %}
                 {% include "public/menusAdm.html" %}
@@ -112,21 +113,16 @@
     </div>
 
     <script>
-        //Função para formatar 1 em 01
         const zeroFill = n => {
             return ('0' + n).slice(-2);
         }
 
-        //Cria intervalo
         const interval = setInterval(() => {
-            //Pega o horário atual
             const now = new Date();
 
-            //Formata a data conforme dd/mm/aaaa hh:ii
             const data = zeroFill(now.getUTCDate()) + '/' + zeroFill((now.getMonth() + 1)) + '/' + now.getFullYear();
             const hora = zeroFill(now.getHours()) + ':' + zeroFill(now.getMinutes());
-
-            //Exibe na tela usando a div#data-hora
+            
             document.getElementById('data-hora').innerHTML = `<span>${hora}</span> <span>${data}</span>`;
         }, 0);
     </script>

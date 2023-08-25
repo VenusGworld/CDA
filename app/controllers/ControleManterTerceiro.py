@@ -10,30 +10,24 @@ from ..models.entity.Log import Log
 from datetime import datetime
 from flask import session
 
-"""
-Classe Controller para o CRUD do Terceiro
-@author - Fabio
-@version - 1.0
-@since - 26/07/2023
-"""
-
 class ControleManterTerceiro:
+    """
+    Classe Controller para funções relacionadas ao CRUD de terceiro
+    @author - Fabio
+    @version - 1.0
+    @since - 26/07/2023
+    """
 
-    def mostrarTerceiros(self) -> list[dict]:
-        #########################################################################################
-        # Essa função recupera os dados das chaves de um objeto "ManterChaveDao" e cria uma 
-        # lista de dicionários, onde cada dicionário representa uma chave e contém seu ID, código 
-        # e nome.
-        
-        # PARAMETROS:
-        #   Não tem parametros.
-        
-        # RETORNOS:
-        #   return listaChaves = Retorna uma lista com dicinário das chaves que retornaram do banco.
-        #########################################################################################
+    def consultarTerceiros(self) -> list[dict]:
+        """
+        Consulta e retorna uma lista de dicionários contendo informações resumidas de todos os terceiros.
+
+        :return: Uma lista de dicionários contendo informações sobre os terceiro.
+            Cada dicionário possui chaves "id", "codigo", "nome" e "cpf".
+        """
         
         manterTerceiroDao = ManterTerceiroDao()
-        respDao = manterTerceiroDao.mostarTerceiros()
+        respDao = manterTerceiroDao.consultarTerceiros()
         listaTerceiros = []
         for terceiro in respDao:
             dicTerceiro ={
@@ -46,19 +40,48 @@ class ControleManterTerceiro:
             listaTerceiros.append(dicTerceiro)
         
         return listaTerceiros
+    
+
+    def consultaTerceiroDetalhadoId(self, id: int) -> Terceiro:
+        """
+        Consulta os detalhes de um terceiro pelo ID.
+
+        :param id: O ID do terceiro a ser consultado.
+
+        :return: Um objeto da classe Terceiro com os detalhes do terceiro.
+        """
+
+        manterTerceiroDao = ManterTerceiroDao()
+        terceiro = manterTerceiroDao.consultarTerceiroDetalhadoId(id)
+        
+        return terceiro
+    
+
+    def consultaTerceiroDetalhadoCodigo(self, codigo: str) -> Terceiro:
+        """
+        Consulta os detalhes de um terceiro pelo código.
+
+        :param codigo: O código do terceiro a ser consultado.
+
+        :return: Um objeto da classe Terceiro com os detalhes do terceiro.
+        """
+
+        manterTerceiroDao = ManterTerceiroDao()
+        terceiro = manterTerceiroDao.consultarTerceiroDetalhadoCodigo(codigo)
+        
+        return terceiro
 
 
     def incluirTerceiro(self, codigo: str, nome: str, cpf: str) -> bool:
-        #########################################################################################
-        # Essa função recebe os dados do funcionário a ser incluido.
-        
-        # PARAMETROS:
-        #   nome = Nome da chave informado no form de cadastro;
-        #   codigo = Código da chave gerado pelo sistma.
-        
-        # RETORNOS:
-        #   return True = Retorna True em caso de sucesso na inclusão da chave.
-        #########################################################################################
+        """
+        Inclui um novo terceiro no sistema.
+
+        :param codigo: O código do terceiro a ser incluído.
+        :param nome: O nome do terceiro.
+        :param cpf: O CPF do terceiro.
+
+        :return: True se a inclusão for bem-sucedida, False caso contrário.
+        """
 
         manterTerceiroDao = ManterTerceiroDao()
         self.terceiroNovo = Terceiro()
@@ -72,6 +95,7 @@ class ControleManterTerceiro:
         self.terceiroNovo.ativo = False
         self.terceiroNovo.delete = False
 
+        #Verifica se o usuário que efetuou a acão é do grupo ADM
         if session["grupo"] == "ADM":
             self.usuarioLogado.id = consultaIds.consultaIdUserLogado(session["usuario"])
         else:
@@ -81,17 +105,29 @@ class ControleManterTerceiro:
             self.terceiroNovo.id = consultaIds.consultaIdFinalTerc()
             self.geraLogTerceiro("INSERT", "")
 
-            return True
+        return True
         
 
     def editarTerceiro(self, id: int, codigo: str, cpf: str, nome: str, observacao: str) -> bool:
+        """
+        Edita as informações de um terceiro no sistema.
+
+        :param id: O ID do terceiro a ser editado.
+        :param codigo: O novo código do terceiro.
+        :param cpf: O novo CPF do terceiro.
+        :param nome: O novo nome do terceiro.
+        :param observacao: A observação relacionada à alteração da chave (obrigatorio para usuários do grupo VIG).
+
+        :return: True se a edição for bem-sucedida, False caso contrário.
+        """
+
         manterTerceiroDao = ManterTerceiroDao()
         consultaIds = ConsultaIdsDao()
         self.usuarioLogado = Usuario()
         self.terceiroNovo = Terceiro()
         self.terceiroAntigo = Terceiro()
 
-        self.terceiroAntigo = manterTerceiroDao.mostrarTerceiroDetalhadoId(id)
+        self.terceiroAntigo = manterTerceiroDao.consultarTerceiroDetalhadoId(id)
 
         self.terceiroNovo.id = id
         self.terceiroNovo.codigo = codigo
@@ -100,6 +136,7 @@ class ControleManterTerceiro:
         self.terceiroNovo.ativo = False
         self.terceiroNovo.delete = False
 
+        #Verifica se o usuário que efetuou a acão é do grupo ADM
         if session["grupo"] == "ADM":
             self.usuarioLogado.id = consultaIds.consultaIdUserLogado(session["usuario"])
         else:
@@ -112,6 +149,18 @@ class ControleManterTerceiro:
     
 
     def excluirTerceiro(self, id: int, observacao: str) -> int:
+        """
+        Exclui ou Inativa um terceiro do sistema.
+
+        :param id: O ID do terceiro a ser excluído.
+        :param observacao: A observação relacionada à exclusão da chave (obrigatorio para usuários do grupo VIG).
+
+        :return: Um valor inteiro representando o resultado da exclusão:
+            - 1: terceiro excluído com sucesso.
+            - 2: terceiro inativado (quando funcionário tem movimentação no sistema).
+            - 3: Existem movimentos abertos associados ao terceiro.
+        """
+
         manterTerceiroDao = ManterTerceiroDao()
         controleTerceiroDao = ControleTerceiroDao()
         #Verifica se o terceiro a ser excluido está em um movimento aberto
@@ -125,8 +174,9 @@ class ControleManterTerceiro:
         self.usuarioLogado = Usuario()
         self.terceiroAntigo = Terceiro()
 
-        self.terceiroAntigo = manterTerceiroDao.mostrarTerceiroDetalhadoId(id)
+        self.terceiroAntigo = manterTerceiroDao.consultarTerceiroDetalhadoId(id)
 
+        #Verifica se o usuário que efetuou a acão é do grupo ADM
         if session["grupo"] == "ADM":
             self.usuarioLogado.id = consultaIds.consultaIdUserLogado(session["usuario"])
         else:
@@ -142,24 +192,13 @@ class ControleManterTerceiro:
                 return 1
         
         
-    def mostraTerceiroDetalhadoId(self, id: int) -> Terceiro:
-        manterTerceiroDao = ManterTerceiroDao()
-        
-        return manterTerceiroDao.mostrarTerceiroDetalhadoId(id)
+    def incrementaCodigoTerc(self) -> str:
+        """
+        Gera e retorna um novo código para um terceiro, incrementando o último código existente.
 
-
-    def incrementaCodigo(self) -> str:
-        #########################################################################################
-        # Essa função consulta o último código que tem no banco e imcrementa 1 para a próximo terceiro.
+        :return: Um novo código para um terceiro.
+        """
         
-        # PARAMETROS:
-        #   Não tem parametros.
-        
-        # RETORNOS:
-        #   return codigo = Retorna o código com o imcrmento de um número.
-        #   return "TE0001" = Retorna "TE0001" caso não exista registro no banco.
-        #########################################################################################
-
         consultaIds = ConsultaIdsDao()
         respDao = consultaIds.consultaCodFinalTerc()
         if respDao:
@@ -173,15 +212,13 @@ class ControleManterTerceiro:
 
 
     def geraLogTerceiro(self, acao: str, observacao: str) -> None:
-        #########################################################################################
-        # Essa função gera log do INSERT, UPDATE e DELETE do tereceiro.
-        
-        # PARAMETROS:
-        #   acao = Ação que foi efetuada.
-        
-        # RETORNOS:
-        #   Não tem retorno.
-        #########################################################################################
+        """
+        Gera um registro de log para ações relacionadas ao manter terceiro.
+
+        :param acao: Ação realizada (INSERT, UPDATE, DELETE).
+
+        :return: Nenhum valor é retornado.
+        """
 
         log = Log()
         log.acao = acao

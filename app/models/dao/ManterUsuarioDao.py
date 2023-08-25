@@ -4,26 +4,22 @@ from ..entity.Usuario import Usuario
 from ..Tables import SysUser
 import os
 
-"""
-Classe Dao para CRUD do usuário
-@tables - SysUser
-@author - Fabio
-@version - 1.0
-@since - 05/06/2023
-"""
 
 class ManterUsuarioDao:
+    """
+    Classe Dao para CRUD do usuário
+    @tables - SysUser
+    @author - Fabio
+    @version - 1.0
+    @since - 05/06/2023
+    """
 
-    def mostarUsuarios(self) -> list[Usuario]:
-        #########################################################################################
-        # Essa Função retorna uma lista contendo os usuários que não estão deletados/inativos.
-        
-        # PARAMETROS:
-        #   Não tem parametro.
-        
-        # RETORNOS:
-        #   return lisUsuarios = Retorna a lista contendo os usuários.
-        #########################################################################################
+    def consultarUsuarios(self) -> list[Usuario]:
+        """
+        Consulta os usuários que não estão inativos ou deletados cadastradas no sistema.
+
+        :return: Uma lista de usuário.
+        """
 
         lisUsuarios = []
 
@@ -39,22 +35,20 @@ class ManterUsuarioDao:
             user.ativo = sysuser.us_ativo
             user.delete = sysuser.us_delete
             lisUsuarios.append(user)
+
         return lisUsuarios
     
 
-    def mostarUsuarioDetalhado(self, id: int) -> Usuario:
-        #########################################################################################
-        # Essa Função retorna os dados detalhados do usuário que foi passado.
-        
-        # PARAMETROS:
-        #    id = ID do usuário selecionado.
-        
-        # RETORNOS:
-        #   return usuario = Retorna a instancia da classe Usuario com os dados do banco.
-        #########################################################################################
+    def consultarUsuarioDetalhado(self, id: int) -> Usuario:
+        """
+        Consulta os detalhes de um usuário no sistema.
+
+        :param id: O ID do usuário a ser consultado.
+
+        :return: Objeto 'Usuario' contendo as informações detalhadas do usuário.
+        """
 
         sysuser = SysUser.query.get(id)
-        
         usuario = Usuario()
         usuario.id = sysuser.id
         usuario.nome = sysuser.us_nome
@@ -70,16 +64,13 @@ class ManterUsuarioDao:
     
 
     def inserirUsuario(self, usuario: Usuario) -> bool:
-        #########################################################################################
-        # Essa Função insere um usuário no banco.
-        
-        # PARAMETROS:
-        #   usuario = Instancia da classe Usuario com os dados para inserção.
-        
-        # RETORNOS:
-        #   return True = Retorna True caso foi inserido com sucesso;
-        #   return False = Retorna False caso ocorra erro na inserção.
-        #########################################################################################
+        """
+        Insere um novo usuário no sistema.
+
+        :param usuario: Objeto 'Usuario' contendo informações do novo usuário.
+
+        :return: True se o processo de inserção for bem-sucedido, False caso contrário.
+        """
 
         if usuario.usuario != "ADMIN": #Verifica se o usuário para inserção é o ADMIN
             sysuser = SysUser(usuario=usuario.usuario, senha=usuario.senha,
@@ -100,16 +91,13 @@ class ManterUsuarioDao:
 
 
     def editarUsuario(self, usuario: Usuario) -> bool:
-        #########################################################################################
-        # Essa Função altera um usuário.
-        
-        # PARAMETROS:
-        #   usuario = Instancia da classe Usuario com os dados para alterção.
-        
-        # RETORNOS:
-        #   return True = Retorna True caso foi alterado com sucesso;
-        #   return False = Retorna False caso ocorra erro na alteração.
-        #########################################################################################
+        """
+        Edita as informações de um usuário no banco de dados.
+
+        :param usuario: Objeto da classe Usuario contendo as novas informações do usuário.
+
+        :return: True se a edição for bem-sucedida, False caso contrário.
+        """
 
         sysuser = SysUser.query.get(usuario.id)
         sysuser.us_nome = usuario.nome
@@ -123,20 +111,16 @@ class ManterUsuarioDao:
 
         DB.session.commit()
         return True
-        
-        
+          
 
     def excluirUsuario(self, id: int) -> bool:
-        #########################################################################################
-        # Essa Função exclui o usuário.
-        
-        # PARAMETROS:
-        #   usuario = Instancia da classe Usuario com os dados para alterção.
-        
-        # RETORNOS:
-        #   return True = Retorna True caso foi excluido com sucesso;
-        #   return False = Retorna False caso ocorra erro na exclusão.
-        #########################################################################################
+        """
+        Marca um usuário como excluído no sistema.
+
+        :param id: ID do usuário a ser marcado como excluído.
+
+        :return: True se a marcação como excluído for bem-sucedida, False caso contrário.
+        """
 
         sysuser = SysUser.query.get(id)
         sysuser.us_delete = True
@@ -146,16 +130,13 @@ class ManterUsuarioDao:
        
         
     def inativarUsuario(self, id: int) -> bool:
-        #########################################################################################
-        # Essa Função inativa o usuário.
+        """
+        Marca um usuário como desativado no sistema.
+
+        :param id: ID do usuário a ser marcado como desativado.
         
-        # PARAMETROS:
-        #   usuario = Instancia da classe Usuario com os dados para alterção.
-        
-        # RETORNOS:
-        #   return True = Retorna True caso foi inativado com sucesso;
-        #   return False = Retorna False caso ocorra erro na inativação.
-        #########################################################################################
+        :return: True se a marcação como desativado for bem-sucedida, False caso contrário.
+        """
 
         sysuser = SysUser.query.get(id)
         sysuser.us_ativo = True
@@ -164,17 +145,14 @@ class ManterUsuarioDao:
         return True
         
 
-
     def adicionarAdm(self, usuario: Usuario):
-        #########################################################################################
-        # Essa Função acessa o arquivo .ini para completar os dados do usuário ADMIN.
+        """
+        Adiciona um usuário administrador baseado em informações do arquivo de configuração.
+
+        :param usuario: O objeto 'Usuario' ao qual as informações do usuário administrador serão atribuídas.
         
-        # PARAMETROS:
-        #   usuario = Instancia da classe Usuario para completar os dados que estão no arquivo.
-        
-        # RETORNOS:
-        #   Não tem retorno.
-        #########################################################################################
+        :return: Nenhum valor é retornado. As informações do usuário administrador são preenchidas no objeto 'usuario'.
+        """
 
         arquivo = ConfigParser()
         arquivo.read(f"{os.path.dirname(os.path.realpath(__file__))}/variaveis/auth.ini")

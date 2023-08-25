@@ -7,7 +7,7 @@ from ...controllers.ControleManterUsuario import ControleManterUsuario
 from ...controllers.ControleManterChave import ControleManterChave
 from ...controllers.ControleTerceiro import ControleTerceiro
 from ...controllers.ControleGerente import ControleDeGerente
-from ...controllers.ControleChave import CrontoleDeChave
+from ...controllers.ControleDeChave import ControleDeChave
 from flask import Blueprint, session, request, Response
 from flask_login import login_required
 import json
@@ -23,7 +23,7 @@ preencheTabelasBlue = Blueprint("preencheTabelasBlue", __name__)
 @login_required
 def listaUsuariosAPI():
     controleManterUsuario = ControleManterUsuario()
-    respControle = controleManterUsuario.mostarUsuarios()
+    respControle = controleManterUsuario.consultarUsuarios()
     resp = Response(response=json.dumps(respControle), status=200, mimetype="application/json")
     return resp
 
@@ -32,7 +32,7 @@ def listaUsuariosAPI():
 @preencheTabelasBlue.route('/lista-chaves-retiradas', methods=["POST"])
 @login_required
 def listaChavesRetAPI():
-    controleChave = CrontoleDeChave()
+    controleChave = ControleDeChave()
     respControle = controleChave.listaChavesRetiradas()
     resp = Response(response=json.dumps({"login": session["grupo"], "data": respControle}), status=200, mimetype="application/json")
     return resp
@@ -42,7 +42,7 @@ def listaChavesRetAPI():
 @preencheTabelasBlue.route('/lista-chaves-manutencao', methods=["POST"])
 @login_required
 def listaChavesManutAPI():
-    controleChave = CrontoleDeChave()
+    controleChave = ControleDeChave()
     respControle = controleChave.listaChavesManut()
     resp = Response(response=json.dumps({"login": session["grupo"], "data": respControle}), status=200, mimetype="application/json")
     return resp
@@ -53,7 +53,7 @@ def listaChavesManutAPI():
 @login_required
 def listaFuncionariosAPI():
     controleManterFuncionario = ControleManterFuncionario()
-    respControle = controleManterFuncionario.mostarFuncionarios()
+    respControle = controleManterFuncionario.consultarFuncionarios()
     resp = Response(response=json.dumps(respControle), status=200, mimetype="application/json")
     return resp
 
@@ -63,7 +63,7 @@ def listaFuncionariosAPI():
 @login_required
 def listaChavesAPI():
     controleManterChave = ControleManterChave()
-    respControle = controleManterChave.mostraChaves()
+    respControle = controleManterChave.consultaChaves()
     resp = Response(response=json.dumps({"login": session["grupo"], "data": respControle}), status=200, mimetype="application/json")
     return resp
 
@@ -92,7 +92,7 @@ def listaLogsUserAPI():
 @login_required
 def listaTerceirosAPI():
     controleManterTerceiro = ControleManterTerceiro()
-    respControle = controleManterTerceiro.mostrarTerceiros()
+    respControle = controleManterTerceiro.consultarTerceiros()
     resp = Response(response=json.dumps({"login": session["grupo"], "data": respControle}), status=200, mimetype="application/json")
     return resp
 

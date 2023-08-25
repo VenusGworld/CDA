@@ -1,19 +1,25 @@
 from ..models.dao.ManterUsuarioDao import ManterUsuarioDao
 from ..models.dao.ConsultaLogUserDao import ConsultaLogUserDao
-from ..extensions.FiltrosJson import filtroDataHora
+from ..extensions.FiltrosJson import filtroDataHora, filtroNome
 from ..models.entity.Log import Log
 import json as js
 
-"""
-Classe Controller para a consulta de logs do sistema
-@author - Fabio
-@version - 1.0
-@since - 07/07/2023
-"""
-
 class ControleConsultarLogUser:
+    """
+    Classe Controller para as funções de consultas de logs do usuário no sistema
+    @author - Fabio
+    @version - 1.0
+    @since - 07/07/2023
+    """
 
     def consultaLogUserInsert(self) -> list[dict]:
+        """
+        Consulta e retorna uma lista de logs de inserção de usuários.
+
+        :return: Uma lista de dicionários contendo informações sobre os logs de inserção de usuários.
+            Cada dicionário possui chaves "id", "dataHora", "acao", "resp" e "usuario".
+        """
+
         consultaLogDao = ConsultaLogUserDao()
         respDao = consultaLogDao.consultaLogsUserInsert()
         listaLogs = []
@@ -23,7 +29,7 @@ class ControleConsultarLogUser:
                 "id": log.id_logUsua,
                 "dataHora": filtroDataHora(log.lus_dataHora),
                 "acao": log.lus_acao,
-                "resp": log.nomeUser,
+                "resp": filtroNome(log.nomeUser),
                 "usuario": js.loads(log.lus_dadosNovos.decode("utf-8"))
             }
 
@@ -33,6 +39,13 @@ class ControleConsultarLogUser:
 
 
     def consultaLogUserUpdate(self) -> list[dict]:
+        """
+        Consulta e retorna uma lista de logs de alteração de usuários.
+
+        :return: Uma lista de dicionários contendo informações sobre os logs de alteração de usuários.
+            Cada dicionário possui chaves "id", "dataHora", "acao", "resp" e "usuario".
+        """
+
         consultaLogDao = ConsultaLogUserDao()
         respDao = consultaLogDao.consultaLogsUserUpdate()
         listaLogs = []
@@ -42,7 +55,7 @@ class ControleConsultarLogUser:
                 "id": log.id_logUsua,
                 "dataHora": filtroDataHora(log.lus_dataHora),
                 "acao": log.lus_acao,
-                "resp": log.nomeUser,
+                "resp": filtroNome(log.nomeUser),
                 "usuario": js.loads(log.lus_dadosNovos.decode("utf-8"))
             }
 
@@ -52,6 +65,13 @@ class ControleConsultarLogUser:
 
 
     def consultaLogUserDelete(self) -> list[dict]:
+        """
+        Consulta e retorna uma lista de logs de exclusão de usuários.
+
+        :return: Uma lista de dicionários contendo informações sobre os logs de exclusão de usuários.
+            Cada dicionário possui chaves "id", "dataHora", "acao", "resp" e "usuario".
+        """
+
         consultaLogDao = ConsultaLogUserDao()
         respDao = consultaLogDao.consultaLogsUserDelete()
         listaLogs = []
@@ -61,7 +81,7 @@ class ControleConsultarLogUser:
                 "id": log.id_logUsua,
                 "dataHora": filtroDataHora(log.lus_dataHora),
                 "acao": log.lus_acao,
-                "resp": log.nomeUser,
+                "resp": filtroNome(log.nomeUser),
                 "usuario": js.loads(log.lus_dadosAntigos.decode("utf-8"))
             }
 
@@ -71,6 +91,13 @@ class ControleConsultarLogUser:
     
 
     def consultaLogUserActive(self) -> list[dict]:
+        """
+        Consulta e retorna uma lista de logs de ativação de usuários.
+
+        :return: Uma lista de dicionários contendo informações sobre os logs de ativação de usuários.
+            Cada dicionário possui chaves "id", "dataHora", "acao", "resp" e "usuario".
+        """
+
         consultaLogDao = ConsultaLogUserDao()
         respDao = consultaLogDao.consultaLogsUserActive()
         listaLogs = []
@@ -80,7 +107,7 @@ class ControleConsultarLogUser:
                 "id": log.id_logUsua,
                 "dataHora": filtroDataHora(log.lus_dataHora),
                 "acao": log.lus_acao,
-                "resp": log.nomeUser,
+                "resp": filtroNome(log.nomeUser),
                 "usuario": js.loads(log.lus_dadosAntigos.decode("utf-8"))
             }
 
@@ -89,7 +116,15 @@ class ControleConsultarLogUser:
         return listaLogs  
         
         
-    def consultaLogUserInsertDetelhado(self, id: int):
+    def consultaLogUsertDetelhado(self, id: int):
+        """
+        Consulta e retorna detalhes de um registro de log de usuário específico.
+
+        :param id: O ID do registro de log de usuário.
+        
+        :return: Um objeto Log contendo detalhes do registro de log de usuário.
+        """
+
         consultaLogDao = ConsultaLogUserDao()
         manterUsuarioDao = ManterUsuarioDao()
         respDao = consultaLogDao.consultaLogsUserDetalhado(id)
@@ -100,6 +135,6 @@ class ControleConsultarLogUser:
         logUser.acao = respDao.lus_acao
         logUser.converteDictDadosAntigos(respDao.lus_dadosAntigos)
         logUser.converteDictDadosNovos(respDao.lus_dadosNovos)
-        logUser.usuario = manterUsuarioDao.mostarUsuarioDetalhado(respDao.lus_idUsua)
+        logUser.usuario = manterUsuarioDao.consultarUsuarioDetalhado(respDao.lus_idUsua)
 
         return logUser

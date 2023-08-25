@@ -2,27 +2,23 @@ from ...configurations.Database import DB
 from ..entity.Usuario import Usuario
 from ..Tables import SysUser
 
-"""
-Classe Dao para login no sistema
-@tables - SysUser
-@author - Fabio
-@version - 1.0
-@since - 25/04/2023
-"""
-
 class LoginDao:
+    """
+    Classe Dao para login no sistema
+    @tables - SysUser
+    @author - Fabio
+    @version - 1.0
+    @since - 25/04/2023
+    """
     
     def consultaUsuario(self, login: Usuario):
-        #########################################################################################
-        # Essa Função verfica se usuário existe no banco.
-         
-        # PARAMETROS:
-        #   login = Instancia da classe Usuario com usuário e senha.
-        
-        # RETORNO:
-        #   return user = Retorna o usuário que achou no banco.
-        #   return 0 = Retorna 0 caso o usuário não exista.
-        #########################################################################################
+        """
+        Consulta um usuário no banco de dados.
+
+        :param login: Um objeto 'Usuario' contendo o nome de usuário (login) a ser consultado.
+
+        :return: O objeto 'SysUser' correspondente se o usuário for encontrado, caso contrário, retorna 0.
+        """
 
         sysuser = SysUser.query.filter_by(us_usuario=login.usuario).first()
         if sysuser:
@@ -40,16 +36,13 @@ class LoginDao:
 
 
     def verficaTrocaSenha(self, login: Usuario) -> bool:
-        #########################################################################################
-        # Essa Função verfica se usuário está logando solicitou a troca de senha.
-         
-        # PARAMETROS:
-        #   login = Instancia da classe Usuario com usuário e senha.
-        
-        # RETORNO:
-        #   return True = Retorna True caso foi solicitado;
-        #   return False = Retorna False caso não foi solicitado.
-        #########################################################################################
+        """
+        Verifica se um usuário que está efetuando o login solicitou a troca de senha.
+
+        :param login: Um objeto 'Usuario' contendo as informações do usuário.
+
+        :return: True se o usuário precisa trocar a senha, False caso contrário.
+        """
 
         sysuser = SysUser.query.get(login.id)
         if sysuser.us_novaSenha:
@@ -59,16 +52,13 @@ class LoginDao:
         
     
     def atulizaTrocaSenha(self, login: Usuario) -> bool:
-        #########################################################################################
-        # Essa Função atualiza os campos de troca senha, para retirar a solicitação.
-         
-        # PARAMETROS:
-        #   login = Instancia da classe Usuario com usuário e senha.
-        
-        # RETORNO:
-        #   return True = Retorna True caso foi alterado com sucesso;
-        #   return False = Retorna False caso de erro.
-        #########################################################################################
+        """
+        Atualiza as informações após a troca de senha.
+
+        :param login: Um objeto 'Usuario' contendo as informações do usuário.
+
+        :return: True se as informações foram atualizadas com sucesso, False em caso de erro.
+        """
 
         sysuser = SysUser.query.get(login.id)
         sysuser.us_hashNovaSenha = ""

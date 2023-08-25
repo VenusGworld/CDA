@@ -96,4 +96,3 @@ class Funcionario:
         return json
 
     
-

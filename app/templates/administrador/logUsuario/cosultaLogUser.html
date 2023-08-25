@@ -6,6 +6,10 @@
 {% include "public/header.html" %}
 {% if context.modal == 1 %}
     {% include "public/modalLog/modalLogInsertUser.html" %}
+{% elif context.modal == 2 %}
+    {% include "public/modalLog/modalLogUpdateUser.html" %}
+{% elif context.modal == 3 %}
+    {% include "public/modalLog/modalLogActiveDeletUser.html" %}
 {% endif %}
 <section class="content">
     <div class="container-fluid p-0">

@@ -2,26 +2,23 @@ from ..Tables import CDA013, CDA011, CDA001, CDA010, CDA012, CDA008, CDA006, CDA
 from ...configurations.Database import DB
 from app.models.entity.Log import Log
 
-"""
-Classe Dao para gerar log
-@tables - CDA013, CDA011, CDA001, CDA010, CDA012, CDA008, CDA006, CDA014
-@author - Fabio
-@version - 4.0
-@since - 05/06/2023
-"""
-
 class GeraLogDao:
+    """
+    Classe Dao para gerar log
+    @tables - CDA013, CDA011, CDA001, CDA010, CDA012, CDA008, CDA006, CDA014
+    @author - Fabio
+    @version - 4.0
+    @since - 05/06/2023
+    """
 
     def inserirLogUsuario(self, log: Log) -> bool:
-        #########################################################################################
-        # Essa Função insere o log no banco.
+        """
+        Insere um registro de log de usuário no banco de dados.
+
+        :param log: Um objeto 'Log' contendo as informações do registro de log.
         
-        # PARAMETROS:
-        #   log = Instancia da classe Log com os dados para inserir o log.
-        
-        # RETORNOS:
-        #   return True = Retorna True caso foi inserido com sucesso.
-        #########################################################################################
+        :return: True se o log foi inserido com sucesso, False em caso de erro.
+        """
 
         logUser = CDA013(dataHora=log.dataHora, acao=log.acao, 
                          dadosAntigos=log.converteBytesDadosAntigos(), 
@@ -31,18 +28,15 @@ class GeraLogDao:
         DB.session.commit()
         return True
         
-    
 
     def inserirLogFuncionario(self, log: Log) -> bool:
-        #########################################################################################
-        # Essa Função insere o log no banco.
-        
-        # PARAMETROS:
-        #   log = Instancia da classe Log com os dados para inserir o log.
-        
-        # RETORNOS:
-        #   return True = Retorna True caso foi inserido com sucesso.
-        #########################################################################################
+        """
+        Insere um registro de log de funcionário no banco de dados.
+
+        :param log: Um objeto 'Log' contendo as informações do registro de log.
+
+        :return: True se o log foi inserido com sucesso, False em caso de erro.
+        """
 
         logFunc = CDA011(dataHora=log.dataHora, acao=log.acao, 
                          dadosAntigos=log.converteBytesDadosAntigos(), 
@@ -54,15 +48,13 @@ class GeraLogDao:
     
 
     def inserirLogChave(self, log: Log) -> bool:
-        #########################################################################################
-        # Essa Função insere o log no banco.
-        
-        # PARAMETROS:
-        #   log = Instancia da classe Log com os dados para inserir o log.
-        
-        # RETORNOS:
-        #   return True = Retorna True caso foi inserido com sucesso.
-        #########################################################################################
+        """
+        Insere um registro de log de chave no banco de dados.
+
+        :param log: Um objeto 'Log' contendo as informações do registro de log.
+
+        :return: True se o log foi inserido com sucesso, False em caso de erro.
+        """
 
         logChave = CDA010(dataHora=log.dataHora, acao=log.acao, observacao=log.observacao, 
                          dadosAntigos=log.converteBytesDadosAntigos(), 
@@ -74,15 +66,13 @@ class GeraLogDao:
     
 
     def inserirLogControleChave(self, log: Log) -> bool:
-        #########################################################################################
-        # Essa Função insere o log no banco.
-        
-        # PARAMETROS:
-        #   log = Instancia da classe Log com os dados para inserir o log.
-        
-        # RETORNOS:
-        #   return True = Retorna True caso foi inserido com sucesso.
-        #########################################################################################
+        """
+        Insere um registro de log de controle de chaves no banco de dados.
+
+        :param log: Um objeto 'Log' contendo as informações do registro de log.
+
+        :return: True se o log foi inserido com sucesso, False em caso de erro.
+        """
 
         logControleChave = CDA001(dataHora=log.dataHora, acao=log.acao, observacao=log.observacao, 
                          dadosAntigos=log.converteBytesDadosAntigos(), 
@@ -94,15 +84,13 @@ class GeraLogDao:
     
 
     def inserirLogTerceiro(self, log: Log) -> bool:
-        #########################################################################################
-        # Essa Função insere o log no banco.
-        
-        # PARAMETROS:
-        #   log = Instancia da classe Log com os dados para inserir o log.
-        
-        # RETORNOS:
-        #   return True = Retorna True caso foi inserido com sucesso.
-        #########################################################################################
+        """
+        Insere um registro de log de terceiro no banco de dados.
+
+        :param log: Um objeto 'Log' contendo as informações do registro de log.
+
+        :return: True se o log foi inserido com sucesso, False em caso de erro.
+        """
 
         logTerc = CDA012(dataHora=log.dataHora, acao=log.acao, observacao=log.observacao, 
                          dadosAntigos=log.converteBytesDadosAntigos(), 
@@ -114,15 +102,13 @@ class GeraLogDao:
     
 
     def inserirLogControleTerceiro(self, log: Log) -> bool:
-        #########################################################################################
-        # Essa Função insere o log no banco.
-        
-        # PARAMETROS:
-        #   log = Instancia da classe Log com os dados para inserir o log.
-        
-        # RETORNOS:
-        #   return True = Retorna True caso foi inserido com sucesso.
-        #########################################################################################
+        """
+        Insere um registro de log de controle de terceiro no banco de dados.
+
+        :param log: Um objeto 'Log' contendo as informações do registro de log.
+
+        :return: True se o log foi inserido com sucesso, False em caso de erro.
+        """
 
         logControleTerc = CDA008(dataHora=log.dataHora, acao=log.acao, observacao=log.observacao, 
                          dadosAntigos=log.converteBytesDadosAntigos(), 
@@ -134,15 +120,13 @@ class GeraLogDao:
     
 
     def inserirLogControleGerente(self, log: Log) -> bool:
-        #########################################################################################
-        # Essa Função insere o log no banco.
-        
-        # PARAMETROS:
-        #   log = Instancia da classe Log com os dados para inserir o log.
-        
-        # RETORNOS:
-        #   return True = Retorna True caso foi inserido com sucesso.
-        #########################################################################################
+        """
+        Insere um registro de log de controle de gerente no banco de dados.
+
+        :param log: Um objeto 'Log' contendo as informações do registro de log.
+
+        :return: True se o log foi inserido com sucesso, False em caso de erro.
+        """
 
         logControleGer = CDA006(dataHora=log.dataHora, acao=log.acao, observacao=log.observacao, 
                          dadosAntigos=log.converteBytesDadosAntigos(), 
@@ -154,15 +138,13 @@ class GeraLogDao:
     
 
     def inserirLogMensagem(self, log: Log) -> bool:
-        #########################################################################################
-        # Essa Função insere o log no banco.
-        
-        # PARAMETROS:
-        #   log = Instancia da classe Log com os dados para inserir o log.
-        
-        # RETORNOS:
-        #   return True = Retorna True caso foi inserido com sucesso.
-        #########################################################################################
+        """
+        Insere um registro de log de mensagem no banco de dados.
+
+        :param log: Um objeto 'Log' contendo as informações do registro de log.
+
+        :return: True se o log foi inserido com sucesso, False em caso de erro.
+        """
 
         logMensagem = CDA014(dataHora=log.dataHora, mensagem=log.observacao, idUsua=log.usuario.id)
     

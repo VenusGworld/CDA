@@ -1,3 +1,0 @@
-
-class Integracao:
-    pass

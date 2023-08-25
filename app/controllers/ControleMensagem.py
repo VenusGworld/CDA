@@ -7,10 +7,21 @@ from ..models.dao.Ldap import Ldap
 from datetime import datetime
 from flask import session
 
-
 class ControleMensagem:
+    """
+    Classe Controller para as funções recionadas ao enviar mensagem
+    @author - Fabio
+    @version - 1.0
+    @since - 20/06/2023
+"""
 
     def consultaMaquinas(self) -> dict:
+        """
+        Essa função consulta no Active Directory(AD) e retorna um dicionário com os grupos de máquinas associadas a determinado setor.
+
+        :return: Um dicionário contendo grupos de máquinas e suas respectivas máquinas.
+        """
+        
         ldap = Ldap()
         grupos = ["Almoxarifado", "Cobranca", "Compras", "Contabil", "CPD", "Diretoria", "Fabrica", "Faturamento", "Financeiro", "Fiscal", "Lab Algodao", "Lab Fios", "Manutencao", "PCP", "Portaria", "RH", "Secretaria", "Sesmt", "Vendas"]
 
@@ -18,7 +29,7 @@ class ControleMensagem:
         for grupo in grupos:
             listaMaquinas = []
             
-            for maquina in ldap.mostrarMaquinas(grupo):
+            for maquina in ldap.consultarMaquinas(grupo):
                 listaMaquinas.append(maquina["attributes"]["cn"])
 
             
@@ -35,6 +46,13 @@ class ControleMensagem:
     
 
     def enviarMesagem(self, mensagem: str, destinos: list[str]) -> bool:
+        """
+        Envia uma mensagem para uma lista de destinos(máquinas).
+
+        :param mensagem: A mensagem a ser enviada.
+        :param destinos: Uma lista de strings contendo os destinos(máquinas) para enviar a mensagem.
+        """
+
         enviarMensagem = Mensagem()
         for maquina in destinos:
             enviarMensagem.enviarMensagem(mensagem.upper(), maquina)
@@ -48,15 +66,13 @@ class ControleMensagem:
     
 
     def geraLogMensagem(self, mensagem: str) -> None:
-        #########################################################################################
-        # Essa função gera log do INSERT, UPDATE e DELETE do usuário.
-        
-        # PARAMETROS:
-        #   acao = Ação que foi efetuada.
-        
-        # RETORNOS:
-        #   Não tem retorno.
-        #########################################################################################
+        """
+        Gera um registro de log para ações relacionadas ao enviar mensagem.
+
+        :param mensagem: mensagem que foi enviada.
+
+        :return: Nenhum valor é retornado.
+        """
 
         log = Log()
         log.acao = ""

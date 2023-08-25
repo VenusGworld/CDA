@@ -78,13 +78,13 @@ def esquciSenha():
     try:
         controleEsqueciSenha = ControleEsqueciSenha()
         jsonData = request.get_json()
-        respControle = controleEsqueciSenha.trocaSenha(jsonData["senha"].upper().strip(), jsonData["hash"].upper())
-        if respControle == 1:
-            resp = Response(response=json.dumps({"success": True}), status=200, mimetype="application/json")
-            return resp
+        controleEsqueciSenha.trocaSenha(jsonData["senha"].upper().strip(), jsonData["hash"].upper())
+        resp = Response(response=json.dumps({"success": True}), status=200, mimetype="application/json")
+        return resp
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
         tracebackInfo = traceback.extract_tb(tb)
         log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
-        abort(500)
+        resp = Response(status=500, mimetype="application/json")
+        return resp

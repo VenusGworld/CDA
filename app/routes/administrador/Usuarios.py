@@ -65,7 +65,7 @@ def insertUsuarioAdm():
 def editarUsuarioAdm(id):
     try:
         controleManterUsuario = ControleManterUsuario()
-        usuario = controleManterUsuario.mostarUsuarioDetalhado(id)
+        usuario = controleManterUsuario.consultarUsuarioDetalhado(id)
         context = {"titulo": "Alterar Usuário", "action": f"{url_for('usuarioAdmBlue.editUsuarioAdm')}", "botao": "Editar", "usuario": usuario, "active": "cadUser"}
         return render_template("administrador/usuario/cadastroUsuario.html", context=context)
     except:

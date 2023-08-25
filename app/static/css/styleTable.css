@@ -384,3 +384,21 @@ th.gridjs-th:last-child {
   cursor: ew-resize;
   background-color: #9bc2f7;
 }
+
+#myGrid {
+    display: flex;
+    flex-direction: column;
+}
+
+.ag-theme-alpine .ag-header-row {
+    background-color: #000;
+    color: #ffffff !important;
+}
+
+.ag-header-icon{
+    color: #ffffff !important;
+}
+
+.ag-row-odd{
+    background-color: #cecece !important;
+}

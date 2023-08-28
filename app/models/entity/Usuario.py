@@ -1,6 +1,7 @@
 from datetime import datetime
 from random import randint
 import bcrypt
+from typing import Optional
 
 """
 Classe Usuario
@@ -24,20 +25,23 @@ class Usuario:
     hashSenhaNova: str
     limiteNovasenha: datetime
 
-    def __init__(self) -> None:
-        self._id = None
-        self._nome = None
-        self._email = None
-        self._grupo = None
-        self._usuario = None
-        self._senha = None
-        self._complex = None
-        self._ativo = None
-        self._delete = None
-        self._senhaCompara = None
-        self._senhaNova = None
-        self._hashSenhaNova = None
-        self._limiteNovasenha = None
+    def __init__(self, id: Optional[int]=None, nome: Optional[str]=None, email: Optional[str]=None, grupo: Optional[str]=None,
+                 usuario: Optional[str]=None, senha: Optional[str]=None, complex: Optional[str]=None, ativo: Optional[bool]=None,
+                 delete: Optional[bool]=None, senhaCompara: Optional[str]=None, senhaNova: Optional[bool]=None, hashSenhaNova: Optional[str]=None,
+                 limiteNovaSenha: Optional[datetime]=None) -> None:
+        self._id = id
+        self._nome = nome
+        self._email = email
+        self._grupo = grupo
+        self._usuario = usuario
+        self._senha = senha
+        self._complex = complex
+        self._ativo = ativo
+        self._delete = delete
+        self._senhaCompara = senhaCompara
+        self._senhaNova = senhaNova
+        self._hashSenhaNova = hashSenhaNova
+        self._limiteNovasenha = limiteNovaSenha
 
     @property
     def id(self) -> int:

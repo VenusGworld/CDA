@@ -67,16 +67,8 @@ class ControleManterUsuario:
         :return: True se a inclusão for bem-sucedida, False caso contrário.
         """
 
-        self.usuarioNovo = Usuario()
-        self.usuarioNovo.nome = nome
-        self.usuarioNovo.email = email
-        self.usuarioNovo.usuario = user
-        self.usuarioNovo.grupo = grupo
+        self.usuarioNovo = Usuario(nome=nome, email=email, usuario=user, grupo=grupo, hashSenhaNova="", senhaNova=False, ativo=False, delete=False)
         self.usuarioNovo.gerarSenha(senha)
-        self.usuarioNovo.hashSenhaNova = ""
-        self.usuarioNovo.senhaNova = False
-        self.usuarioNovo.ativo = False
-        self.usuarioNovo.delete = False
 
         self.usuarioLogado = Usuario()
 
@@ -106,21 +98,13 @@ class ControleManterUsuario:
 
         self.usuarioNovo = Usuario()
         self.usuarioLogado = Usuario()
-        self.usuarioAntigo = Usuario()
         manterUsuarioDao = ManterUsuarioDao()
         consultaIdUser = ConsultaIdsDao()    
 
         self.usuarioAntigo = manterUsuarioDao.consultarUsuarioDetalhado(id)
 
-        self.usuarioNovo.id = id
-        self.usuarioNovo.nome = nome
-        self.usuarioNovo.email = email
-        self.usuarioNovo.usuario = user
-        self.usuarioNovo.grupo = grupo
-        self.usuarioNovo.senha = senha
-        self.usuarioNovo.ativo = False
-        self.usuarioNovo.delete = False
-        self.usuarioNovo.complex = self.usuarioAntigo.complex
+        self.usuarioAntigo = Usuario(id=id, nome=nome, email=email, usuario=user, grupo=grupo,
+                                     senha=senha, ativo=False, delete=False, complex=self.usuarioAntigo.complex)
 
         #Verifica se a senha teve alteração, se teve é gerada novo hash da senha nova
         if self.usuarioAntigo.senha != self.usuarioNovo.senha: 
@@ -179,11 +163,7 @@ class ControleManterUsuario:
         :return: Nenhum valor é retornado.
         """
 
-        log = Log()
-        log.acao = acao
-        log.dataHora = datetime.now()
-        log.observacao = ""
-        log.usuario = self.usuarioLogado
+        log = Log(acao=acao, dataHora=datetime.now(), observacao="", usuario=self.usuarioLogado)
 
         if acao == "INSERT":
             log.dadosAntigos = {"vazio": 0}

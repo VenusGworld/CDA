@@ -28,9 +28,7 @@ class ControleLogin:
             6 - Usuário não encontrado.
         """
 
-        usuario = Usuario()
-        usuario.usuario = user
-        usuario.senha = pssd
+        usuario = Usuario(usuario=user, senha=pssd)
         if user == "ADMIN":
             return self.loginAdm(usuario)
         else:

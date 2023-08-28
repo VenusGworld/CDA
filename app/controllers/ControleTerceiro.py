@@ -38,19 +38,14 @@ class ControleTerceiro:
         :param acomps: Lista de dicionários contendo informações sobre acompanhantes (caso haja).
         """
 
-        self.movimentoTercNovo = MovimentoTerceiro()
+        
         funcionario = Funcionario()
         self.usuarioLogado = Usuario()
         manterFuncionarioDao = ManterFuncionarioDao()
         funcionario = manterFuncionarioDao.consultarFuncionarioDetalhadoCracha(list(pessoaVisit.split())[0])
-        self.movimentoTercNovo.pessoaVisit = funcionario
-        self.movimentoTercNovo.empresa = empesa.upper().strip()
-        self.movimentoTercNovo.placa = placa.upper().strip()
-        self.movimentoTercNovo.veiculo = veiculo.upper().strip()
-        self.movimentoTercNovo.motivo = motivo.upper().strip()
-        self.movimentoTercNovo.dataEnt = dtEnt.replace("-", "")
-        self.movimentoTercNovo.horaEnt = hrEnt
-        self.movimentoTercNovo.delete = False
+        self.movimentoTercNovo = MovimentoTerceiro(pessoaVisit=funcionario, empresa=empesa.upper().strip(), placa=placa.upper().strip(),
+                                                   veiculo=veiculo.upper().strip(), motivo=motivo.upper().strip(), dataEnt=dtEnt.replace("-", ""),
+                                                   horaEnt=hrEnt, delete=False) 
         
         pesquisaDao = PesquisaDao()
         manterTerceiroDao = ManterTerceiroDao()
@@ -152,7 +147,6 @@ class ControleTerceiro:
         """
         
         controleTerceiroDao = ControleTerceiroDao()
-        self.movimentoTercNovo = MovimentoTerceiro()
         self.usuarioLogado = Usuario()
         manterTerceiroDao = ManterTerceiroDao()
         manterFuncionario = ManterFuncionarioDao()

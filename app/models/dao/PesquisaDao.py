@@ -101,7 +101,7 @@ class PesquisaDao:
         :return: O funcionário correspondente ao número de crachá, excluindo o funcionário com o ID fornecido.
         """
 
-        crachaFunc = CDA007.query.filter(CDA007.fu_cracha==cracha, CDA007.id_funcionarios!=id).first()
+        crachaFunc = CDA007.query.filter(CDA007.fu_cracha==cracha, CDA007.id_funcionario!=id).first()
 
         return crachaFunc
     
@@ -119,6 +119,7 @@ class PesquisaDao:
                             user="{}\\{}".format("", ""),
                             password="",
                             auto_referrals=False)
+
         maquinas = conn.extend.standard.paged_search(f'', '(objectClass=computer)', attributes=['cn', 'givenName'])
 
         return maquinas

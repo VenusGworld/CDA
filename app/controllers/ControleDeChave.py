@@ -30,21 +30,13 @@ class ControleDeChave:
         :return: True se a inserção for bem-sucedida, False caso contrário.
         """
         
-        self.movimentoChaveNovo = MovimentoChave()
         controleChaveDao = ControleChaveDao()
         manterFuncionarioDao = ManterFuncionarioDao()
         manterChaveDao = ManterChaveDao()
         self.usuarioLogado = Usuario()
         funcionario = manterFuncionarioDao.consultarFuncionarioDetalhadoCracha(list(crachaFun.split())[0])
         chave = manterChaveDao.consultarChaveDetalhadaCodigo(list(codChave.split())[0])
-        self.movimentoChaveNovo.dataRet = dataRet.replace("-", "")
-        self.movimentoChaveNovo.horaRet = horaRet
-        self.movimentoChaveNovo.chave = chave
-        self.movimentoChaveNovo.respRet = funcionario
-        self.movimentoChaveNovo.dataDev = ""
-        self.movimentoChaveNovo.horaDev = ""
-        self.movimentoChaveNovo.respDev = Funcionario()
-        self.movimentoChaveNovo.delete = False
+        self.movimentoChaveNovo = MovimentoChave(dataRet=dataRet.replace("-", ""), horaRet=horaRet, chave=chave, respRet=funcionario, respDev=Funcionario(), delete=False)
 
         if controleChaveDao.inserirRetirada(self.movimentoChaveNovo):
             consultaIds = ConsultaIdsDao()
@@ -70,7 +62,6 @@ class ControleDeChave:
         :param checkbox: Indica se a mesma pessoa que retirou a chave está realizando a devolução.
         """
         
-        self.movimentoChaveNovo = MovimentoChave()
         controleChaveDao = ControleChaveDao()
         manterFuncionarioDao = ManterFuncionarioDao()
         self.usuarioLogado = Usuario()

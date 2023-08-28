@@ -73,7 +73,7 @@ class ControleTerceiroDao:
         
         movimentos = DB.session\
             .query(CDA004.id_movTerc, CDA004.mte_dataEntra, CDA004.mte_horaEntra, CDA004.mte_empresa, CDA007.fu_nome.label("nomeFunc"))\
-                .join(CDA007, CDA007.id_funcionarios == CDA004.mte_idFunc)\
+                .join(CDA007, CDA007.id_funcionario == CDA004.mte_idFunc)\
                     .filter(CDA004.mte_dataSaid==None, CDA004.mte_horaSaid==None, CDA004.mte_delete!=True)
         
         return movimentos
@@ -88,21 +88,12 @@ class ControleTerceiroDao:
         :return: Um objeto MovimentoTerceiro contendo informações detalhadas do movimento.
         """
 
-        movimento = CDA004.query.get(id)
+        mov = CDA004.query.get(id)
 
-        mov = MovimentoTerceiro()
-        mov.id = movimento.id_movTerc
-        mov.dataEnt = movimento.mte_dataEntra
-        mov.horaEnt = movimento.mte_horaEntra
-        mov.empresa = movimento.mte_empresa
-        mov.veiculo = movimento.mte_veiculo
-        mov.placa = movimento.mte_placa
-        mov.motivo = movimento.mte_motivo
-        mov.dataSai = movimento.mte_dataSaid
-        mov.horaSai = movimento.mte_horaSaid
-        mov.delete = movimento.mte_delete
+        movimento = MovimentoTerceiro(id=mov.id_movTerc, dataEnt=mov.mte_dataEntra, horaEnt=mov.mte_horaEntra, empresa=mov.mte_empresa, veiculo=mov.mte_veiculo,
+                                      placa=mov.mte_placa, motivo=mov.mte_motivo, dataSai=mov.mte_dataSaid, horaSai=mov.mte_horaSaid, delete=mov.mte_delete)
 
-        return mov
+        return movimento
     
     
     def consultaIdFuncMovTerc(self, id: int) -> int:

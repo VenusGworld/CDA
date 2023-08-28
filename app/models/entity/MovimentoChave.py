@@ -1,5 +1,6 @@
 from .Funcionario import Funcionario
 from .Chave import Chave
+from typing import Optional
 
 """
 Classe Movimento Chave
@@ -19,15 +20,18 @@ class MovimentoChave:
     chave: Chave
     delete: bool
 
-    def __init__(self) -> None:
-        self._id = None
-        self._dataRet = None
-        self._horaRet = None
-        self._respRet = None
-        self._dataDev = None
-        self._horaDev = None
-        self._chave = None
-        self._delete = None 
+    def __init__(self, id: Optional[int]=None, dataRet: Optional[str]=None, horaRet: Optional[str]=None, 
+                 respRet: Optional[Funcionario]=None, dataDev: Optional[str]=None, horaDev: Optional[str]=None,
+                 respDev: Optional[Funcionario]=None, chave: Optional[Chave]=None, delete: Optional[bool]=None) -> None:
+        self._id = id
+        self._dataRet = dataRet
+        self._horaRet = horaRet
+        self._respRet = respRet
+        self._dataDev = dataDev
+        self._horaDev = horaDev
+        self._respDev = respDev
+        self._chave = chave
+        self._delete = delete 
 
     @property
     def id(self) -> int:

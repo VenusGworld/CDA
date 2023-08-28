@@ -26,15 +26,12 @@ class ControleDeGerente:
         :param gerente: O crachá do gerente que está entrando.
         """
 
-        self.movimentoGerNovo = MovimentoGerente()
         controleGerenteDao = ControleGerenteDao()
         manterFuncionarioDao = ManterFuncionarioDao()
         self.usuarioLogado = Usuario()
 
-        self.movimentoGerNovo.dataEnt = dataEnt.replace("-", "")
-        self.movimentoGerNovo.horaEnt = horaEnt
-        self.movimentoGerNovo.gerente = manterFuncionarioDao.consultarFuncionarioDetalhadoCracha(list(gerente.split())[0])
-        self.movimentoGerNovo.delete = False
+        self.movimentoGerNovo = MovimentoGerente(dataEnt=dataEnt.replace("-", ""), horaEnt=horaEnt, delete=False,
+                                                 gerente=manterFuncionarioDao.consultarFuncionarioDetalhadoCracha(list(gerente.split())[0]))
 
         if controleGerenteDao.inserirEntrada(self.movimentoGerNovo):
             consultaIds = ConsultaIdsDao()
@@ -60,7 +57,6 @@ class ControleDeGerente:
         :param cracha: O crachá do gerente que está saindo.
         """
 
-        self.movimentoGerNovo = MovimentoGerente()
         controleGerenteDao = ControleGerenteDao()
         manterFuncionarioDao = ManterFuncionarioDao()
         self.usuarioLogado = Usuario()
@@ -158,11 +154,7 @@ class ControleDeGerente:
         :return: Nenhum valor é retornado.
         """
 
-        log = Log()
-        log.acao = acao
-        log.dataHora = datetime.now()
-        log.observacao = observacao
-        log.usuario = self.usuarioLogado
+        log = Log(acao=acao, dataHora=datetime.now(), observacao=observacao, usuario=self.usuarioLogado)
 
         if acao == "ENTRADA" or acao == "SAIDA":
             log.dadosAntigos = {"vazio": 0}

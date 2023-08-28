@@ -25,15 +25,9 @@ class ManterUsuarioDao:
 
         sysusers = SysUser.query.filter(SysUser.us_ativo!=True, SysUser.us_delete!=True)
         for sysuser in sysusers:
-            user = Usuario()
-            user.id = sysuser.id
-            user.nome = sysuser.us_nome
-            user.email = sysuser.us_email
-            user.usuario = sysuser.us_usuario
-            user.senha = sysuser.us_senha
-            user.grupo = sysuser.us_grupo
-            user.ativo = sysuser.us_ativo
-            user.delete = sysuser.us_delete
+            user = Usuario(id=sysuser.id, nome=sysuser.us_nome, email=sysuser.us_email, usuario=sysuser.us_usuario,
+                          senha=sysuser.us_senha, complex=sysuser.us_complex, grupo=sysuser.us_grupo, ativo=sysuser.us_ativo,
+                          delete=sysuser.us_delete)
             lisUsuarios.append(user)
 
         return lisUsuarios
@@ -49,16 +43,9 @@ class ManterUsuarioDao:
         """
 
         sysuser = SysUser.query.get(id)
-        usuario = Usuario()
-        usuario.id = sysuser.id
-        usuario.nome = sysuser.us_nome
-        usuario.email = sysuser.us_email
-        usuario.usuario = sysuser.us_usuario
-        usuario.senha = sysuser.us_senha
-        usuario.complex = sysuser.us_complex
-        usuario.grupo = sysuser.us_grupo
-        usuario.ativo = sysuser.us_ativo
-        usuario.delete = sysuser.us_delete
+        usuario = Usuario(id=sysuser.id, nome=sysuser.us_nome, email=sysuser.us_email, usuario=sysuser.us_usuario,
+                          senha=sysuser.us_senha, complex=sysuser.us_complex, grupo=sysuser.us_grupo, ativo=sysuser.us_ativo,
+                          delete=sysuser.us_delete)
         
         return usuario
     

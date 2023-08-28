@@ -34,14 +34,9 @@ class ManterFuncionarioDao:
 
         if id != None:
             func = CDA007.query.get(id)
-            funcionario = Funcionario()
-            funcionario.id = id
-            funcionario.cracha = func.fu_cracha
-            funcionario.nome = func.fu_nome
-            funcionario.gerente = func.fu_gerente
-            funcionario.maquina = func.fu_maquina
-            funcionario.ativo = func.fu_ativo
-            funcionario.delete = func.fu_delete
+            funcionario = Funcionario(id=id, cracha=func.fu_cracha, nome=func.fu_nome, gerente=func.fu_gerente,
+                                      maquina=func.fu_maquina, ativo=func.fu_ativo, delete=func.fu_delete)
+            
             return funcionario
         else:
             return Funcionario()
@@ -57,14 +52,8 @@ class ManterFuncionarioDao:
         """
 
         func = CDA007.query.filter(CDA007.fu_cracha==cracha).first()
-        funcionario = Funcionario()
-        funcionario.id = func.id_funcionarios
-        funcionario.cracha = func.fu_cracha
-        funcionario.nome = func.fu_nome
-        funcionario.gerente = func.fu_gerente
-        funcionario.maquina = func.fu_maquina
-        funcionario.ativo = func.fu_ativo
-        funcionario.delete = func.fu_delete
+        funcionario = Funcionario(id=func.id_funcionario, cracha=func.fu_cracha, nome=func.fu_nome, gerente=func.fu_gerente,
+                                      maquina=func.fu_maquina, ativo=func.fu_ativo, delete=func.fu_delete)
 
         return funcionario
     

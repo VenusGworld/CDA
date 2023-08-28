@@ -129,12 +129,9 @@ class ControleConsultarLogUser:
         manterUsuarioDao = ManterUsuarioDao()
         respDao = consultaLogDao.consultaLogsUserDetalhado(id)
         
-        logUser = Log()
-        logUser.id = respDao.id_logUsua
-        logUser.dataHora = respDao.lus_dataHora
-        logUser.acao = respDao.lus_acao
+        usuario = manterUsuarioDao.consultarUsuarioDetalhado(respDao.lus_idUsua)
+        logUser = Log(id=respDao.id_logUsua, dataHora=respDao.lus_dataHora, acao=respDao.lus_acao, usuario=usuario)
         logUser.converteDictDadosAntigos(respDao.lus_dadosAntigos)
         logUser.converteDictDadosNovos(respDao.lus_dadosNovos)
-        logUser.usuario = manterUsuarioDao.consultarUsuarioDetalhado(respDao.lus_idUsua)
 
         return logUser

@@ -84,16 +84,11 @@ class ControleManterTerceiro:
         """
 
         manterTerceiroDao = ManterTerceiroDao()
-        self.terceiroNovo = Terceiro()
         consultaIds = ConsultaIdsDao()
         self.usuarioLogado = Usuario()
 
-        self.terceiroNovo.codigo = codigo
-        self.terceiroNovo.nome = nome
         cpf = ''.join(filter(str.isdigit, cpf))
-        self.terceiroNovo.cpf = cpf
-        self.terceiroNovo.ativo = False
-        self.terceiroNovo.delete = False
+        self.terceiroNovo = Terceiro(codigo=codigo, nome=nome, cpf=cpf, ativo=False, delete=False)
 
         #Verifica se o usuário que efetuou a acão é do grupo ADM
         if session["grupo"] == "ADM":
@@ -124,17 +119,12 @@ class ControleManterTerceiro:
         manterTerceiroDao = ManterTerceiroDao()
         consultaIds = ConsultaIdsDao()
         self.usuarioLogado = Usuario()
-        self.terceiroNovo = Terceiro()
         self.terceiroAntigo = Terceiro()
 
         self.terceiroAntigo = manterTerceiroDao.consultarTerceiroDetalhadoId(id)
 
-        self.terceiroNovo.id = id
-        self.terceiroNovo.codigo = codigo
-        self.terceiroNovo.nome = nome
-        self.terceiroNovo.cpf = ''.join(filter(str.isdigit, cpf))
-        self.terceiroNovo.ativo = False
-        self.terceiroNovo.delete = False
+        cpf = ''.join(filter(str.isdigit, cpf))
+        self.terceiroNovo = Terceiro(id=id, codigo=codigo, nome=nome, cpf=cpf, ativo=False, delete=False)
 
         #Verifica se o usuário que efetuou a acão é do grupo ADM
         if session["grupo"] == "ADM":
@@ -220,11 +210,7 @@ class ControleManterTerceiro:
         :return: Nenhum valor é retornado.
         """
 
-        log = Log()
-        log.acao = acao
-        log.dataHora = datetime.now()
-        log.observacao = observacao
-        log.usuario = self.usuarioLogado
+        log = Log(acao=acao, dataHora=datetime.now(), observacao=observacao, usuario=self.usuarioLogado)
 
         if acao == "INSERT":
             log.dadosAntigos = {"vazio": 0}

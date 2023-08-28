@@ -74,14 +74,7 @@ class ControleMensagem:
         :return: Nenhum valor é retornado.
         """
 
-        log = Log()
-        log.acao = ""
-        log.dataHora = datetime.now()
-        log.observacao = mensagem.upper()
-        log.usuario = self.usuarioLogado
-        log.dadosAntigos = {"vazio": 0}
-        log.dadosNovos = {"vazio": 0}
-
+        log = Log(acao="", dataHora=datetime.now(), observacao=mensagem, usuario=self.usuarioLogado, dadosAntigos={"vazio": 0}, dadosNovos={"vazio": 0})
 
         logDao = GeraLogDao()
         logDao.inserirLogMensagem(log)

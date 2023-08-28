@@ -30,7 +30,7 @@ class ControleManterFuncionario:
         listaFuncionarios = []
         for funcionario in respDao:
             dicFunc ={
-                "id": funcionario.id_funcionarios,
+                "id": funcionario.id_funcionario,
                 "cracha": funcionario.fu_cracha,
                 "nome": funcionario.fu_nome,
                 "maquina": funcionario.fu_maquina,
@@ -69,14 +69,9 @@ class ControleManterFuncionario:
         :return: True se a inclusão for bem-sucedida, False caso contrário.
         """
 
-        self.funcionarioNovo = Funcionario()
+        
         self.usuarioLogado = Usuario()
-        self.funcionarioNovo.cracha = cracha
-        self.funcionarioNovo.nome = nome
-        self.funcionarioNovo.maquina = maquina
-        self.funcionarioNovo.gerente = gerente
-        self.funcionarioNovo.ativo = False
-        self.funcionarioNovo.delete = False
+        self.funcionarioNovo = Funcionario(cracha=cracha, nome=nome, maquina=maquina, gerente=gerente, ativo=False, delete=False)
 
         self.usuarioLogado = Usuario()
 
@@ -105,7 +100,6 @@ class ControleManterFuncionario:
         :return: True se a edição for bem-sucedida, False caso contrário.
         """
 
-        self.funcionarioNovo = Funcionario()
         self.usuarioLogado = Usuario()
         self.funcionarioAntigo = Funcionario()
         manterFuncionarioDao = ManterFuncionarioDao()
@@ -113,13 +107,7 @@ class ControleManterFuncionario:
 
         self.funcionarioAntigo = manterFuncionarioDao.consultarFuncionarioDetalhado(id)
 
-        self.funcionarioNovo.id = id
-        self.funcionarioNovo.cracha = cracha
-        self.funcionarioNovo.nome = nome
-        self.funcionarioNovo.maquina = maquina
-        self.funcionarioNovo.gerente = gerente
-        self.funcionarioNovo.ativo = False
-        self.funcionarioNovo.delete = False
+        self.funcionarioNovo = Funcionario(id=id, cracha=cracha, nome=nome, maquina=maquina, gerente=gerente, ativo=False, delete=False)
 
         if manterFuncionarioDao.editarFuncionario(self.funcionarioNovo):
             self.usuarioLogado.id = consultaIdUser.consultaIdUserLogado(session["usuario"])
@@ -168,11 +156,7 @@ class ControleManterFuncionario:
         :return: Nenhum valor é retornado.
         """
 
-        log = Log()
-        log.acao = acao
-        log.dataHora = datetime.now()
-        log.observacao = ""
-        log.usuario = self.usuarioLogado
+        log = Log(acao=acao, dataHora=datetime.now(), observacao="", usuario=self.usuarioLogado)
 
         if acao == "INSERT":
             log.dadosAntigos = {"vazio": 0}

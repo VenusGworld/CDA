@@ -1,5 +1,6 @@
 from .Funcionario import Funcionario
 from .Terceiro import Terceiro
+from typing import Optional
 
 """
 Classe Movimento de Terceiro
@@ -24,20 +25,22 @@ class MovimentoTerceiro:
     acomps: list[Terceiro]
 
 
-    def __init__(self) -> None:
-        self._id = None
-        self._terceiro = None
-        self._dataEnt = None
-        self._horaEnt = None
-        self._placa = None
-        self._veiculo = None
-        self._motivo = None
-        self._empresa = None
-        self._dataSai = None
-        self._horaSai = None
-        self._pessoaVisit = None
-        self._delete = None
-        self._acomps = None
+    def __init__(self, id: Optional[int]=None, terceiro: Optional[Terceiro]=None, dataEnt: Optional[str]=None, horaEnt: Optional[str]=None,
+                 placa: Optional[str]=None, veiculo: Optional[str]=None, motivo: Optional[str]=None, empresa: Optional[str]=None, dataSai: Optional[str]=None,
+                 horaSai: Optional[str]=None, pessoaVisit: Optional[Funcionario]=None, delete: Optional[bool]=None, acomps: Optional[list[dict]]=None) -> None:
+        self._id = id
+        self._terceiro = terceiro
+        self._dataEnt = dataEnt
+        self._horaEnt = horaEnt
+        self._placa = placa
+        self._veiculo = veiculo
+        self._motivo = motivo
+        self._empresa = empresa
+        self._dataSai = dataSai
+        self._horaSai = horaSai
+        self._pessoaVisit = pessoaVisit
+        self._delete = delete
+        self._acomps = acomps
 
     @property
     def id(self) -> int:

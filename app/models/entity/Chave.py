@@ -1,3 +1,4 @@
+from typing import Optional
 
 """
 Classe Chave
@@ -13,12 +14,13 @@ class Chave:
     ativo: bool
     delete: bool
 
-    def __init__(self) -> None:
-        self._id = None
-        self._codigo = None
-        self._nome = None
-        self._ativo = None
-        self._delete = None
+    def __init__(self, id: Optional[int]=None, codigo: Optional[str]=None, nome: Optional[str]=None, 
+                 ativo: Optional[bool]=None, delete: Optional[bool]=None) -> None:
+        self._id = id
+        self._codigo = codigo
+        self._nome = nome
+        self._ativo = ativo
+        self._delete = delete
 
     @property
     def id(self) -> int:

@@ -52,7 +52,7 @@ class ControleGerenteDao:
         :return: Uma lista de registros de entrada de gerentes em andamento.
         """
         movimentos = DB.session.query(CDA003.id_movGere, CDA003.mge_dataEntra, CDA003.mge_horaEntra, CDA007.fu_nome.label("nomeGer"))\
-            .join(CDA007, CDA007.id_funcionarios==CDA003.mge_idFunc)\
+            .join(CDA007, CDA007.id_funcionario==CDA003.mge_idFunc)\
                 .filter(CDA003.mge_dataSaid==None, CDA003.mge_horaSaid==None, CDA003.mge_delete!=True)
         
         return movimentos
@@ -68,13 +68,8 @@ class ControleGerenteDao:
         """
         mov = CDA003.query.filter(CDA003.id_movGere==id).first()
 
-        movimento = MovimentoGerente()
-        movimento.id = mov.id_movGere
-        movimento.dataEnt = mov.mge_dataEntra
-        movimento.horaEnt = mov.mge_horaEntra
-        movimento.dataSai = mov.mge_dataSaid
-        movimento.horaSai = mov.mge_horaSaid
-        movimento.delete = mov.mge_delete
+        movimento = MovimentoGerente(id=mov.id_movGere, dataEnt=mov.mge_dataEntra, horaEnt=mov.mge_horaEntra, 
+                                     dataSai=mov.mge_dataSaid, horaSai=mov.mge_horaSaid, delete=mov.mge_delete)
 
         return movimento
     
@@ -101,7 +96,7 @@ class ControleGerenteDao:
         """
         
         movimentos = DB.session.query(CDA003.id_movGere, CDA003.mge_dataEntra, CDA003.mge_horaEntra, CDA003.mge_dataSaid, CDA003.mge_horaSaid, CDA007.fu_nome.label("nomeGer"))\
-            .join(CDA007, CDA007.id_funcionarios==CDA003.mge_idFunc)\
+            .join(CDA007, CDA007.id_funcionario==CDA003.mge_idFunc)\
                 .filter(CDA003.mge_dataSaid!=None, CDA003.mge_horaSaid!=None,CDA003.mge_delete!=True)
         
         return movimentos

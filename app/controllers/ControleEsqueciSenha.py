@@ -25,10 +25,8 @@ class ControleEsqueciSenha:
                 - 3: Falha na verificação das informações do usuário.
         """
 
-        user = Usuario()
+        user = Usuario(usuario=usuario, email=email)
         esqueciSenhaDao = EsqueciSenhaDao()
-        user.usuario = usuario
-        user.email = email
         respDao = esqueciSenhaDao.verificaUsuario(user)
         #Verifica se o usuário existe
         if respDao != 0:
@@ -87,10 +85,8 @@ class ControleEsqueciSenha:
         :param hash: O hash associado à redefinição de senha.
         """
         
-        user = Usuario()
+        user = Usuario(hashSenhaNova="", senhaNova=False)
         user.gerarSenha(senha)
-        user.hashSenhaNova= ""
-        user.senhaNova = False
 
         esqueciSenhaDao = EsqueciSenhaDao()
         esqueciSenhaDao.trocaSenha(hash, user)

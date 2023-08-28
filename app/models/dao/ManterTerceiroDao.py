@@ -35,13 +35,8 @@ class ManterTerceiroDao:
 
         terceiro = CDA009.query.filter(CDA009.te_cpf==cpf, CDA009.te_delete!=True, CDA009.te_ativo!=True).first()
 
-        terceiroMov = Terceiro()
-        terceiroMov.id = terceiro.id_terceiro
-        terceiroMov.codigo = terceiro.te_codigo
-        terceiroMov.nome = terceiro.te_nome
-        terceiroMov.cpf = terceiro.te_cpf
-        terceiroMov.ativo = terceiro.te_ativo
-        terceiroMov.delete = terceiro.te_delete
+        terceiroMov = Terceiro(id=terceiro.id_terceiro, codigo=terceiro.te_codigo, nome=terceiro.te_nome, cpf=terceiro.te_cpf,
+                               ativo=terceiro.te_ativo, delete=terceiro.te_delete)
 
         return terceiroMov
     
@@ -57,13 +52,8 @@ class ManterTerceiroDao:
 
         terceiro = CDA009.query.filter(CDA009.id_terceiro==id, CDA009.te_delete!=True, CDA009.te_ativo!=True).first()
 
-        terceiroMov = Terceiro()
-        terceiroMov.id = terceiro.id_terceiro
-        terceiroMov.codigo = terceiro.te_codigo
-        terceiroMov.nome = terceiro.te_nome
-        terceiroMov.cpf = terceiro.te_cpf
-        terceiroMov.ativo = terceiro.te_ativo
-        terceiroMov.delete = terceiro.te_delete
+        terceiroMov = Terceiro(id=terceiro.id_terceiro, codigo=terceiro.te_codigo, nome=terceiro.te_nome, cpf=terceiro.te_cpf,
+                               ativo=terceiro.te_ativo, delete=terceiro.te_delete)
 
         return terceiroMov
     
@@ -79,13 +69,8 @@ class ManterTerceiroDao:
 
         terceiro = CDA009.query.filter(CDA009.te_codigo==codigo, CDA009.te_delete!=True, CDA009.te_ativo!=True).first()
 
-        terceiroMov = Terceiro()
-        terceiroMov.id = terceiro.id_terceiro
-        terceiroMov.codigo = terceiro.te_codigo
-        terceiroMov.nome = terceiro.te_nome
-        terceiroMov.cpf = terceiro.te_cpf
-        terceiroMov.ativo = terceiro.te_ativo
-        terceiroMov.delete = terceiro.te_delete
+        terceiroMov = Terceiro(id=terceiro.id_terceiro, codigo=terceiro.te_codigo, nome=terceiro.te_nome, cpf=terceiro.te_cpf,
+                               ativo=terceiro.te_ativo, delete=terceiro.te_delete)
 
         return terceiroMov
     

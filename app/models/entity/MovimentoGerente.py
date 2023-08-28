@@ -1,4 +1,5 @@
 from .Funcionario import Funcionario
+from typing import Optional
 
 """
 Classe Movimento Gerente
@@ -16,14 +17,16 @@ class MovimentoGerente:
     horaSai: str
     delete: bool
 
-    def __init__(self) -> None:
-        self._id = None
-        self._dataEnt = None
-        self._horaEnt = None
-        self._gerente = None
-        self._dataSai = None
-        self._horaSai = None
-        self._delete = None
+    def __init__(self, id: Optional[int]=None, dataEnt: Optional[str]=None, horaEnt: Optional[str]=None,
+                 gerente: Optional[Funcionario]=None, dataSai: Optional[str]=None, horaSai: Optional[str]=None,
+                 delete: Optional[bool]=None) -> None:
+        self._id = id
+        self._dataEnt = dataEnt
+        self._horaEnt = horaEnt
+        self._gerente = gerente
+        self._dataSai = dataSai
+        self._horaSai = horaSai
+        self._delete = delete
 
     @property
     def id(self) -> int:

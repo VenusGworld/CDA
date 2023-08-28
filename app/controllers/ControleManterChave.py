@@ -66,14 +66,10 @@ class ControleManterChave:
         """
         
         manterChaveDao = ManterChaveDao()
-        self.chaveNova = Chave()
         consultaIds = ConsultaIdsDao()
         self.usuarioLogado = Usuario()
 
-        self.chaveNova .codigo = codigo
-        self.chaveNova .nome = nome
-        self.chaveNova .ativo = False
-        self.chaveNova .delete = False
+        self.chaveNova = Chave(codigo=codigo, nome=nome, ativo=False, delete=False)
 
         #Verifica se o usuário que efetuou a acão é do grupo ADM
         if session["grupo"] == "ADM":
@@ -103,15 +99,11 @@ class ControleManterChave:
         manterChaveDao = ManterChaveDao()
         consultaIds = ConsultaIdsDao()
         self.usuarioLogado = Usuario()
-        self.chaveNova = Chave()
+        
         self.chaveAntiga = Chave()
         self.chaveAntiga = manterChaveDao.consultarChaveDetalhadaId(id)
         
-        self.chaveNova.id = id
-        self.chaveNova.codigo = codigo
-        self.chaveNova.nome = nome
-        self.chaveNova.ativo = False
-        self.chaveNova.delete = False
+        self.chaveNova = Chave(id=id, codigo=codigo, nome=nome, ativo=False, delete=False)
 
         #Verifica se o usuário que efetuou a acão é do grupo ADM
         if session["grupo"] == "ADM":
@@ -170,7 +162,7 @@ class ControleManterChave:
                 return 1
     
 
-    def incrementaCodigo(self) -> str:
+    def incrementaCodigoChave(self) -> str:
         """
         Incrementa o código da chave com base no último código existente.
 
@@ -199,11 +191,7 @@ class ControleManterChave:
         :return: Nenhum valor é retornado.
         """
 
-        log = Log()
-        log.acao = acao
-        log.dataHora = datetime.now()
-        log.observacao = observacao
-        log.usuario = self.usuarioLogado
+        log = Log(acao=acao, dataHora=datetime.now(), observacao=observacao, usuario=self.usuarioLogado)
 
         if acao == "INSERT":
             log.dadosAntigos = {"vazio": 0}

@@ -41,7 +41,7 @@ class ConsultaIdsDao:
         :return: O ID do último funcionário cadastrado.
         """
 
-        id = DB.session.query(CDA007.id_funcionarios).order_by(CDA007.id_funcionarios.desc()).first()
+        id = DB.session.query(CDA007.id_funcionario).order_by(CDA007.id_funcionario.desc()).first()
         return id[0]
     
 

@@ -62,20 +62,15 @@ class ControleChaveDao:
 
         manterFuncionarioDao = ManterFuncionarioDao()
         manterChaveDao = ManterChaveDao()
-        movimento = CDA002.query.get(id)
+        mov = CDA002.query.get(id)
 
-        mov = MovimentoChave()
-        mov.id = movimento.id_movChave
-        mov.dataRet = movimento.mch_dataRet
-        mov.horaRet = movimento.mch_horaRet
-        mov.respRet = manterFuncionarioDao.consultarFuncionarioDetalhado(movimento.mch_respRet)
-        mov.dataDev = movimento.mch_dataDev
-        mov.horaDev = movimento.mch_horaDev
-        mov.respDev = manterFuncionarioDao.consultarFuncionarioDetalhado(movimento.mch_respDev)
-        mov.delete = movimento.mch_delete
-        mov.chave = manterChaveDao.consultarChaveDetalhadaId(movimento.mch_idChav)
+        movimento = MovimentoChave(id=mov.id_movChave, dataRet=mov.mch_dataRet, horaRet=mov.mch_horaRet, 
+                                   respRet=manterFuncionarioDao.consultarFuncionarioDetalhado(mov.mch_respRet),
+                                   respDev=manterFuncionarioDao.consultarFuncionarioDetalhado(mov.mch_respDev),
+                                   dataDev=mov.mch_dataDev, horaDev=mov.mch_horaDev, delete=mov.mch_delete,
+                                   chave=manterChaveDao.consultarChaveDetalhadaId(mov.mch_idChav))
         
-        return mov
+        return movimento
 
 
     def consultaChavesRetiradas(self) -> CDA002:
@@ -87,7 +82,7 @@ class ControleChaveDao:
 
         chavesRetiradas = DB.session\
             .query(CDA002.id_movChave, CDA002.mch_horaRet, CDA002.mch_dataRet, CDA002.mch_respRet, CDA005.ch_nome.label("nomeChave"), CDA007.fu_nome.label("nomeResp"))\
-            .join(CDA005, CDA005.id_chave == CDA002.mch_idChav).join(CDA007, CDA007.id_funcionarios == CDA002.mch_respRet)\
+            .join(CDA005, CDA005.id_chave == CDA002.mch_idChav).join(CDA007, CDA007.id_funcionario == CDA002.mch_respRet)\
                 .filter(CDA002.mch_dataDev==None, CDA002.mch_horaDev==None, CDA002.mch_delete!=True)
        
         return chavesRetiradas
@@ -102,7 +97,7 @@ class ControleChaveDao:
         
         chavesRetiradas = DB.session\
             .query(CDA002.id_movChave, CDA002.mch_horaRet, CDA002.mch_dataRet, CDA002.mch_respRet, CDA002.mch_dataDev, CDA002.mch_horaDev, CDA005.ch_nome.label("nomeChave"), CDA007.fu_nome.label("nomeResp"))\
-            .join(CDA005, CDA005.id_chave == CDA002.mch_idChav).join(CDA007, CDA007.id_funcionarios == CDA002.mch_respRet)\
+            .join(CDA005, CDA005.id_chave == CDA002.mch_idChav).join(CDA007, CDA007.id_funcionario == CDA002.mch_respRet)\
                 .filter(CDA002.mch_dataDev!=None, CDA002.mch_horaDev!=None, CDA002.mch_delete!=True)
        
         return chavesRetiradas

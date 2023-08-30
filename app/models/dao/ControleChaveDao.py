@@ -40,14 +40,17 @@ class ControleChaveDao:
         
         :return: True se a atualização foi bem-sucedida, False caso contrário.
         """
-        movimentoDev = CDA002.query.get(movimento.id)
-        
-        movimentoDev.mch_dataDev = movimento.dataDev
-        movimentoDev.mch_horaDev = movimento.horaDev
-        movimentoDev.mch_respDev = movimento.respDev.id
-       
 
+        #Campos a serem atualizados
+        campos = {
+            "mch_dataDev": movimento.dataDev,
+            "mch_horaDev": movimento.horaDev,
+            "mch_respDev": movimento.respDev.id
+        }
+
+        CDA002.query.filter(CDA002.id_movChave==movimento.id).update(campos)
         DB.session.commit()
+
         return True
 
     
@@ -129,3 +132,84 @@ class ControleChaveDao:
         movimento = CDA002.query.filter(CDA002.id_movChave==id, CDA002.mch_dataDev==None, CDA002.mch_horaDev==None).first()
 
         return movimento
+    
+
+    def consultaMovimentosRelatIdChave(self, dataDe: str, dataAte: str, idChave: int) -> CDA002:
+        """
+        Consulta os movimentos de uma chave específica que tem a data dentro do range passado.
+
+        :param dataDe: A data início da consulta no formato YYYYMMDD.
+        :param dataAte: A data final da consulta no formato YYYYMMDD.
+        :param idChave: Um ID de uma chave específica para consultar os movimentos.
+
+        :return: Uma lista contendo as informações da cada movimento.
+        """
+
+        movimentos = CDA002.query.filter(CDA002.mch_dataRet>=dataDe, CDA002.mch_dataRet<=dataAte, CDA002.mch_idChav==idChave)\
+            .order_by(CDA002.mch_dataRet)
+
+        return movimentos
+    
+
+    def consultaMovimentosRelatChave(self, dataDe: str, dataAte: str) -> CDA002:
+        """
+        Consulta os movimentos que tem a data dentro do range passado.
+
+        :param dataDe: A data início da consulta no formato YYYYMMDD.
+        :param dataAte: A data final da consulta no formato YYYYMMDD.
+
+        :return: Uma lista contendo as informações da cada movimento.
+        """
+
+        movimentos = CDA002.query.filter(CDA002.mch_dataRet>=dataDe, CDA002.mch_dataRet<=dataAte)\
+            .order_by(CDA002.mch_dataRet)
+
+        return movimentos
+    
+
+    def editarMovimentoChave(self, movimento: MovimentoChave) -> bool:
+        """
+        Altera os dados de um movimento específico.
+
+        :param movimento: Um objeto da classe MovimentoChave contendo as informações para a alteração.
+        
+        :return: True se a edição for bem-sucedida, False caso contrário.
+        """
+
+        #Campos a serem atualizados
+        campos = {
+            "mch_dataRet": movimento.dataRet,
+            "mch_horaRet": movimento.horaRet,
+            "mch_respRet": movimento.respRet.id,
+            "mch_dataDev": movimento.dataDev,
+            "mch_horaDev": movimento.horaDev,
+            "mch_respDev": movimento.respDev.id,
+            "mch_idChav": movimento.chave.id
+        }
+
+        CDA002.query.filter(CDA002.id_movChave==movimento.id).update(campos)
+        DB.session.commit()
+
+        return True
+    
+
+    def excluirMovimentoChave(self, movimento: MovimentoChave) -> bool:
+        """
+        Marca um movimento de chave como excluido no sistema.
+
+        :param id: O ID do movimento de chave a ser excluido.
+
+        :return: True se a inativação for bem-sucedida, False caso contrário.
+        """
+
+        #Campos a serem atualizados
+        campos = {
+            "mch_delete": True
+        }
+
+        CDA002.query.filter(CDA002.id_movChave==movimento.id).update(campos)
+        DB.session.commit()
+
+        return True
+
+

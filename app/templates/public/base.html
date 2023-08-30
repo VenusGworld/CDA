@@ -22,7 +22,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='plugins/jqvmap/jqvmap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='plugins/daterangepicker/daterangepicker.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='plugins/summernote/summernote-bs4.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styleTable.css') }}">
 
@@ -36,14 +35,12 @@
     <script type="text/javascript" src="{{ url_for('static', filename='plugins/jqvmap/maps/jquery.vmap.usa.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='plugins/jquery-knob/jquery.knob.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='plugins/moment/moment.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='plugins/daterangepicker/daterangepicker.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
+    <!-- <script type="text/javascript" src="{{ url_for('static', filename='plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script> -->
     <script type="text/javascript" src="{{ url_for('static', filename='plugins/adminlte/adminlte.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='plugins/adminlte/demo.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='plugins/pagination/table-sortable.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='plugins/grid/gridjs.umd.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='plugins/ag-grid/ag-grid-community.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/public/verificaObservacao.js') }}"></script>
     
     <script>
         $.widget.bridge('uibutton', $.ui.button)
@@ -111,7 +108,6 @@
             {% endblock %}
         </div>
     </div>
-
     <script>
         const zeroFill = n => {
             return ('0' + n).slice(-2);
@@ -126,7 +122,6 @@
             document.getElementById('data-hora').innerHTML = `<span>${hora}</span> <span>${data}</span>`;
         }, 0);
     </script>
-
     {% block script %}
     {% endblock %}
 </body>

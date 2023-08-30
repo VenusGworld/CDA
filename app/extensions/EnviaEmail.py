@@ -1,9 +1,16 @@
-import smtplib
-from email.message import EmailMessage
 from ..models.entity.Usuario import Usuario
+from email.message import EmailMessage
+import smtplib
 import netifaces
 
+
 class EnviaEmail:
+    """
+    Classe para funções relacionadas ao enviar E-mail
+    @author - Fabio
+    @version - 1.0
+    @since - 14/06/2023
+    """
 
     def enviarEmail(self, usuario: Usuario):#Função para enviar E-mail
         try:
@@ -22,6 +29,7 @@ class EnviaEmail:
             <br>
             
             <p><strong>Link:</strong> <a href='http://{self.ipServidor()}:6560/esqueci-senha/{usuario.hashSenhaNova}'>http://{self.ipServidor()}:6560/esqueci-senha/{usuario.hashSenhaNova}</a></p>
+            <p style="color: #FF0000;"><strong>Esse link expira em 2 minutos.</strong></p>
             <br><br>
             
             E-mail enviado automaticamente. Não responder.<br>
@@ -38,6 +46,7 @@ class EnviaEmail:
         
         except:
             return False    
+    
         
     def ipServidor(self):
         interfaces = netifaces.interfaces()

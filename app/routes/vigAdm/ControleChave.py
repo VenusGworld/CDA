@@ -108,8 +108,99 @@ def insertDevolucaoChav():
 @login_required
 def manutencaoChave():
     try:
-        context = {"titulo": "Manutenção retirada e devolução de Chave", "active": "controlChav"}
+        session["loginVig"] = False
+        context = {"titulo": "Manutenção movimento de Chave", "active": "controlChav"}
         return render_template("vigAdm/controleChave/manutencaoChave.html", context=context)
+    except:
+        log = LogErro()
+        tipoExcecao, valorExcecao, tb = sys.exc_info()
+        tracebackInfo = traceback.extract_tb(tb)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
+        abort(500)
+
+
+#Rota para tela de edição dos dados do movimentos de chave
+@controleChaveVigBlue.route('/controle-chave/manutencao-chave/modal-visualizacao-controle-chave/<id>', methods=["GET"])
+@login_required
+def vizualizarMovimentoChave(id):
+    try:
+        controleChave = ControleDeChave()
+        movimento = controleChave.consultaMovimentoDetalhado(id)
+        context = {"titulo": "Manutenção movimento de Chave", "active": "controlChav", "modal": 1, "movimento": movimento}
+        return render_template("vigAdm/controleChave/manutencaoChave.html", context=context)
+    except:
+        log = LogErro()
+        tipoExcecao, valorExcecao, tb = sys.exc_info()
+        tracebackInfo = traceback.extract_tb(tb)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
+        abort(500)
+
+
+#Rota para modal de exibição dos dados da controle de chave
+@controleChaveVigBlue.route('/controle-chave/manutencao-chave/edicao-controle-chave/<id>', methods=["GET"])
+@login_required
+def editarMovimentoChave(id):
+    try:
+        if session["loginVig"] or session["grupo"] == "ADM":
+            controleChave = ControleDeChave()
+            movimento = controleChave.consultaMovimentoDetalhado(id)
+            context = {"titulo": "Edição de Movimento de Chave", "active": "controlChav", "movimento": movimento}
+            return render_template("vigAdm/controleChave/editarmovimentoChave.html", context=context)
+        else:
+            return redirect(url_for('controleChaveVigBlue.controleChave'))
+    except:
+        log = LogErro()
+        tipoExcecao, valorExcecao, tb = sys.exc_info()
+        tracebackInfo = traceback.extract_tb(tb)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
+        abort(500)
+
+
+#Rota para modal de confirmção de exclusão de movimento de chave
+@controleChaveVigBlue.route('/controle-chave/manutencao-chave/edicao-controle-chave', methods=["POST"])
+@login_required
+def editMovimentoChave():
+    try:
+        controleChave = ControleDeChave()
+        controleChave.editarMovimentoChave(request.form["idMov"], request.form["dataRet"], request.form["horaRet"], request.form["crachaRet"],
+                                           request.form["dataDev"], request.form["horaDev"], request.form["crachaDev"], request.form["codigoChave"], request.form["observacaoEditar"].upper().strip())
+        
+        flash("Movimento alterado com sucesso!", "success")
+        return redirect(url_for('controleChaveVigBlue.manutencaoChave'))
+    except:
+        log = LogErro()
+        tipoExcecao, valorExcecao, tb = sys.exc_info()
+        tracebackInfo = traceback.extract_tb(tb)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
+        abort(500)
+
+
+#Rota para modal de exibição dos dados da controle de chave
+@controleChaveVigBlue.route('/controle-chave/manutencao-chave/modal-exlusao-controle-chave/<id>', methods=["GET"])
+@login_required
+def modalExclirMovimentoChave(id):
+    try:
+        controleChave = ControleDeChave()
+        movimento = controleChave.consultaMovimentoDetalhado(id)
+        context = {"titulo": "Manutenção movimento de Chave", "active": "controlChav", "modal": 2, "movimento": movimento}
+        return render_template("vigAdm/controleChave/manutencaoChave.html", context=context)
+    except:
+        log = LogErro()
+        tipoExcecao, valorExcecao, tb = sys.exc_info()
+        tracebackInfo = traceback.extract_tb(tb)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
+        abort(500)
+
+
+#Rota para modal de exibição dos dados da controle de chave
+@controleChaveVigBlue.route('/controle-chave/manutencao-chave/exlusao-controle-chave', methods=["POST"])
+@login_required
+def excluirMovimentoChave():
+    try:
+        controleChave = ControleDeChave()
+        controleChave.excluirMovimentoChave(request.form["idExcluir"], request.form["observacaoExcluir"].upper().strip())
+        flash("Movimento excluido com sucesso!", "success")
+        return redirect(url_for('controleChaveVigBlue.manutencaoChave'))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()

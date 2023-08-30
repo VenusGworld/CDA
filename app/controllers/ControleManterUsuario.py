@@ -96,14 +96,13 @@ class ControleManterUsuario:
         :return: True se a edição for bem-sucedida, False caso contrário.
         """
 
-        self.usuarioNovo = Usuario()
         self.usuarioLogado = Usuario()
         manterUsuarioDao = ManterUsuarioDao()
         consultaIdUser = ConsultaIdsDao()    
 
         self.usuarioAntigo = manterUsuarioDao.consultarUsuarioDetalhado(id)
 
-        self.usuarioAntigo = Usuario(id=id, nome=nome, email=email, usuario=user, grupo=grupo,
+        self.usuarioNovo = Usuario(id=id, nome=nome, email=email, usuario=user, grupo=grupo,
                                      senha=senha, ativo=False, delete=False, complex=self.usuarioAntigo.complex)
 
         #Verifica se a senha teve alteração, se teve é gerada novo hash da senha nova

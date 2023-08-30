@@ -1,0 +1,103 @@
+{% extends "public/base.html" %}
+{% block content %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleUsuarios.css') }}">
+{% endblock %}
+{% include "public/header.html" %}
+<section class="content">
+    <div class="container-fluid p-2">
+        <div id="alert" class="alert alert-danger alert-dismissible d-flex align-items-center none" role="alert">
+            <i class="fa-solid fa-circle-exclamation icon-size"></i>
+            <div>
+                <h6 class="msg-alert"></h6>
+            </div>
+        </div>
+        <form class="container-fluid" action="{% if session.grupo != 'ADM' %}{{ url_for('controleChaveVigBlue.editMovimentoChave') }}{% else %}{{ url_for('controleChaveAdmBlue.editMovimentoChave') }}{% endif %}" onsubmit="return verificaDataEObservacao(dataRet, horaRet, dataDev, horaDev, observacaoEditar)" method="POST">
+            <div class="container-fluid">
+                <div class="row mb-1">
+                    <div class="d-none">
+                        <input type="text" name="idMov" id="idMov" class="form-control upper"
+                            value="{{ context.movimento.id }}">
+                        <input type="text" name="codigoChave" id="codigoChave" class="form-control upper"
+                            value="{{ context.movimento.chave.codigo }}">
+                        <input type="text" name="crachaRet" id="crachaRet" class="form-control upper"
+                            value="{{ context.movimento.respRet.cracha }}">
+                        <input type="text" name="crachaDev" id="crachaDev" class="form-control upper"
+                            value="{{ context.movimento.respDev.cracha }}">
+                    </div>
+                    <div class="col">
+                        <label for="recipient-name" class="col-form-label">Chave:</label>
+                        <input type="text" name="chave" id="chave" class="form-control upper"
+                            value="{{ context.movimento.chave.nome }}" readonly>
+                    </div>
+                </div>
+                <div class="row mb-1">
+                    <div class="col">
+                        <label for="recipient-name" class="col-form-label">Data Retirada:</label>
+                        <input type="date" name="dataRet" id="dataRet" class="form-control"
+                            value="{{ context.movimento.dataRet | dataInput }}">
+                    </div>
+                    <div class="col">
+                        <label for="recipient-name" class="col-form-label">Hora Retirada:</label>
+                        <input type="time" name="horaRet" id="horaRet" class="form-control"
+                            value="{{ context.movimento.horaRet }}">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <label for="recipient-name" class="col-form-label">Responsável Retirada:</label>
+                        <input type="text" name="respRet" id="respRet" class="form-control upper"
+                            value="{{ context.movimento.respRet.nome }}" readonly>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="recipient-name" class="col-form-label">Data Devolução:</label>
+                        <input type="date" name="dataDev" id="dataDev" class="form-control"
+                            value="{{ context.movimento.dataDev | dataInput }}">
+                    </div>
+                    <div class="col">
+                        <label for="recipient-name" class="col-form-label">Hora Devolução:</label>
+                        <input type="time" name="horaDev" id="horaDev" class="form-control"
+                            value="{{ context.movimento.horaDev }}">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <label for="recipient-name" class="col-form-label">Responsável Devolução:</label>
+                        <input type="text" name="respDev" id="respDev" class="form-control upper"
+                            value="{{ context.movimento.respDev.nome }}" readonly>
+                    </div>
+                </div>
+                {% if session.grupo != 'ADM' %}
+                    <div class="row mb-5">
+                        <span class="obs-alert">* Observação deve ser preenchida</span>
+                        <div class="col">
+                            <label for="">Observação:</label>
+                            <textarea class="form-control upper" id="observacaoEditar" name="observacaoEditar" rows="3" cols="50" maxlength="120"></textarea>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="row d-none mb-5">
+                        <div class="col">
+                            <label for="">Observação:</label>
+                            <textarea class="form-control upper" id="observacaoEditar" name="observacaoEditar" rows="3" cols="50" maxlength="120"></textarea>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="btns mb-3">
+                {% if session.grupo != 'ADM' %}
+                    <a href="{{url_for('controleChaveVigBlue.manutencaoChave')}}" class="btn btn-outline-danger" type="button" name="btnCancelar" id="btnCancelar" tabindex="10">Cancelar</a>
+                {% else %}
+                    <a href="{{url_for('controleChaveAdmBlue.manutencaoChave')}}" class="btn btn-outline-danger" type="button" name="btnCancelar" id="btnCancelar" tabindex="10">Cancelar</a>
+                {% endif %}
+                <input type="submit" class="btn btn-outline-success" id="btnGravar" value="Editar" tabindex="9">
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}
+{% block script %}
+<script src="{{ url_for('static', filename='js/controleChave/funcoes.js') }}"></script>
+{% endblock %}

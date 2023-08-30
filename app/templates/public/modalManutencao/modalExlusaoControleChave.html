@@ -6,9 +6,9 @@
                     <h5 class="modal-title" id="exampleModalLabel">Aviso</h5>
                 </div>
                 {% if session.grupo != 'ADM' %}
-                    <form action="{{url_for('terceiroVigBlue.deleteTerceiro')}}" method="POST" onsubmit="return verificaObservacao(observacaoExcluir)">
+                    <form action="{{url_for('controleChaveVigBlue.excluirMovimentoChave')}}" method="POST" onsubmit="return verificaObservacao(observacaoExcluir)">
                 {% else %}
-                    <form action="{{url_for('terceiroAdmBlue.deleteTerceiro')}}" method="POST">
+                    <form action="{{url_for('controleChaveAdmBlue.excluirMovimentoChave')}}" method="POST">
                 {% endif %}
                         <div class="modal-body">
                             <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -29,9 +29,9 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <span class="msg-obs">Deseja realmente excluir o(a) terceiro(a) {{ context.terceiro.nome }} ?</span>
+                                <span class="msg-obs">Deseja realmente excluir a retirada/devolução da chave {{ context.movimento.chave.nome }} ?</span>
                             </div>
-                            <input type="text" name="idExcluir" id="idExcluir" value="{{ context.terceiro.id }}" style="display: none;">
+                            <input class="d-none" type="text" name="idExcluir" id="idExcluir" value="{{ context.movimento.id }}">
                             {% if session.grupo != 'ADM' %}
                                 <div class="row">
                                     <span class="obs-alert">* Observação deve ser preenchida</span>
@@ -41,7 +41,7 @@
                                     </div>
                                 </div>
                             {% else %}
-                                <div class="row" style="display: none;">
+                                <div class="row d-none">
                                     <div class="col">
                                         <label for="">Observação:</label>
                                         <textarea class="form-control" id="observacaoExcluir" name="observacaoExcluir" rows="3" cols="50" maxlength="120"></textarea>
@@ -51,9 +51,9 @@
                         </div>
                         <div class="modal-footer justify-content-between">
                             {% if session.grupo != 'ADM' %}
-                                <a href="{{url_for('terceiroVigBlue.listaTerceiros')}}" class="btn btn-outline-primary">Cancelar</a>
+                                <a href="{{url_for('controleChaveVigBlue.manutencaoChave')}}" class="btn btn-outline-primary">Cancelar</a>
                             {% else %}
-                                <a href="{{url_for('terceiroAdmBlue.listaTerceiros')}}" class="btn btn-outline-primary">Cancelar</a>
+                                <a href="{{url_for('controleChaveAdmBlue.manutencaoChave')}}" class="btn btn-outline-primary">Cancelar</a>
                             {% endif %}
                             <button type="submit" class="btn btn-outline-danger">Excluir</button>
                         </div>

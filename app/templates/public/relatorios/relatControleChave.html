@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CDA | Relatório Controle Chave</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleRelatorio.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='plugins/bootstrap/css/bootstrap.min.css') }}">
+</head>
+<body>
+    <header>
+        <div class="hearder">
+            <div class="img">
+                
+            </div>
+            <div class="titulo">
+                <label for="">Controle de Chaves</label>
+                de {{ context.de | dataLimite }} até {{ context.ate | dataLimite }}
+            </div>
+            <div class="hora">
+                <label for="">15:06</label>
+                28/08/2023
+            </div>
+        </div>
+    </header>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Retirada</th>
+                <th>Responsavel Ret.</th>
+                <th>Devolução</th>
+                <th>Responsavel Dev.</th>
+                <th>Chave</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for movimento in context.movimentos %}
+                <tr>
+                    <td>{{ movimento.dataRet | dataLimite }} {{ movimento.horaRet }}</td>
+                    <td>{{ movimento.respRet.nome }}</td>
+                    <td>{{ movimento.dataDev | dataLimite }} {{ movimento.horaDev }}</td>
+                    <td>{{ movimento.respRet.nome }}</td>
+                    <td>{{ movimento.chave.nome }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

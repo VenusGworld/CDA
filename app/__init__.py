@@ -1,10 +1,9 @@
-from flask import Flask
-from .configurations import Database
-from .configurations import Auth
+from .configurations.Scheduler import Scheduler
 from .configurations import Configuration
 from .configurations import Blueprint
-#from .configurations.Scheduler import Scheduler
-from flask_sock import Sock
+from .configurations import Database
+from .configurations import Auth
+from flask import Flask
 
 
 def create_app():

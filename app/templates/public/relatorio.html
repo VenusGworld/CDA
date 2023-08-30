@@ -1,0 +1,167 @@
+{% extends "public/base.html" %}
+{% block content %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styleUsuarios.css') }}">
+{% endblock %}
+{% include "public/header.html" %}
+<section class="content">
+    <div class="container-fluid p-0">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#controlChav" type="button"
+                    role="tab" aria-controls="controlChav" aria-selected="true">Controle de Chaves</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#controlTerc" type="button"
+                    role="tab" aria-controls="controlTerc" aria-selected="false">Controle de Terceiros</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#ControlGer" type="button"
+                    role="tab" aria-controls="ControlGer" aria-selected="false">Controle de Gerentes</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="controlChav" role="tabpanel" aria-labelledby="controlChav">
+                <div class="tabela p-3 m-2">
+                    <label for="">Parâmetros para o Controle de Chaves</label>
+                    <div class="container-fluid">
+                        <form action="{{url_for('relatorioBlue.relatorioControleChaves')}}" method="POST" target="_blank">
+                            <div class="row mb-2">
+                                <div class="col-3">
+                                    <label for="">De:</label>
+                                    <input type="date" id="deControlChave" name="deControlChave" class="form-control">
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-3">
+                                    <label for="">Até:</label>
+                                    <input type="date" id="ateControlChave" name="ateControlChave" class="form-control">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <label for="">Chave:</label>
+                                    <input type="text" id="chave" name="chave" class="form-control upper">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <button type="submit" class="btn btn-outline-success">Gerar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="controlTerc" role="tabpanel" aria-labelledby="controlTerc">
+                <div class="tabela p-3 m-2">
+                    <label for="">Parâmetros para o Controle de Terceiros</label>
+                    <div class="container">
+                        <div class="row mb-2">
+                            <div class="col-3">
+                                <label for="">De:</label>
+                                <input type="date" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-3">
+                                <label for="">Até:</label>
+                                <input type="date" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <label for="">Terceiro:</label>
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <button>Gerar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="ControlGer" role="tabpanel" aria-labelledby="ControlGer">
+                <div class="tabela p-3 m-2">
+                    <label for="">Parâmetros para o Controle de Gerentes</label>
+                    <div class="container">
+                        <div class="row mb-2">
+                            <div class="col-3">
+                                <label for="">De:</label>
+                                <input type="date" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-3">
+                                <label for="">Até:</label>
+                                <input type="date" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <label for="">Gerente:</label>
+                                <input type="text" id="gerente" name="gerente" class="form-control upper">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <button>Gerar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+{% block script %}
+<script>
+    $("#chave").keyup(function(){
+        var nomeChave = this.value
+        if (nomeChave.length > 2){
+            
+            var chaves=[]
+            function carregaChaves(){
+                $.getJSON(`/chave-pesquisa/${nomeChave}`, function(data, status, xhr){
+                    for (var i = 0; i < data.length; i++){
+                        chaves.push(data[i].chave)
+                    }
+                });
+            }
+            carregaChaves();
+
+            $("#chave").autocomplete({
+                source: chaves,
+            });
+
+            $(".ui-helper-hidden-accessible").css("display", "none")
+        }
+    })
+</script>
+<script>
+    $("#gerente").keyup(function(){
+        var nomeGer = this.value
+        if (nomeGer.length >= 2){
+            
+            var gerentes=[]
+            function carregaGerentes(){
+                $.getJSON(`/gerente-pesquisa/${nomeGer}`, function(data, status, xhr){
+                    for (var i = 0; i < data.length; i++){
+                        gerentes.push(data[i].gerente)
+                    }
+                });
+            }
+            carregaGerentes();
+
+            $("#gerente").autocomplete({
+                source: gerentes,
+            });
+
+            $(".ui-helper-hidden-accessible").css("display", "none")
+        }
+    })
+</script>
+{% endblock %}

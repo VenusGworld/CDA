@@ -9,7 +9,7 @@
             <input type="text" class="urlDest" id="urlDest" style="display: none;">
             <input type="text" class="acao" id="acao" style="display: none;">
             <input type="text" class="idModalLogin" id="idModalLogin" style="display: none;">
-            <div class="alert" id="alert-modal-login" style="display: none; margin-left: 1rem; margin-right: 1rem; margin-top: 1rem;" role="alert">
+            <div class="alert" id="alert-modal-login" style="display: none; margin-left: 0.5rem; margin-right: 0.5rem; margin-top: 0.5rem;" role="alert">
             </div>
             <div class="modal-body">
                 <div class="container">
@@ -73,11 +73,10 @@
                     window.location = dest
                 },
                 error: function(data, status){
-                    var h6 = data.responseJSON.msg;
                     $("#alert-modal-login").prop("style").removeProperty("opacity");
                     $("#alert-modal-login").empty();
                     $("#alert-modal-login").removeClass();
-                    $("#alert-modal-login").append(h6);
+                    $("#alert-modal-login").append(`<i class="fa-solid fa-circle-exclamation icon-size"></i> <h6 class="msg-alert">${data.responseJSON.msg}</h6>`);
                     $("#alert-modal-login").addClass("alert alert-danger alert-dismissible fade show");
                     $("#alert-modal-login").show();
                     window.setTimeout(() => {

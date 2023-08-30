@@ -70,3 +70,53 @@ function verificaChavRespDev(){
     }
 
 }
+
+
+function verificaDataEObservacao(dtRet, hrRet, dtDev, hrDev, obs){
+    let dataRet = new Date(dtRet.value);
+    let dataDev = new Date(dtDev.value);
+    let horaRet = hrRet.value;
+    let horaDev = hrDev.value;
+    var div = document.getElementById("alert");
+    var msg = document.querySelector(".msg-alert");
+
+    if ( obs.value.length < 15){
+        div.classList.remove('none');
+        msg.innerHTML = "";
+        msg.innerHTML = "<h6 class='msg-alert'>Observação precisa ter mais que 15 caracteres.!</h6>";
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+          });
+        setTimeout(() =>{
+            div.classList.add('none');
+        }, 6000);
+        return false
+    } else if ( dataDev.getTime() < dataRet.getTime()){
+        div.classList.remove('none');
+        msg.innerHTML = "";
+        msg.innerHTML = "<h6 class='msg-alert'>Data de devolução menor que a data de retirada!</h6>";
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+          });
+        setTimeout(() =>{
+            div.classList.add('none');
+        }, 6000);
+        return false
+    } else if (dataDev.getTime() === dataRet.getTime() && horaDev < horaRet ){
+        div.classList.remove('none');
+        msg.innerHTML = "";
+        msg.innerHTML = "<h6 class='msg-alert'>Hora de devolução menor que a hora de retirada!</h6>";
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+          });
+        setTimeout(() =>{
+            div.classList.add('none');
+        }, 6000);
+        return false
+    } else{
+        return true
+    }
+}

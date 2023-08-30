@@ -13,7 +13,7 @@ mensagemAdmBlue = Blueprint("mensagemAdmBlue", __name__)
 # Rotas relacionadas ao enviar mensagem
 ##############################################################
 
-#Rota para a tela de Enviar Mensagem
+#Rota para a tela de enviar mensagem
 @mensagemAdmBlue.route('/mensagem/enviar-mensagem', methods=["GET"])
 @login_required
 def enviarMensagem():
@@ -37,7 +37,7 @@ def sendMensagem():
     try:
         data = request.get_json()
         controleMensagem = ControleMensagem()
-        controleMensagem.enviarMesagem(data["mensagem"], data["destinos"])
+        controleMensagem.enviarMesagem(data["mensagem"].upper(), data["destinos"])
         resp = Response(response=json.dumps({"secsses": True}), status=200, mimetype="application/json")
         return resp
     except:

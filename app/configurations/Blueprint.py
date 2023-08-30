@@ -22,6 +22,9 @@ def rotasMain(app):
     from ..routes.public.Erros import errosBlue
     app.register_blueprint(errosBlue)
 
+    from ..routes.public.Relatorio import relatorioBlue
+    app.register_blueprint(relatorioBlue)
+
     from .FunctionShell import functionShellBlue
     app.register_blueprint(functionShellBlue)
 

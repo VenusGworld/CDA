@@ -63,7 +63,7 @@
                 </ul>
             </li>
             <li class="nav-item">
-                <a href="/dashboard" class="nav-link">
+                <a href="{{url_for('relatorioBlue.relatorio')}}" class="nav-link {% if context.active == 'relat' %}active{% endif %}">
                     <i class="fa-solid fa-newspaper icon-space"></i>
                     <p class="font-p">
                         Relatórios

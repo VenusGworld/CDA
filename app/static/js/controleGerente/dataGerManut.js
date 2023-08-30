@@ -19,7 +19,6 @@ $.ajax({
             entrada: resp.data[x].entrada,
             saida: resp.data[x].saida,
             acoes: gridjs.html(`<div style="width: 100%;display: flex;align-items: center;text-align: center;justify-content: space-evenly;">
-            <a href="/admin/controle-chave/incluir-devolucao/" class="btn btn-primary btn-sm"><i class="fa-regular fa-eye"></i></a>
             <a href="/admin/controle-chave/incluir-devolucao/" class="btn btn-warning btn-sm"><i class="fa-regular fa-pen-to-square"></i></a>
             <a href="/admin/controle-chave/incluir-devolucao/" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash-can"></i></a>
             </div>`)

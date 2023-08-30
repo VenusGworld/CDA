@@ -1,0 +1,62 @@
+@page {
+    size: A4 landscape;
+}
+
+.hearder{
+    background-color: rgb(175, 175, 175);
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 5rem;
+}
+
+.titulo{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+}
+
+.hora{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+}
+
+#icon{
+    width: 4.3rem;
+    padding: 15px;
+}
+
+
+@media print {
+    .hearder{
+        background-color: rgb(175, 175, 175);
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 5rem;
+    }
+    
+    .titulo{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 15px;
+    }
+    
+    .hora{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 15px;
+    }
+    
+    #icon{
+        width: 4.3rem;
+        padding: 15px;
+    }
+}

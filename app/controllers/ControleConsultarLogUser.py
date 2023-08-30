@@ -116,7 +116,7 @@ class ControleConsultarLogUser:
         return listaLogs  
         
         
-    def consultaLogUsertDetelhado(self, id: int):
+    def consultaLogUsertDetelhado(self, id: int) -> Log:
         """
         Consulta e retorna detalhes de um registro de log de usuário específico.
 

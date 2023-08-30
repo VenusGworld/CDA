@@ -27,6 +27,7 @@ class ControleDeChave:
         :param horaRet: Hora da retirada da chave no formato 'HH:MM'.
         :param codChave: Código da chave a ser retirada.
         :param crachaFun: Crachá do funcionário que está retirando a chave.
+
         :return: True se a inserção for bem-sucedida, False caso contrário.
         """
         
@@ -83,7 +84,68 @@ class ControleDeChave:
             self.geraLogControleChave("DEVOLUCAO", "")
             
         return True
+    
+
+    def editarMovimentoChave(self, id: int, dataRet: str, horaRet: str, crachaRet: str, dataDev: str, horaDev: str, crachaDev: str, codigoChave: str, observacao: str) -> bool:
+        """
+        Altera um movimento de chave específico
+
+        :param id: O ID do registro de movimento de chave a ser alterado.
+        :param dataRet: Data da devolução da chave no formato 'YYYY-MM-DD'.
+        :param horaRet: Hora da devolução da chave no formato 'HH:MM'.
+        :param crachaRet: Crachá do responsável pela retirada da chave.
+        :param dataDev: Data da devolução da chave no formato 'YYYY-MM-DD'.
+        :param horaDev: Hora da devolução da chave no formato 'HH:MM'.
+        :param crachaDev: Crachá do responsável pela devolução da chave.
+        :param codigoChave: Chave que pertence ao movimento.
+
+        :return: True se a edição for bem-sucedida, False caso contrário.
+        """
         
+        controleChaveDao = ControleChaveDao()
+        self.usuarioLogado = Usuario()
+        manterFuncionarioDao = ManterFuncionarioDao()
+        manterChaveDao = ManterChaveDao()
+
+        respRet = manterFuncionarioDao.consultarFuncionarioDetalhadoCracha(crachaRet)
+        respDev = manterFuncionarioDao.consultarFuncionarioDetalhadoCracha(crachaDev)
+        chave = manterChaveDao.consultarChaveDetalhadaCodigo(codigoChave)
+
+        self.movimentoChaveNovo = MovimentoChave(id=id, dataRet=dataRet.replace("-", ""), horaRet=horaRet, respRet=respRet, 
+                                                 dataDev=dataDev.replace("-", ""), horaDev=horaDev, respDev=respDev, chave=chave)
+        
+        self.movimentoChaveAntigo = controleChaveDao.consultaMovimentoChaveDetalhado(id)
+
+        controleChaveDao.editarMovimentoChave(self.movimentoChaveNovo)
+
+        consultaIds = ConsultaIdsDao()
+        if session["grupo"] == "ADM":
+            self.usuarioLogado.id = consultaIds.consultaIdUserLogado(session["usuario"])
+        else:
+            self.usuarioLogado.id = consultaIds.consultaIdUserLogado(session["usuarioVIG"])
+
+        self.geraLogControleChave("UPDATE", observacao)
+
+        return True
+    
+
+    def excluirMovimentoChave(self, id: int, observacao: str) -> bool:
+        controleChaveDao = ControleChaveDao()
+        self.usuarioLogado = Usuario()
+        self.movimentoChaveAntigo = controleChaveDao.consultaMovimentoChaveDetalhado(id)
+
+        controleChaveDao.excluirMovimentoChave(self.movimentoChaveAntigo)
+
+        consultaIds = ConsultaIdsDao()
+        if session["grupo"] == "ADM":
+            self.usuarioLogado.id = consultaIds.consultaIdUserLogado(session["usuario"])
+        else:
+            self.usuarioLogado.id = consultaIds.consultaIdUserLogado(session["usuarioVIG"])
+
+        self.geraLogControleChave("DELETE", observacao)
+
+        return True
+
 
     def consultaMovimentoDetalhado(self, id: int) -> MovimentoChave:
         """
@@ -93,6 +155,7 @@ class ControleDeChave:
 
         :return: Um objeto MovimentoChave contendo detalhes do registro de movimento de chave.
         """
+
         controleChaveDao = ControleChaveDao()
         return controleChaveDao.consultaMovimentoChaveDetalhado(id)
 
@@ -135,7 +198,7 @@ class ControleDeChave:
         for movimento in respDao:
             dicChave ={
                 "id": movimento.id_movChave,
-                "nome": movimento.nomeChave,
+                "nome": filtroNome(movimento.nomeChave),
                 "retirada": f"{filtroData(movimento.mch_dataRet)} {movimento.mch_horaRet}",
                 "devolucao": f"{filtroData(movimento.mch_dataDev)} {movimento.mch_horaDev}",
                 "respRet": filtroNome(movimento.nomeResp)          

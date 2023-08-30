@@ -1,0 +1,50 @@
+<section class="modal-alert">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Dados movimentação de Chave</h5>
+            </div>
+            <div class="alert" id="alert-modal"
+                style="display: none; margin-left: 1rem; margin-right: 1rem; margin-top: 1rem;" role="alert">
+            </div>
+            <div class="modal-body overflow-scroll">
+                <div class="container">
+                    <div class="row mb-1">
+                        <div class="col">
+                            <label for="recipient-name" class="col-form-label">Chave:</label>
+                            <input type="text" name="gerente" id="gerente" class="form-control upper"
+                                value="{{ context.movimento.chave.nome }}" readonly>
+                        </div>
+                    </div>
+                    <div class="row mb-1">
+                        <div class="col">
+                            <label for="recipient-name" class="col-form-label">Retirada:</label>
+                            <input type="text" name="dataEnt" id="dataEnt" class="form-control"
+                                value="{{ context.movimento.dataRet | dataLimite }} {{ context.movimento.horaRet }}" readonly>
+                        </div>
+                        <div class="col">
+                            <label for="recipient-name" class="col-form-label">Responsável Retirada:</label>
+                            <input type="text" name="horaEnt" id="horaEnt" class="form-control"
+                                value="{{ context.movimento.respRet.nome }}" readonly>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="recipient-name" class="col-form-label">Devolução:</label>
+                            <input type="text" name="dataSai" id="dataSai" class="form-control"
+                                value="{{ context.movimento.dataDev | dataLimite }} {{ context.movimento.horaDev }}" readonly>
+                        </div>
+                        <div class="col">
+                            <label for="recipient-name" class="col-form-label">Responsável Devolução:</label>
+                            <input type="text" name="dataSai" id="dataSai" class="form-control"
+                                value="{{ context.movimento.respDev.nome }}" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <a href="javascript:history.back()" class="btn btn-outline-danger">Voltar</a>
+            </div>
+        </div>
+    </div>
+</section>

@@ -37,11 +37,15 @@ class ControleGerenteDao:
         :return: True se a atualização for bem-sucedida, False caso contrário.
         """
 
-        mov = CDA003.query.get(movimento.id)
-        mov.mge_dataSaid = movimento.dataSai
-        mov.mge_horaSaid = movimento.horaSai
+        #Campos a serem atualizados
+        campos = {
+            "mge_dataSaid": movimento.dataSai,
+            "mge_horaSaid": movimento.horaSai
+        }
 
+        CDA003.query.filter(CDA003.id_movGere==movimento.id).update(campos)
         DB.session.commit()
+
         return True
     
 
@@ -58,6 +62,49 @@ class ControleGerenteDao:
         return movimentos
     
 
+    def editarMovimentoGerente(self, movimento: MovimentoGerente) -> bool:
+        """
+        Altera os dados de um movimento de gerente específico.
+
+        :param movimento: Um objeto da classe MovimentoGerente contendo as informações para a alteração.
+        
+        :return: True se a edição for bem-sucedida, False caso contrário.
+        """
+
+        #Campos a serem atualizados
+        campos = {
+            "mge_dataEntra": movimento.dataEnt,
+            "mge_horaEntra": movimento.horaEnt,
+            "mge_dataSaid": movimento.dataSai,
+            "mge_horaSaid": movimento.horaSai
+        }
+
+        CDA003.query.filter(CDA003.id_movGere==movimento.id).update(campos)
+        DB.session.commit()
+
+        return True
+    
+
+    def excluirMovimentoGerente(self, movimento: MovimentoGerente) -> bool:
+        """
+        Marca um movimento de gerente como excluido no sistema.
+
+        :param movimento: Um objeto da classe MovimentoGerente contando o ID do movimento de gerente a ser excluido.
+
+        :return: True se a inativação for bem-sucedida, False caso contrário.
+        """
+
+        #Campos a serem atualizados
+        campos = {
+            "mge_delete": True
+        }
+
+        CDA003.query.filter(CDA003.id_movGere==movimento.id).update(campos)
+        DB.session.commit()
+
+        return True
+    
+
     def consultaMovimentoDetalhado(self, id: int) -> MovimentoGerente:
         """
         Consulta os detalhes de um registro de movimento de gerente na base de dados.
@@ -66,6 +113,7 @@ class ControleGerenteDao:
 
         :return: Um objeto contendo os detalhes do movimento de gerente.
         """
+
         mov = CDA003.query.filter(CDA003.id_movGere==id).first()
 
         movimento = MovimentoGerente(id=mov.id_movGere, dataEnt=mov.mge_dataEntra, horaEnt=mov.mge_horaEntra, 

@@ -1,0 +1,156 @@
+{% extends "public/base.html" %}
+{% block content %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleUsuarios.css') }}">
+{% endblock %}
+{% include "public/header.html" %}
+<section class="content">
+    <div class="container-fluid p-2" id="container-edit">
+        <div id="alert" class="alert alert-danger alert-dismissible d-flex align-items-center none" role="alert">
+            <i class="fa-solid fa-circle-exclamation icon-size"></i>
+            <div>
+                <h6 class="msg-alert"></h6>
+            </div>
+        </div>
+        {% if session.grupo != 'ADM' %}
+            <form class="container-fluid" action="{{ url_for('controleTercVigBlue.editMovimentoTerceiro') }}" onsubmit="return verificaDataEObservacao(dataEnt, horaEnt, dataSai, horaSai, observacaoEditar)" method="POST">
+        {% else %}
+            <form class="container-fluid" action="{{ url_for('controleTercAdmBlue.editMovimentoTerceiro') }}" onsubmit="return verificaData(dataEnt, horaEnt, dataSai, horaSai)" method="POST">
+        {% endif %}
+                <div class="container-fluid">
+                    <input type="text" name="idMov" id="idMov" class="form-control upper d-none" value="{{ context.movimento.id }}" readonly>
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="recipient-name" class="col-form-label">CPF:</label>
+                            <input type="text" name="cpfTerc" id="cpfTerc" class="form-control upper"
+                                value="{{ context.movimento.terceiro.cpf | cpf}}" readonly>
+                        </div>
+                        <div class="col">
+                            <label for="recipient-name" class="col-form-label">Terceiro:</label>
+                            <input type="text" name="terceiro" id="terceiro" class="form-control upper"
+                                value="{{ context.movimento.terceiro.nome }}" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="recipient-name" class="col-form-label">Empresa:</label>
+                            <input type="text" name="empresa" id="empresa" class="form-control"
+                                value="{{ context.movimento.empresa }}" readonly>
+                        </div>
+                        <div class="col">
+                            <label for="recipient-name" class="col-form-label">Veículo:</label>
+                            <input type="text" name="veiculo" id="veiculo" class="form-control"
+                                value="{{ context.movimento.veiculo }}" readonly>
+                        </div>
+                        <div class="col">
+                            <label for="recipient-name" class="col-form-label">Placa:</label>
+                            <input type="text" name="placa" id="placa" class="form-control"
+                                value="{{ context.movimento.placa }}" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="recipient-name" class="col-form-label">Motivo:</label>
+                            <input type="text" name="motivo" id="motivo" class="form-control"
+                                value="{{ context.movimento.motivo }}" readonly>
+                        </div>
+                        <div class="col">
+                            <label for="recipient-name" class="col-form-label">Pessoa Visitada:</label>
+                            <input type="text" name="crachaPessoaVisit" id="crachaPessoaVisit" class="d-none" value="{{ context.movimento.pessoaVisit.cracha }}" readonly>
+                            <input type="text" name="pessoaVisit" id="pessoaVisit" class="form-control"
+                                value="{{ context.movimento.pessoaVisit.nome }}" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="recipient-name" class="col-form-label">Data Entrada:</label>
+                            <input type="date" data-bs="ENT" name="dataEnt" id="dataEnt" class="form-control"
+                                value="{{ context.movimento.dataEnt | dataInput }}">
+                        </div>
+                        <div class="col">
+                            <label for="recipient-name" class="col-form-label">Hora Entrada:</label>
+                            <input type="time" name="horaEnt" id="horaEnt" class="form-control"
+                                value="{{ context.movimento.horaEnt }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="recipient-name" class="col-form-label">Data Saída:</label>
+                            <input type="date" name="dataSai" id="dataSai" class="form-control"
+                                value="{{ context.movimento.dataSai | dataInput }}">
+                        </div>
+                        <div class="col">
+                            <label for="recipient-name" class="col-form-label">Hora Saída:</label>
+                            <input type="time" name="horaSai" id="horaSai" class="form-control"
+                                value="{{ context.movimento.horaSai }}">
+                        </div>
+                    </div>
+                    {% if context.movimento.acomps | length > 0 %}
+                        <div class="row" id="check">
+                            <div class="col">
+                                <label for="recipient-name" class="col-form-label">Mostrar acompanhantes?</label>
+                                <input type="checkbox" value="False" name="checkResp"  id="checkResp" onclick="ativaAcompanhantes(this)">
+                            </div>
+                        </div>
+                        <div class="row" id="inputResp" style="display: none;">
+                            {% for acompanhante in context.movimento.acomps %}
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label for="respDev" class="col-form-label">CPF:</label>
+                                        <input type="text" name="cpfAcomp" id="cpfAcomp" class="form-control upper" value="{{ acompanhante.cpf | cpf }}" readonly>
+                                    </div>
+                                    <div class="col">
+                                        <label for="respDev" class="col-form-label">Nome:</label>
+                                        <input type="text" name="respDev" id="respDev" class="form-control upper" value="{{ acompanhante.nome }}" readonly>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {% if session.grupo != 'ADM' %}
+                        <div class="row mt-3">
+                            <span class="obs-alert">* Observação deve ser preenchida</span>
+                            <div class="col">
+                                <label for="">Observação:</label>
+                                <textarea class="form-control upper" id="observacaoEditar" name="observacaoEditar" rows="3" cols="50" maxlength="120"></textarea>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="row d-none mt-3">
+                            <div class="col">
+                                <label for="">Observação:</label>
+                                <textarea class="form-control upper" id="observacaoEditar" name="observacaoEditar" rows="3" cols="50" maxlength="120"></textarea>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="btns mb-3 mt-5">
+                    {% if session.grupo != 'ADM' %}
+                        <a href="{{url_for('controleTercVigBlue.manutencaoTerceiro')}}" class="btn btn-outline-danger" type="button" name="btnCancelar" id="btnCancelar" tabindex="10">Cancelar</a>
+                    {% else %}
+                        <a href="{{url_for('controleTercAdmBlue.manutencaoTerceiro')}}" class="btn btn-outline-danger" type="button" name="btnCancelar" id="btnCancelar" tabindex="10">Cancelar</a>
+                    {% endif %}
+                    <input type="submit" class="btn btn-outline-success" id="btnGravar" value="Editar" tabindex="9">
+                </div>
+        </form>
+    </div>
+</section>
+{% endblock %}
+{% block script %}
+<script>
+    function ativaAcompanhantes(radio){
+        var input = document.getElementById("inputResp");
+        var div = document.getElementById("container-edit");
+
+        if (radio.checked) {
+            radio.value = "True";
+            div.style.overflowY = "auto";
+            input.style.display = "block";
+        }else{
+            radio.value = "False";
+            div.style.overflowY = "hidden";
+            input.style.display = "none";
+        }
+    }
+</script>
+{% endblock %}

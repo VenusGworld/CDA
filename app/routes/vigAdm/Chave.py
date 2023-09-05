@@ -131,13 +131,12 @@ def deleteChave():
         respControle = controleManterChave.excluirChave(int(request.form["idExcluir"]), request.form["observacaoExcluir"].upper().strip())
         if respControle == 1:
             flash("Chave excluida com sucesso!", "success")
-            return redirect(url_for("chaveVigBlue.listaChaves"))
         elif respControle == 2:
             flash("Chave possue movimentação no sistema, então foi desativada", "success")
-            return redirect(url_for("chaveVigBlue.listaChaves"))
         else:
             flash("Chave não pode ser excluida pois existe movimento em aberto", "danger")
-            return redirect(url_for("chaveVigBlue.listaChaves"))
+        
+        return redirect(url_for("chaveVigBlue.listaChaves"))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()

@@ -74,8 +74,79 @@ class ControleDeGerente:
             else:
                 self.usuarioLogado.id = consultaIds.consultaIdUserLogado(session["usuarioVIG"])
 
-            self.movimentoGerNovo.id = consultaIds.consultaIdFinalMovGer()
             self.geraLogControleGerente("SAIDA", "")
+
+        return True
+    
+
+    def editarMovimentoGerente(self, id: int, crachaGerente: str, dataEnt: str, horaEnt: str, dataSai: str, horaSai: str, observacao: str) -> bool:
+        """
+        Altera um movimento de gerente específico
+
+        :param id: O ID do registro de movimento de chave a ser alterado.
+        :param dataEnt: Data da devolução da chave no formato 'YYYY-MM-DD'.
+        :param horaEnt: Hora da devolução da chave no formato 'HH:MM'.
+        :param dataSai: Data da devolução da chave no formato 'YYYY-MM-DD'.
+        :param horaSai: Hora da devolução da chave no formato 'HH:MM'.
+        :param crachaGerente: Crachá do responsável pela devolução da chave.
+        :param observacao: A observação relacionada à edição do movimento de gerente (obrigatorio para usuários do grupo VIG).
+
+        :return: True se a edição for bem-sucedida, False caso contrário.
+        """
+
+        controleGerenteDao = ControleGerenteDao()
+        manterFuncionarioDao = ManterFuncionarioDao()
+        consultaIds = ConsultaIdsDao()
+        self.usuarioLogado = Usuario()
+
+        gerente = manterFuncionarioDao.consultarFuncionarioDetalhadoCracha(crachaGerente)
+        self.movimentoGerAntigo = controleGerenteDao.consultaMovimentoDetalhado(id)
+        self.movimentoGerAntigo.gerente = gerente
+
+        self.movimentoGerNovo = MovimentoGerente(id=id, dataEnt=dataEnt.replace("-", ""), horaEnt=horaEnt, dataSai=dataSai.replace("-", ""), horaSai=horaSai, gerente=gerente)
+
+        controleGerenteDao.editarMovimentoGerente(self.movimentoGerNovo)
+
+        #Verifica se o usuário que está logo é do grupo de ADMIN
+        if session["grupo"] == "ADM":
+            self.usuarioLogado.id = consultaIds.consultaIdUserLogado(session["usuario"])
+        else:
+            self.usuarioLogado.id = consultaIds.consultaIdUserLogado(session["usuarioVIG"])
+
+        self.geraLogControleGerente("UPDATE", observacao)
+
+        return True
+
+
+    def excluirMovimentoGerente(self, id: int, crachaGer: str, observacao: str) -> bool:
+        """
+        Exclui um movimento de gerente especifíco.
+
+        :param id: O ID do registro de movimento de gerente a ser alterado.
+        :param crachaGer: O crachá do gerente.
+        :param observacao: A observação relacionada à exclusão do movimento de gerente (obrigatorio para usuários do grupo VIG).
+
+        :return: True se a edição for bem-sucedida, False caso contrário.
+        """
+
+        controleGerenteDao = ControleGerenteDao()
+        manterFuncionarioDao = ManterFuncionarioDao()
+        self.usuarioLogado = Usuario()
+        consultaIds = ConsultaIdsDao()
+
+        gerente = manterFuncionarioDao.consultarFuncionarioDetalhadoCracha(crachaGer)
+        self.movimentoGerAntigo = controleGerenteDao.consultaMovimentoDetalhado(id)
+        self.movimentoGerAntigo.gerente = gerente
+
+        controleGerenteDao.excluirMovimentoGerente(self.movimentoGerAntigo)
+
+        #Verifica se o usuário que está logo é do grupo de ADMIN
+        if session["grupo"] == "ADM":
+            self.usuarioLogado.id = consultaIds.consultaIdUserLogado(session["usuario"])
+        else:
+            self.usuarioLogado.id = consultaIds.consultaIdUserLogado(session["usuarioVIG"])
+
+        self.geraLogControleGerente("DELETE", observacao)
 
         return True
     

@@ -7,7 +7,7 @@ from ...controllers.ControleManterUsuario import ControleManterUsuario
 from ...controllers.ControleManterChave import ControleManterChave
 from ...controllers.ControleTerceiro import ControleTerceiro
 from ...controllers.ControleGerente import ControleDeGerente
-from ...controllers.ControleDeChave import ControleDeChave
+from ...controllers.ControleChave import ControleChave
 from flask import Blueprint, session, request, Response
 from flask_login import login_required
 import json
@@ -32,7 +32,7 @@ def listaUsuariosAPI():
 @preencheTabelasBlue.route('/lista-chaves-retiradas', methods=["POST"])
 @login_required
 def listaChavesRetAPI():
-    controleChave = ControleDeChave()
+    controleChave = ControleChave()
     respControle = controleChave.listaChavesRetiradas()
     resp = Response(response=json.dumps({"login": session["grupo"], "data": respControle}), status=200, mimetype="application/json")
     return resp
@@ -42,7 +42,7 @@ def listaChavesRetAPI():
 @preencheTabelasBlue.route('/lista-chaves-manutencao', methods=["POST"])
 @login_required
 def listaChavesManutAPI():
-    controleChave = ControleDeChave()
+    controleChave = ControleChave()
     respControle = controleChave.listaChavesManut()
     resp = Response(response=json.dumps({"login": session["grupo"], "data": respControle}), status=200, mimetype="application/json")
     return resp
@@ -153,4 +153,14 @@ def listaLogsMenAPI():
     controleConsultarLogMen = ControleConsultarLogMen()
     respControle = controleConsultarLogMen.consultaLogMen()
     resp = Response(response=json.dumps(respControle), status=200, mimetype="application/json")
+    return resp
+
+
+#Rotapara para preencher a lista de Movimento de Terceiro
+@preencheTabelasBlue.route('/lista-terceiro-manutencao', methods=["POST"])
+@login_required
+def listaTerceiroManutAPI():
+    controleTerceiro = ControleTerceiro()
+    respControle = controleTerceiro.listaTercManut()
+    resp = Response(response=json.dumps({"login": session["grupo"], "data": respControle}), status=200, mimetype="application/json")
     return resp

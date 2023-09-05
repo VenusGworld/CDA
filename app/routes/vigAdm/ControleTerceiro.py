@@ -103,3 +103,114 @@ def insertSaidaTerc():
         tracebackInfo = traceback.extract_tb(tb)
         log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
         abort(500)
+
+
+#Rota para tela de manutenção de movimentação de terceiros
+@controleTercVigBlue.route('/controle-terceiro/manutencao-terceiro', methods=["GET"])
+@login_required
+def manutencaoTerceiro():
+    try:
+        session["loginVig"] = False
+        context = {"titulo": "Manutenção movimento de Terceiro", "active": "controlTerc"}
+        return render_template("vigAdm/controleTerceiro/manutencaoTerceiro.html", context=context)
+    except:
+        log = LogErro()
+        tipoExcecao, valorExcecao, tb = sys.exc_info()
+        tracebackInfo = traceback.extract_tb(tb)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
+        abort(500)
+
+
+#Rota para tela de edição dos dados do movimentos de terceiro
+@controleTercVigBlue.route('/controle-terceiro/manutencao-terceiro/modal-visualizacao-controle-terceiro/<id>', methods=["GET"])
+@login_required
+def vizualizarMovimentoTerceiro(id):
+    try:
+        controleTerceiro = ControleTerceiro()
+        movimento = controleTerceiro.consultaMovTercDetalhado(int(id))
+        context = {"titulo": "Manutenção movimento de Terceiro", "active": "controlTerc", "modal": 1, "movimento": movimento}
+        return render_template("vigAdm/controleTerceiro/manutencaoTerceiro.html", context=context)
+    except:
+        log = LogErro()
+        tipoExcecao, valorExcecao, tb = sys.exc_info()
+        tracebackInfo = traceback.extract_tb(tb)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
+        abort(500)
+
+
+#Rota para tela de edição dos dados do movimentos de terceiro
+@controleTercVigBlue.route('/controle-terceiro/manutencao-terceiro/editar-controle-terceiro/<id>', methods=["GET"])
+@login_required
+def editarMovimentoTerceiro(id):
+    try:
+        if session["loginVig"] or session["grupo"] == "ADM":
+            controleTerceiro = ControleTerceiro()
+            movimento = controleTerceiro.consultaMovTercDetalhado(int(id))
+            context = {"titulo": "Edição de Movimento de Terceiro", "active": "controlTerc", "movimento": movimento}
+            return render_template("vigAdm/controleTerceiro/editarMovimentoTerceiro.html", context=context)
+        else:
+            return redirect(url_for('controleTercVigBlue.manutencaoTerceiro'))
+    except:
+        log = LogErro()
+        tipoExcecao, valorExcecao, tb = sys.exc_info()
+        tracebackInfo = traceback.extract_tb(tb)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
+        abort(500)
+
+
+#Rota para edição de movimento de terceiro
+@controleTercVigBlue.route('/controle-terceiro/manutencao-terceiro/edicao-controle-terceiro', methods=["POST"])
+@login_required
+def editMovimentoTerceiro():
+    try:
+        controleTerceiro = ControleTerceiro()
+        controleTerceiro.editarMovimentoTerceiro(request.form["idMov"], request.form["dataEnt"], request.form["horaEnt"], 
+                                                request.form["dataSai"], request.form["horaSai"], request.form["crachaPessoaVisit"],
+                                                request.form["observacaoEditar"].upper().strip())
+        
+        flash("Movimento alterado com sucesso!", "success")
+        return redirect(url_for('controleTercVigBlue.manutencaoTerceiro'))
+    except:
+        log = LogErro()
+        tipoExcecao, valorExcecao, tb = sys.exc_info()
+        tracebackInfo = traceback.extract_tb(tb)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
+        abort(500)
+
+
+#Rota para modal de confirmação de exclusão do movimento de terceiro
+@controleTercVigBlue.route('/controle-terceiro/manutencao-terceiro/modal-exclusão-controle-terceiro/<id>', methods=["GET"])
+@login_required
+def modalExcluirMovimentoTerceiro(id):
+    try:
+        if session["loginVig"] or session["grupo"] == "ADM":
+            controleTerceiro = ControleTerceiro()
+            movimento = controleTerceiro.consultaMovTercDetalhado(int(id))
+            context = {"titulo": "Manutenção movimento de Terceiro", "active": "controlTerc", "modal": 2, "movimento": movimento}
+            return render_template("vigAdm/controleTerceiro/manutencaoTerceiro.html", context=context)
+        else:
+            return redirect(url_for('controleTercVigBlue.manutencaoTerceiro'))
+    except:
+        log = LogErro()
+        tipoExcecao, valorExcecao, tb = sys.exc_info()
+        tracebackInfo = traceback.extract_tb(tb)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
+        abort(500)
+
+
+
+#Rota para exclusão do movimento de terceiro
+@controleTercVigBlue.route('/controle-terceiro/manutencao-terceiro/exclusão-controle-terceiro', methods=["POST"])
+@login_required
+def excluirMovimentoTerceiro():
+    try:
+        controleTerceiro = ControleTerceiro()
+        controleTerceiro.excluirMovimentoTerceiro(request.form["idExcluir"], request.form["crachaPessoaVisit"], request.form["observacaoExcluir"].upper().strip())
+        flash("Movimento excluido com sucesso!", "success")
+        return redirect(url_for('controleTercVigBlue.manutencaoTerceiro'))
+    except:
+        log = LogErro()
+        tipoExcecao, valorExcecao, tb = sys.exc_info()
+        tracebackInfo = traceback.extract_tb(tb)
+        log.geraLogErro(tipoExcecao, valorExcecao, tracebackInfo, request.url)
+        abort(500)

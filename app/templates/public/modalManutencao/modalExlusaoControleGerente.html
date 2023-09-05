@@ -6,9 +6,9 @@
                     <h5 class="modal-title" id="exampleModalLabel">Aviso</h5>
                 </div>
                 {% if session.grupo != 'ADM' %}
-                    <form action="{{url_for('controleChaveVigBlue.excluirMovimentoChave')}}" method="POST" onsubmit="return verificaObservacao(observacaoExcluir)">
+                    <form action="{{url_for('controleGerVigBlue.exclirMovimentoGerente')}}" method="POST" onsubmit="return verificaObservacao(observacaoExcluir)">
                 {% else %}
-                    <form action="{{url_for('controleChaveAdmBlue.excluirMovimentoChave')}}" method="POST">
+                    <form action="{{url_for('controleGerAdmBlue.exclirMovimentoGerente')}}" method="POST">
                 {% endif %}
                         <div class="modal-body">
                             <div id="alert-excluir" class="alert alert-danger alert-dismissible d-flex align-items-center none" role="alert">
@@ -16,9 +16,10 @@
                                 <h6 class="msg-alert">Observação precisa ter mais que 15 caracteres.</h6>
                             </div>
                             <div class="mb-3">
-                                <span class="msg-obs">Deseja realmente excluir a retirada/devolução da chave {{ context.movimento.chave.nome }} ?</span>
+                                <span class="msg-obs">Deseja realmente excluir a entrada/saída do(a) gerente {{ context.movimento.gerente.nome }} ?</span>
                             </div>
                             <input class="d-none" type="text" name="idExcluir" id="idExcluir" value="{{ context.movimento.id }}">
+                            <input class="d-none" type="text" name="crachaGer" id="crachaGer" value="{{ context.movimento.gerente.cracha }}">
                             {% if session.grupo != 'ADM' %}
                                 <div class="row">
                                     <span class="obs-alert">* Observação deve ser preenchida</span>
@@ -38,9 +39,9 @@
                         </div>
                         <div class="modal-footer justify-content-between">
                             {% if session.grupo != 'ADM' %}
-                                <a href="{{url_for('controleChaveVigBlue.manutencaoChave')}}" class="btn btn-outline-primary">Cancelar</a>
+                                <a href="{{url_for('controleGerVigBlue.manutencaoGerente')}}" class="btn btn-outline-primary">Cancelar</a>
                             {% else %}
-                                <a href="{{url_for('controleChaveAdmBlue.manutencaoChave')}}" class="btn btn-outline-primary">Cancelar</a>
+                                <a href="{{url_for('controleGerAdmlue.manutencaoGerente')}}" class="btn btn-outline-primary">Cancelar</a>
                             {% endif %}
                             <button type="submit" class="btn btn-outline-danger">Excluir</button>
                         </div>

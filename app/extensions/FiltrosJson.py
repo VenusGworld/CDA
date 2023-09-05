@@ -22,6 +22,10 @@ def filtroMensagem(mensagem):
     return mensagem[:20]
 
 
+def filtroMotivo(motivo):
+    return motivo[:10]
+
+
 def filtroCpf(cpf):
     if len(cpf) < 11:
         cpf = "--"

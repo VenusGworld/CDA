@@ -122,3 +122,61 @@ class ControleTerceiroDao:
         movimento = CDA004.query.filter(CDA004.id_movTerc==id, CDA004.mte_dataSaid==None, CDA004.mte_horaSaid==None).first()
 
         return movimento
+    
+
+    def listaTercManut(self) -> CDA004:
+        """
+        Consulta os registros de movimento de terceiros com entrada e saída (completos) para manutenções.
+
+        :return: Uma consulta que retorna os registros de movimento de terceiros para a manutenção.
+        """
+        
+        movimentos = DB.session\
+            .query(CDA004.id_movTerc, CDA004.mte_dataEntra, CDA004.mte_horaEntra, CDA004.mte_dataSaid, CDA004.mte_horaSaid, CDA004.mte_motivo, CDA004.mte_empresa, CDA007.fu_nome.label("nomeFunc"))\
+                .join(CDA007, CDA007.id_funcionario == CDA004.mte_idFunc)\
+                    .filter(CDA004.mte_dataSaid!=None, CDA004.mte_horaSaid!=None, CDA004.mte_delete!=True)
+        
+        return movimentos
+    
+
+    def editarMovimentoTerceiro(self, movimento: MovimentoTerceiro) -> bool:
+        """
+        Altera os dados de um movimento de terceiro específico.
+
+        :param movimento: Um objeto da classe MovimentoTerceiro contendo as informações para a alteração.
+        
+        :return: True se a edição for bem-sucedida, False caso contrário.
+        """
+
+        #Campos a serem atualizados
+        campos = {
+            "mte_dataEntra": movimento.dataEnt,
+            "mte_horaEntra": movimento.horaEnt,
+            "mte_dataSaid": movimento.dataSai,
+            "mte_horaSaid": movimento.horaSai
+        }
+
+        CDA004.query.filter(CDA004.id_movTerc==movimento.id).update(campos)
+        DB.session.commit()
+
+        return True
+    
+
+    def excluirMovimentoTerceiro(self, movimento: MovimentoTerceiro) -> bool:
+        """
+        Marca um movimento de terceiro como excluido no sistema.
+
+        :param movimento: Um objeto da classe MovimentoTerceiro contando o ID do movimento de terceiro a ser excluido.
+
+        :return: True se a inativação for bem-sucedida, False caso contrário.
+        """
+
+        #Campos a serem atualizados
+        campos = {
+            "mte_delete": True
+        }
+
+        CDA004.query.filter(CDA004.id_movTerc==movimento.id).update(campos)
+        DB.session.commit()
+
+        return True

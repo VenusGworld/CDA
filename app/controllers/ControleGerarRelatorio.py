@@ -34,7 +34,6 @@ class ControleGerarRelatorio:
         else:
             movimentos = controleChaveDao.consultaMovimentosRelatChave(dataDe.replace("-", ""), dataAte.replace("-", ""))
 
-
         listaMovimentos = []
         for movimento in movimentos:
             chave = manterChaveDao.consultarChaveDetalhadaId(movimento.mch_idChav)

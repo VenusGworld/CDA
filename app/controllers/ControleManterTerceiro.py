@@ -1,4 +1,4 @@
-from ..models.dao.VerificamovimentoDao import VerificaMovimentoDao
+from ..models.dao.VerificaMovimentoDao import VerificaMovimentoDao
 from ..models.dao.ControleTerceiroDao import ControleTerceiroDao
 from ..models.dao.ManterTerceiroDao import ManterTerceiroDao
 from ..models.dao.ConsultaIdsDao import ConsultaIdsDao

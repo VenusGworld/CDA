@@ -12,7 +12,11 @@
                 <h6 class="msg-alert"></h6>
             </div>
         </div>
-        <form class="container-fluid" action="{% if session.grupo != 'ADM' %}{{ url_for('controleChaveVigBlue.editMovimentoChave') }}{% else %}{{ url_for('controleChaveAdmBlue.editMovimentoChave') }}{% endif %}" onsubmit="return verificaDataEObservacao(dataRet, horaRet, dataDev, horaDev, observacaoEditar)" method="POST">
+        {% if session.grupo != 'ADM' %}
+            <form class="container-fluid" action="{{ url_for('controleChaveVigBlue.editMovimentoChave') }}" onsubmit="return verificaDataEObservacao(dataRet, horaRet, dataDev, horaDev, observacaoEditar)" method="POST">
+        {% else %}
+            <form class="container-fluid" action="{{ url_for('controleChaveAdmBlue.editMovimentoChave') }}" onsubmit="return verificaData(dataRet, horaRet, dataDev, horaDev)" method="POST">
+        {% endif %}
             <div class="container-fluid">
                 <div class="row mb-1">
                     <div class="d-none">
@@ -34,7 +38,7 @@
                 <div class="row mb-1">
                     <div class="col">
                         <label for="recipient-name" class="col-form-label">Data Retirada:</label>
-                        <input type="date" name="dataRet" id="dataRet" class="form-control"
+                        <input type="date" data-bs="RET" name="dataRet" id="dataRet" class="form-control"
                             value="{{ context.movimento.dataRet | dataInput }}">
                     </div>
                     <div class="col">

@@ -72,7 +72,7 @@
                         <div class="row" id="check">
                             <div class="col mb-1">
                                 <label for="recipient-name" class="col-form-label">Mostrar acompanhantes?</label>
-                                <input type="checkbox" value="False" name="checkResp"  id="checkResp" onclick="ativaResponsavel(this)">
+                                <input type="checkbox" value="False" name="checkResp"  id="checkResp" onclick="ativaAcompanhantes(this)">
                             </div>
                         </div>
                         <div class="row" id="inputResp" style="display: none;">
@@ -105,7 +105,7 @@
 </section>
 {% block script %}
 <script>
-    function ativaResponsavel(radio){
+    function ativaAcompanhantes(radio){
         var input = document.getElementById("inputResp");
         var modal = document.getElementById("modal-terc");
 

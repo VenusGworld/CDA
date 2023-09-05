@@ -7,7 +7,7 @@
 {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
         {% for category, message in messages %}
-            <script>
+             <script>
                 window.setTimeout(function() {
                     $("#alert-list").fadeTo(500, 0).slideUp(500, function(){
                         $(this).remove(); 
@@ -29,45 +29,30 @@
 {% endwith %}
 {% include "public/modal/modalLogin.html" %}
 {% if context.modal == 1 %}
-    {% include "public/modal/modalSaidaGerente.html" %}   
+    {% include "public/modalManutencao/modalVizuControleTerceiro.html" %}
+{% elif context.modal == 2 %}
+    {% include "public/modalManutencao/modalExlusaoControleTerceiro.html" %}
 {% endif %}
 <section class="content">
     <div class="container-fluid p-0">
-        <div class="d-flex justify-content-between p-1 mb-3">
-            <div class="botao">
-                {% if session.grupo != 'ADM' %}
-                    <a href="{{url_for('controleGerVigBlue.manutencaoGerente')}}" class="btn btn-outline-secondary">Manutenção</a>
-                {% else %}
-                    <a href="{{url_for('controleGerAdmBlue.manutencaoGerente')}}" class="btn btn-outline-secondary">Manutenção</a>
-                {% endif %}
-            </div>
-            <div class="botao">
-                {% if session.grupo != 'ADM' %}
-                    <a data-bs-toggle="modal" data-bs-target="#modalLogin" data-bs-acao="INCLUIR_RET_CHAVE" data-bs-toggle="modal" data-bs-id="" data-bs-url="/vig/controle-gerente/incluir-entrada" class="btn btn-outline-success">Incluir</a>
-                {% else %} 
-                    <a href="{{url_for('controleGerAdmBlue.incluirEntradaGer')}}" class="btn btn-outline-success">Incluir</a>
-                {% endif %}
-            </div>
-        </div>
         <div class="tabela p-3">
-            <div id="lista-entrada-terceiros"></div>
+            <div id="lista-terceiro-manut"></div>
         </div>
     </div>
 </section>
 {% block script %}
-<script src="{{ url_for('static', filename='js/controleGerente/dataGerEntrada.js') }}"></script>
-<script src="{{ url_for('static', filename='js/controleGerente/funcoes.js') }}"></script>
+<script src="{{ url_for('static', filename='js/ControleTerceiro/dataTerceiroManut.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/login/funcaoLogin.js') }}"></script>
 <script>
     new gridjs.Grid({
-        columns: colunasGerEntrada,
-        data: dadosGerEntrada,
+        columns: colunasTerceiroManut,
+        data: dadosTerceiroManut,
         search: true,
         sort: true,
         paginationAutoPageSize: true,
         pagination: true,
         suppressPaginationPanel: true
-    }).render(document.getElementById("lista-entrada-terceiros"));
+    }).render(document.getElementById("lista-terceiro-manut"));
 </script>
 {% endblock %}
 {% endblock %}

@@ -11,7 +11,7 @@ from ..models.entity.Log import Log
 from datetime import datetime
 from flask import session
 
-class ControleDeChave:
+class ControleChave:
     """
     Classe Controller para as funções relacionadas ao controle de chaves
     @author - Fabio
@@ -98,6 +98,7 @@ class ControleDeChave:
         :param horaDev: Hora da devolução da chave no formato 'HH:MM'.
         :param crachaDev: Crachá do responsável pela devolução da chave.
         :param codigoChave: Chave que pertence ao movimento.
+        :param observacao: A observação relacionada à edição do movimento de chave (obrigatorio para usuários do grupo VIG).
 
         :return: True se a edição for bem-sucedida, False caso contrário.
         """
@@ -130,6 +131,15 @@ class ControleDeChave:
     
 
     def excluirMovimentoChave(self, id: int, observacao: str) -> bool:
+        """
+        Exclui um movimento de chave especifíco.
+
+        :param id: O ID do registro de movimento de chave a ser alterado.
+        :param observacao: A observação relacionada à exclusão do movimento de chave (obrigatorio para usuários do grupo VIG).
+
+        :return: True se a edição for bem-sucedida, False caso contrário.
+        """
+
         controleChaveDao = ControleChaveDao()
         self.usuarioLogado = Usuario()
         self.movimentoChaveAntigo = controleChaveDao.consultaMovimentoChaveDetalhado(id)

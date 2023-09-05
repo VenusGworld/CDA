@@ -1,4 +1,4 @@
-from ..models.dao.VerificamovimentoDao import VerificaMovimentoDao
+from ..models.dao.VerificaMovimentoDao import VerificaMovimentoDao
 from ..models.dao.ControleChaveDao import ControleChaveDao
 from ..models.dao.ManterChaveDao import ManterChaveDao
 from ..models.dao.ConsultaIdsDao import ConsultaIdsDao

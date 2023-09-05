@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, request, Response, session, url_for, abort, flash
-from ...controllers.ControleDeChave import ControleDeChave
+from ...controllers.ControleChave import ControleChave
 from ...extensions.LogErro import LogErro
 from flask_login import login_required
 from datetime import datetime
@@ -51,7 +51,7 @@ def incluirRetiradaChav():
 @login_required
 def insertRetiradaChav():
     try:
-        controleChave = ControleDeChave()
+        controleChave = ControleChave()
         if controleChave.inserirRetirada(request.form["dtRet"], request.form["hrRet"], request.form["chave"], request.form["responsavel"]):
             flash("Retirada incluida com sucesso!", "success")
             return redirect(url_for("controleChaveVigBlue.controleChave"))
@@ -69,7 +69,7 @@ def insertRetiradaChav():
 def incluirDevolucaoChav(id):
     try:
         if session["loginVig"] or session["grupo"] == "ADM":
-            controleChave = ControleDeChave()
+            controleChave = ControleChave()
             movimento = controleChave.consultaMovimentoDetalhado(id)
             data = datetime.now()
             context = {"active": "controlChav", "modal": 1, "movimento": movimento, "dataAtual": data}
@@ -90,7 +90,7 @@ def incluirDevolucaoChav(id):
 def insertDevolucaoChav():
     try:
         data = request.get_json()
-        controleChave = ControleDeChave()
+        controleChave = ControleChave()
         controleChave.inserirDevolucao(data["idMov"], data["dataDev"], data["horaDev"], data["respDev"], data["check"])
         flash("Devolução incluida com sucesso!", "success")
         resp = Response(response=json.dumps({"success": True}), status=200, mimetype="application/json")
@@ -124,7 +124,7 @@ def manutencaoChave():
 @login_required
 def vizualizarMovimentoChave(id):
     try:
-        controleChave = ControleDeChave()
+        controleChave = ControleChave()
         movimento = controleChave.consultaMovimentoDetalhado(id)
         context = {"titulo": "Manutenção movimento de Chave", "active": "controlChav", "modal": 1, "movimento": movimento}
         return render_template("vigAdm/controleChave/manutencaoChave.html", context=context)
@@ -142,7 +142,7 @@ def vizualizarMovimentoChave(id):
 def editarMovimentoChave(id):
     try:
         if session["loginVig"] or session["grupo"] == "ADM":
-            controleChave = ControleDeChave()
+            controleChave = ControleChave()
             movimento = controleChave.consultaMovimentoDetalhado(id)
             context = {"titulo": "Edição de Movimento de Chave", "active": "controlChav", "movimento": movimento}
             return render_template("vigAdm/controleChave/editarmovimentoChave.html", context=context)
@@ -161,9 +161,10 @@ def editarMovimentoChave(id):
 @login_required
 def editMovimentoChave():
     try:
-        controleChave = ControleDeChave()
+        controleChave = ControleChave()
         controleChave.editarMovimentoChave(request.form["idMov"], request.form["dataRet"], request.form["horaRet"], request.form["crachaRet"],
-                                           request.form["dataDev"], request.form["horaDev"], request.form["crachaDev"], request.form["codigoChave"], request.form["observacaoEditar"].upper().strip())
+                                           request.form["dataDev"], request.form["horaDev"], request.form["crachaDev"], request.form["codigoChave"], 
+                                           request.form["observacaoEditar"].upper().strip())
         
         flash("Movimento alterado com sucesso!", "success")
         return redirect(url_for('controleChaveVigBlue.manutencaoChave'))
@@ -180,10 +181,13 @@ def editMovimentoChave():
 @login_required
 def modalExclirMovimentoChave(id):
     try:
-        controleChave = ControleDeChave()
-        movimento = controleChave.consultaMovimentoDetalhado(id)
-        context = {"titulo": "Manutenção movimento de Chave", "active": "controlChav", "modal": 2, "movimento": movimento}
-        return render_template("vigAdm/controleChave/manutencaoChave.html", context=context)
+        if session["loginVig"] or session["grupo"] == "ADM":
+            controleChave = ControleChave()
+            movimento = controleChave.consultaMovimentoDetalhado(id)
+            context = {"titulo": "Manutenção movimento de Chave", "active": "controlChav", "modal": 2, "movimento": movimento}
+            return render_template("vigAdm/controleChave/manutencaoChave.html", context=context)
+        else:
+            return redirect(url_for('controleChaveVigBlue.controleChave'))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
@@ -197,7 +201,7 @@ def modalExclirMovimentoChave(id):
 @login_required
 def excluirMovimentoChave():
     try:
-        controleChave = ControleDeChave()
+        controleChave = ControleChave()
         controleChave.excluirMovimentoChave(request.form["idExcluir"], request.form["observacaoExcluir"].upper().strip())
         flash("Movimento excluido com sucesso!", "success")
         return redirect(url_for('controleChaveVigBlue.manutencaoChave'))

@@ -1,0 +1,109 @@
+<section class="modal-alert">
+    <div class="modal-dialog modal-xl" id="modal-terc">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Dados movimentação de Terceiro</h5>
+            </div>
+            <div class="modal-body overflow-scroll">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="recipient-name" class="col-form-label">CPF:</label>
+                            <input type="text" name="gerente" id="gerente" class="form-control upper"
+                                value="{{ context.movimento.terceiro.cpf | cpf}}" readonly>
+                        </div>
+                        <div class="col">
+                            <label for="recipient-name" class="col-form-label">Terceiro:</label>
+                            <input type="text" name="gerente" id="gerente" class="form-control upper"
+                                value="{{ context.movimento.terceiro.nome }}" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="recipient-name" class="col-form-label">Empresa:</label>
+                            <input type="text" name="dataEnt" id="dataEnt" class="form-control"
+                                value="{{ context.movimento.empresa }}" readonly>
+                        </div>
+                        <div class="col">
+                            <label for="recipient-name" class="col-form-label">Veículo:</label>
+                            <input type="text" name="horaEnt" id="horaEnt" class="form-control"
+                                value="{{ context.movimento.veiculo }}" readonly>
+                        </div>
+                        <div class="col">
+                            <label for="recipient-name" class="col-form-label">Placa:</label>
+                            <input type="text" name="horaEnt" id="horaEnt" class="form-control"
+                                value="{{ context.movimento.placa }}" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="recipient-name" class="col-form-label">Motivo:</label>
+                            <input type="text" name="dataSai" id="dataSai" class="form-control"
+                                value="{{ context.movimento.motivo }}" readonly>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="recipient-name" class="col-form-label">Pessoa Visitada:</label>
+                            <input type="text" name="dataSai" id="dataSai" class="form-control"
+                                value="{{ context.movimento.pessoaVisit.nome }}" readonly>
+                        </div>
+                        <div class="col-3">
+                            <label for="recipient-name" class="col-form-label">Entrada:</label>
+                            <input type="text" name="dataSai" id="dataSai" class="form-control"
+                                value="{{ context.movimento.dataEnt | dataLimite }} {{ context.movimento.horaEnt }}" readonly>
+                        </div>
+                        <div class="col-3">
+                            <label for="recipient-name" class="col-form-label">Saída:</label>
+                            <input type="text" name="dataSai" id="dataSai" class="form-control"
+                                value="{{ context.movimento.dataSai | dataLimite }} {{ context.movimento.horaSai }}" readonly>
+                        </div>
+                    </div>
+                    {% if context.movimento.acomps | length > 0 %}
+                        <div class="row" id="check">
+                            <div class="col mb-1">
+                                <label for="recipient-name" class="col-form-label">Mostrar acompanhantes?</label>
+                                <input type="checkbox" value="False" name="checkResp"  id="checkResp" onclick="ativaAcompanhantes(this)">
+                            </div>
+                        </div>
+                        <div class="row" id="inputResp" style="display: none;">
+                            {% for acompanhante in context.movimento.acomps %}
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label for="respDev" class="col-form-label">CPF:</label>
+                                        <input type="text" name="cpfAcomp" id="cpfAcomp" class="form-control upper" value="{{ acompanhante.cpf | cpf }}" readonly>
+                                    </div>
+                                    <div class="col">
+                                        <label for="respDev" class="col-form-label">Nome:</label>
+                                        <input type="text" name="respDev" id="respDev" class="form-control upper" value="{{ acompanhante.nome }}" readonly>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <a href="javascript:history.back()" class="btn btn-outline-danger">Voltar</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% block script %}
+<script>
+    function ativaAcompanhantes(radio){
+        var input = document.getElementById("inputResp");
+        var modal = document.getElementById("modal-terc");
+
+        if (radio.checked) {
+            radio.value = "True"
+            modal.classList.add("modal-dialog-scrollable")
+            input.style.display = "block";
+        }else{
+            radio.value = "False"
+            modal.classList.remove("modal-dialog-scrollable")
+            input.style.display = "none";
+        }
+    }
+</script>
+{% endblock %}

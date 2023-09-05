@@ -177,6 +177,9 @@ section.modal-form div#card-form div#btns input.btn-primary{
     text-transform: uppercase;
 }
 
+.icon-margin{
+    margin-right: 0.5rem;
+}
 
 @media (max-width: 600px) {
     .card-form{

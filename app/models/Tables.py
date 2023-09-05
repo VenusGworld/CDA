@@ -98,7 +98,7 @@ class CDA001(DB.Model):
 
 #Tabela de Funcionarios
 class CDA007(DB.Model):
-    id_funcionarios = Column(Integer, primary_key=True, nullable=False)
+    id_funcionario = Column(Integer, primary_key=True, nullable=False)
     fu_cracha = Column(String(6), nullable=False)
     fu_nome = Column(String(45), nullable=False)
     fu_maquina = Column(String(20))

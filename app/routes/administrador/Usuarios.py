@@ -102,13 +102,12 @@ def deleteUsuarioAdm(id):
         respControle = controleManterUsuario.excluirUsuario(int(id))
         if respControle == 1:
             flash("Usuário logado não pode ser excluido", "danger")
-            return redirect(url_for("usuarioAdmBlue.listaUsuariosAdm"))
         elif respControle == 2:
             flash("Usuário excluido com sucesso!", "success")
-            return redirect(url_for("usuarioAdmBlue.listaUsuariosAdm"))
         else:
             flash("Usuário possue movimentação no sistema, então foi desativado", "success")
-            return redirect(url_for("usuarioAdmBlue.listaUsuariosAdm"))
+        
+        return redirect(url_for("usuarioAdmBlue.listaUsuariosAdm"))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()

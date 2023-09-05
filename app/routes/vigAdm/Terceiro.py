@@ -131,13 +131,12 @@ def deleteTerceiro():
         respControle = controleManterFuncionario.excluirTerceiro(int(request.form["idExcluir"]), request.form["observacaoExcluir"].upper().strip())
         if respControle == 1:
             flash("Terceiro excluido com sucesso!", "success")
-            return redirect(url_for("terceiroVigBlue.listaTerceiros"))
         elif respControle == 2:
             flash("Terceiro possue movimentação no sistema, então foi desativado", "success")
-            return redirect(url_for("terceiroVigBlue.listaTerceiros"))
         else:
-            flash("Terceiro não pode ser excluido pois existe movimento em aberto", "danger")
-            return redirect(url_for("terceiroVigBlue.listaTerceiros"))
+            flash("Terceiro não pode ser excluido pois existe movimento(s) em aberto", "danger")
+        
+        return redirect(url_for("terceiroVigBlue.listaTerceiros"))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()

@@ -1,9 +1,9 @@
+from ..extensions.FiltrosJson import filtroData, filtroNome, filtroMotivo
 from ..controllers.ControleManterTerceiro import ControleManterTerceiro
 from ..models.dao.ManterFuncionarioDao import ManterFuncionarioDao
 from ..models.dao.ControleTerceiroDao import ControleTerceiroDao
 from ..models.entity.MovimentoTerceiro import MovimentoTerceiro
 from ..models.dao.ManterTerceiroDao import ManterTerceiroDao
-from ..extensions.FiltrosJson import filtroData, filtroNome
 from ..models.dao.ConsultaIdsDao import ConsultaIdsDao
 from ..models.entity.Funcionario import Funcionario
 from ..models.dao.PesquisaDao import PesquisaDao
@@ -38,7 +38,6 @@ class ControleTerceiro:
         :param acomps: Lista de dicionários contendo informações sobre acompanhantes (caso haja).
         """
 
-        
         funcionario = Funcionario()
         self.usuarioLogado = Usuario()
         manterFuncionarioDao = ManterFuncionarioDao()
@@ -80,6 +79,7 @@ class ControleTerceiro:
         self.movimentoTercNovo.acomps = listaAcomps
         controleTerceiroDao = ControleTerceiroDao()
         consultaIdsDao = ConsultaIdsDao()
+
         controleTerceiroDao.inserirEntrada(self.movimentoTercNovo)
         self.movimentoTercNovo.id = consultaIdsDao.consultaIdFinalMovTerc()
 
@@ -165,15 +165,117 @@ class ControleTerceiro:
 
         self.movimentoTercNovo.acomps = listaAcomps
 
-        if controleTerceiroDao.inserirSaida(self.movimentoTercNovo):
-            consultaIds = ConsultaIdsDao()
-            #Verifica se o usuário que efetuou a acão é do grupo ADM
-            if session["grupo"] == "ADM":
-                self.usuarioLogado.id = consultaIds.consultaIdUserLogado(session["usuario"])
-            else:
-                self.usuarioLogado.id = consultaIds.consultaIdUserLogado(session["usuarioVIG"])
+        controleTerceiroDao.inserirSaida(self.movimentoTercNovo)
+        consultaIds = ConsultaIdsDao()
+        #Verifica se o usuário que efetuou a acão é do grupo ADM
+        if session["grupo"] == "ADM":
+            self.usuarioLogado.id = consultaIds.consultaIdUserLogado(session["usuario"])
+        else:
+            self.usuarioLogado.id = consultaIds.consultaIdUserLogado(session["usuarioVIG"])
 
-            self.geraLogControleTerceiro("SAIDA", "")
+        self.geraLogControleTerceiro("SAIDA", "")
+        
+        return True
+    
+
+    def editarMovimentoTerceiro(self, id: int, dataEnt: str, horaEnt: str, dataSai: str, horaSai: str, pessoaVisit: str, observacao: str) -> bool:
+        """
+        Altera um movimento de terceiro específico
+
+        :param id: O ID do registro de movimento de chave a ser alterado.
+        :param dataEnt: Data da devolução da chave no formato 'YYYY-MM-DD'.
+        :param horaEnt: Hora da devolução da chave no formato 'HH:MM'.
+        :param dataSai: Data da devolução da chave no formato 'YYYY-MM-DD'.
+        :param horaSai: Hora da devolução da chave no formato 'HH:MM'.
+        :param observacao: A observação relacionada à edição do movimento de terceiro (obrigatorio para usuários do grupo VIG).
+
+        :return: True se a edição for bem-sucedida, False caso contrário.
+        """
+
+        controleTerceiroDao = ControleTerceiroDao()
+        self.usuarioLogado = Usuario()
+        manterTerceiroDao = ManterTerceiroDao()
+        manterFuncionario = ManterFuncionarioDao()
+        terceiroDao = TerceiroDao()
+
+        funcVisitado = manterFuncionario.consultarFuncionarioDetalhadoCracha(pessoaVisit)
+        self.movimentoTercAntigo = controleTerceiroDao.consultaMovTercDetalhado(id)
+        self.movimentoTercAntigo.pessoaVisit = funcVisitado
+
+        self.movimentoTercNovo = MovimentoTerceiro(id=id, dataEnt=dataEnt.replace("-", ""), horaEnt=horaEnt, dataSai=dataSai.replace("-", ""), horaSai=horaSai, delete=False)
+        self.movimentoTercNovo.pessoaVisit = funcVisitado
+
+        listaTerc = []
+        #Conulta dos IDs dos terceiros que fizeram as visita
+        ids = terceiroDao.terceirosMovimento(self.movimentoTercAntigo.id)
+        if len(ids) != 0:
+            for i, id in enumerate(ids):
+                if i == 0:
+                    self.movimentoTercAntigo.terceiro = manterTerceiroDao.consultarTerceiroDetalhadoId(id)
+                    self.movimentoTercNovo.terceiro = manterTerceiroDao.consultarTerceiroDetalhadoId(id)
+                else:
+                    listaTerc.append(manterTerceiroDao.consultarTerceiroDetalhadoId(id))
+
+        self.movimentoTercAntigo.acomps = listaTerc
+        self.movimentoTercNovo.acomps = listaTerc
+
+        controleTerceiroDao.editarMovimentoTerceiro(self.movimentoTercNovo)
+
+        consultaIds = ConsultaIdsDao()
+        #Verifica se o usuário que efetuou a acão é do grupo ADM
+        if session["grupo"] == "ADM":
+            self.usuarioLogado.id = consultaIds.consultaIdUserLogado(session["usuario"])
+        else:
+            self.usuarioLogado.id = consultaIds.consultaIdUserLogado(session["usuarioVIG"])
+
+        self.geraLogControleTerceiro("UPDATE", observacao)
+        
+        return True
+    
+
+    def excluirMovimentoTerceiro(self, id: int, pessoaVisit: str, observacao: str) -> bool:
+        """
+        Exclui um movimento de terceiro especifíco.
+
+        :param id: O ID do registro de movimento de terceiro a ser alterado.
+        :param pessoaVisit: O crachá da pessoa que foi visitada.
+        :param observacao: A observação relacionada à exclusão do movimento de terceiro (obrigatorio para usuários do grupo VIG).
+
+        :return: True se a edição for bem-sucedida, False caso contrário.
+        """
+
+        controleTerceiroDao = ControleTerceiroDao()
+        self.usuarioLogado = Usuario()
+        manterTerceiroDao = ManterTerceiroDao()
+        manterFuncionario = ManterFuncionarioDao()
+        terceiroDao = TerceiroDao()
+
+        funcVisitado = manterFuncionario.consultarFuncionarioDetalhadoCracha(pessoaVisit)
+        self.movimentoTercAntigo = controleTerceiroDao.consultaMovTercDetalhado(id)
+        self.movimentoTercAntigo.pessoaVisit = funcVisitado
+
+        listaTerc = []
+        #Conulta dos IDs dos terceiros que fizeram as visita
+        ids = terceiroDao.terceirosMovimento(self.movimentoTercAntigo.id)
+        if len(ids) != 0:
+            for i, id in enumerate(ids):
+                if i == 0:
+                    self.movimentoTercAntigo.terceiro = manterTerceiroDao.consultarTerceiroDetalhadoId(id)
+                else:
+                    listaTerc.append(manterTerceiroDao.consultarTerceiroDetalhadoId(id))
+
+        self.movimentoTercAntigo.acomps = listaTerc
+
+        controleTerceiroDao.excluirMovimentoTerceiro(self.movimentoTercAntigo)
+
+        consultaIds = ConsultaIdsDao()
+        #Verifica se o usuário que efetuou a acão é do grupo ADM
+        if session["grupo"] == "ADM":
+            self.usuarioLogado.id = consultaIds.consultaIdUserLogado(session["usuario"])
+        else:
+            self.usuarioLogado.id = consultaIds.consultaIdUserLogado(session["usuarioVIG"])
+
+        self.geraLogControleTerceiro("DELETE", observacao)
         
         return True
 
@@ -205,6 +307,35 @@ class ControleTerceiro:
         return listaMovimentos
     
 
+    def listaTercManut(self) -> list[dict]:
+        """
+        Lista os registros de movimentos de entrada e saída de terceiros para manutenção.
+
+        :return: Uma lista de dicionários contendo os detalhes dos movimentos de entrada e saída de terceiros.
+            Cada dicionário possui chaves 'id', "nomeTerc", "entrada", "saida", "motivo", "visitado" e  "empresa".
+        """
+
+        controleTerceiroDao = ControleTerceiroDao()
+        movimentos = controleTerceiroDao.listaTercManut()
+        manterTerceiroDao = ManterTerceiroDao()
+        listaMovimentos = []
+        for movimento in movimentos:
+            nometerc = manterTerceiroDao.consultaTerceiro(movimento.id_movTerc)
+            dicMovimento = {
+                "id": movimento.id_movTerc,
+                "nomeTerc": filtroNome(nometerc[0]),
+                "entrada": f"{filtroData(movimento.mte_dataEntra)} {movimento.mte_horaEntra}",
+                "saida": f"{filtroData(movimento.mte_dataSaid)} {movimento.mte_horaSaid}",
+                "motivo": filtroMotivo(movimento.mte_motivo),
+                "visitado": filtroNome(movimento.nomeFunc),
+                "empresa": movimento.mte_empresa
+            }
+
+            listaMovimentos.append(dicMovimento)
+
+        return listaMovimentos
+    
+
     def geraLogControleTerceiro(self, acao: str, observacao: str) -> None:
         """
         Gera um registro de log para ações relacionadas ao controle de terceiros.
@@ -225,10 +356,10 @@ class ControleTerceiro:
             log.dadosAntigos = {"vazio": 0}
             log.dadosNovos = self.movimentoTercNovo.toJson()
         elif acao == "UPDATE":
-            log.dadosAntigos = self.movimentoChaveAntigo.toJson()
+            log.dadosAntigos = self.movimentoTercAntigo.toJson()
             log.dadosNovos = self.movimentoTercNovo.toJson()
         else:
-            log.dadosAntigos = self.movimentoTercNovo.toJson()
+            log.dadosAntigos = self.movimentoTercAntigo.toJson()
             log.dadosNovos = {"vazio": 0}
 
         logDao = GeraLogDao()

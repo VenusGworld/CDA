@@ -18,7 +18,7 @@
 
     <title>CDA | LOGIN</title>
 </head>
-<body id="body">
+<body id="body" {% if session.base == 'CDATESTE' %}style="background-color: rgb(105, 18, 18);"{% endif %}>
     <div class="container-fluid centralizar">
         <div class="card-form">
             <div class="head-card">
@@ -114,7 +114,7 @@
                         success: function(data, status){
                             console.log(data)
                             console.log(status)
-                            var h6 = `E-mail enviado com sucesso!<br>Verifique sua caixa de entrada.`;
+                            var h6 = `<i class="fa-solid fa-circle-check icon-margin"></i> E-mail enviado com sucesso!<br>Verifique sua caixa de entrada.`;
                             $("#alert").prop("style").removeProperty("opacity");
                             $("#alert").empty();
                             $("#alert").removeClass();
@@ -129,17 +129,14 @@
                             
                         },
                         error: function(data, status){
-                            var h6 = data.responseJSON.msg;
                             $("#alert").prop("style").removeProperty("opacity");
                             $("#alert").empty();
                             $("#alert").removeClass();
-                            $("#alert").append(h6);
+                            $("#alert").append(`<i class="fa-solid fa-circle-exclamation icon-margin"></i>` + data.responseJSON.msg);
                             $("#alert").addClass("alert alert-danger alert-dismissible fade show");
                             $("#alert").show();
                             window.setTimeout(function() {
-                                $("#alert").fadeTo(500, 0).slideUp(500, function(){
-                                     
-                                });
+                                $("#alert").fadeTo(500, 0).slideUp(500, function(){});
                             }, 15000);
                         },
                         });

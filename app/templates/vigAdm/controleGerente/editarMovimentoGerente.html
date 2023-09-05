@@ -1,0 +1,86 @@
+{% extends "public/base.html" %}
+{% block content %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleUsuarios.css') }}">
+{% endblock %}
+{% include "public/header.html" %}
+<section class="content">
+    <div class="container-fluid p-2">
+        <div id="alert" class="alert alert-danger alert-dismissible d-flex align-items-center none" role="alert">
+            <i class="fa-solid fa-circle-exclamation icon-size"></i>
+            <div>
+                <h6 class="msg-alert"></h6>
+            </div>
+        </div>
+        {% if session.grupo != 'ADM' %}
+            <form class="container-fluid" action="{{ url_for('controleGerVigBlue.editMovimentoGerente') }}" onsubmit="return verificaDataEObservacao(dataEnt, horaEnt, dataSai, horaSai, observacaoEditar)" method="POST">
+        {% else %}
+            <form class="container-fluid" action="{{ url_for('controleGerAdmBlue.editMovimentoGerente') }}" onsubmit="return verificaData(dataEnt, horaEnt, dataSai, horaSai)" method="POST">
+        {% endif %}
+                <div class="container-fluid">
+                <div class="row mb-1">
+                    <div class="d-none">
+                        <input type="text" name="idMov" id="idMov" class="form-control upper"
+                            value="{{ context.movimento.id }}">
+                        <input type="text" name="crachaGer" id="crachaGer" class="form-control upper"
+                            value="{{ context.movimento.gerente.cracha }}">
+                    </div>
+                    <div class="col">
+                        <label for="recipient-name" class="col-form-label">Gerente:</label>
+                        <input type="text" name="gerente" id="gerente" class="form-control upper"
+                            value="{{ context.movimento.gerente.nome }}" readonly>
+                    </div>
+                </div>
+                <div class="row mb-1">
+                    <div class="col">
+                        <label for="recipient-name" class="col-form-label">Data Entrada:</label>
+                        <input type="date" data-bs="ENT" name="dataEnt" id="dataEnt" class="form-control"
+                            value="{{ context.movimento.dataEnt | dataInput }}">
+                    </div>
+                    <div class="col">
+                        <label for="recipient-name" class="col-form-label">Hora Entrada:</label>
+                        <input type="time" name="horaEnt" id="horaEnt" class="form-control"
+                            value="{{ context.movimento.horaEnt }}">
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    <div class="col">
+                        <label for="recipient-name" class="col-form-label">Data Saída:</label>
+                        <input type="date" name="dataSai" id="dataSai" class="form-control"
+                            value="{{ context.movimento.dataSai | dataInput }}">
+                    </div>
+                    <div class="col">
+                        <label for="recipient-name" class="col-form-label">Hora Saída:</label>
+                        <input type="time" name="horaSai" id="horaSai" class="form-control"
+                            value="{{ context.movimento.horaSai }}">
+                    </div>
+                </div>
+                {% if session.grupo != 'ADM' %}
+                    <div class="row mb-5">
+                        <span class="obs-alert">* Observação deve ser preenchida</span>
+                        <div class="col">
+                            <label for="">Observação:</label>
+                            <textarea class="form-control upper" id="observacaoEditar" name="observacaoEditar" rows="3" cols="50" maxlength="120"></textarea>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="row d-none mb-5">
+                        <div class="col">
+                            <label for="">Observação:</label>
+                            <textarea class="form-control upper" id="observacaoEditar" name="observacaoEditar" rows="3" cols="50" maxlength="120"></textarea>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="btns mb-3">
+                {% if session.grupo != 'ADM' %}
+                    <a href="{{url_for('controleGerVigBlue.manutencaoGerente')}}" class="btn btn-outline-danger" type="button" name="btnCancelar" id="btnCancelar" tabindex="10">Cancelar</a>
+                {% else %}
+                    <a href="{{url_for('controleGerAdmBlue.manutencaoGerente')}}" class="btn btn-outline-danger" type="button" name="btnCancelar" id="btnCancelar" tabindex="10">Cancelar</a>
+                {% endif %}
+                <input type="submit" class="btn btn-outline-success" id="btnGravar" value="Editar" tabindex="9">
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

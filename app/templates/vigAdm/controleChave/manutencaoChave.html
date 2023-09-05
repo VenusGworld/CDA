@@ -7,14 +7,14 @@
 {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
         {% for category, message in messages %}
-            <script>
+             <script>
                 window.setTimeout(function() {
-                    $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                    $("#alert-list").fadeTo(500, 0).slideUp(500, function(){
                         $(this).remove(); 
                     });
                 }, 10000);
-            </script>           
-            <div class="alert alert-{{ category }} d-flex align-items-center alert-margin" role="alert">
+            </script>
+            <div class="alert alert-{{ category }} d-flex align-items-center alert-margin" role="alert" id="alert-list">
                 {% if category == "success" %}
                     <i class="fa-solid fa-circle-check icon-size"></i>
                 {% else %}

@@ -4,7 +4,7 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Devolução de Chave</h5>
             </div>
-            <div class="alert" id="alert-modal-dev" style="display: none; margin-left: 1rem; margin-right: 1rem; margin-top: 1rem;" role="alert">
+            <div class="alert d-none" id="alert-modal-dev" style="margin-left: 0.5rem; margin-right: 0.5rem; margin-top: 0.5rem;" role="alert">
             </div>
             <div class="modal-body overflow-scroll">
                 <div class="container">
@@ -124,33 +124,38 @@
                 $("#alert-modal-dev").prop("style").removeProperty("opacity");
                 $("#alert-modal-dev").empty();
                 $("#alert-modal-dev").removeClass();
-                $("#alert-modal-dev").append("Preencha o responsavel pela devolução");
-                $("#alert-modal-dev").addClass("alert alert-danger alert-dismissible fade show");
+                $("#alert-modal-dev").append('<i class="fa-solid fa-circle-exclamation icon-size"></i><h6>Preencha o responsavel pela devolução</h6>');
+                $("#alert-modal-dev").addClass("alert alert-danger alert-dismissible fade show d-flex align-items-center flex-row");
                 $("#alert-modal-dev").show();
                 window.setTimeout(() => {
-                    $("#alert-modal-dev").fadeTo(500, 0).slideUp(500, () => {});
+                    $("#alert-modal-dev").fadeTo(500, 0).slideUp(500, () => {
+                        $("#alert-modal-dev").removeClass("d-flex");
+                    });
                 }, 3500);
 
             }else if ( dataDev.getTime() < dataRet.getTime()){
                 $("#alert-modal-dev").prop("style").removeProperty("opacity");
                 $("#alert-modal-dev").empty();
                 $("#alert-modal-dev").removeClass();
-                $("#alert-modal-dev").append("Data de devolução menor que a data de retirada!");
-                $("#alert-modal-dev").addClass("alert alert-danger alert-dismissible fade show");
+                $("#alert-modal-dev").append('<i class="fa-solid fa-circle-exclamation icon-size"></i><h6>Data de devolução menor que a data de retirada!</h6>');
+                $("#alert-modal-dev").addClass("alert alert-danger alert-dismissible fade show d-flex align-items-center flex-row");
                 $("#alert-modal-dev").show();
                 window.setTimeout(() => {
                     $("#alert-modal-dev").fadeTo(500, 0).slideUp(500, () => {});
+                    $("#alert-modal-dev").removeClass("d-flex");
                 }, 3500);
                 
             }else if( dataDev.getTime() === dataRet.getTime() && horaDev < horaRet ){
                 $("#alert-modal-dev").prop("style").removeProperty("opacity");
                 $("#alert-modal-dev").empty();
                 $("#alert-modal-dev").removeClass();
-                $("#alert-modal-dev").append("Hora de devolução menor que a hora de retirada!");
-                $("#alert-modal-dev").addClass("alert alert-danger alert-dismissible fade show");
+                $("#alert-modal-dev").append('<i class="fa-solid fa-circle-exclamation icon-size"></i><h6>Hora de devolução menor que a hora de retirada!</h6>');
+                $("#alert-modal-dev").addClass("alert alert-danger alert-dismissible fade show d-flex align-items-center flex-row");
                 $("#alert-modal-dev").show();
                 window.setTimeout(() => {
-                    $("#alert-modal-dev").fadeTo(500, 0).slideUp(500, () => {});
+                    $("#alert-modal-dev").fadeTo(500, 0).slideUp(500, () => {
+                        $("#alert-modal-dev").removeClass("d-flex");
+                    });
                 }, 3500);
 
             }else{
@@ -170,15 +175,16 @@
                         window.location=dest
                     },
                     error: function(data, status){
-                        var h6 = data.responseJSON.msg;
                         $("#alert").prop("style").removeProperty("opacity");
                         $("#alert").empty();
                         $("#alert").removeClass();
-                        $("#alert").append(h6);
-                        $("#alert").addClass("alert alert-danger alert-dismissible fade show");
+                        $("#alert").append(`<i class="fa-solid fa-circle-exclamation icon-size"></i><h6>${data.responseJSON.msg}</h6>`);
+                        $("#alert").addClass("alert alert-danger alert-dismissible fade show d-flex align-items-center flex-row");
                         $("#alert").show();
                         window.setTimeout(function() {
-                            $("#alert").fadeTo(500, 0).slideUp(500, function(){});
+                            $("#alert").fadeTo(500, 0).slideUp(500, function(){
+                                $("#alert-modal-dev").removeClass("d-flex");
+                            });
                         }, 15000);
                     },
                 });

@@ -161,7 +161,7 @@ class ControleChaveDao:
         :return: Uma lista contendo as informações da cada movimento.
         """
 
-        movimentos = CDA002.query.filter(CDA002.mch_dataRet>=dataDe, CDA002.mch_dataRet<=dataAte)\
+        movimentos = CDA002.query.filter(CDA002.mch_dataRet>=dataDe, CDA002.mch_dataRet<=dataAte, CDA002.mch_horaDev!=None, CDA002.mch_dataDev!=None)\
             .order_by(CDA002.mch_dataRet)
 
         return movimentos
@@ -169,7 +169,7 @@ class ControleChaveDao:
 
     def editarMovimentoChave(self, movimento: MovimentoChave) -> bool:
         """
-        Altera os dados de um movimento específico.
+        Altera os dados de um movimento de chave específico.
 
         :param movimento: Um objeto da classe MovimentoChave contendo as informações para a alteração.
         
@@ -180,11 +180,8 @@ class ControleChaveDao:
         campos = {
             "mch_dataRet": movimento.dataRet,
             "mch_horaRet": movimento.horaRet,
-            "mch_respRet": movimento.respRet.id,
             "mch_dataDev": movimento.dataDev,
             "mch_horaDev": movimento.horaDev,
-            "mch_respDev": movimento.respDev.id,
-            "mch_idChav": movimento.chave.id
         }
 
         CDA002.query.filter(CDA002.id_movChave==movimento.id).update(campos)
@@ -197,7 +194,7 @@ class ControleChaveDao:
         """
         Marca um movimento de chave como excluido no sistema.
 
-        :param id: O ID do movimento de chave a ser excluido.
+        :param movimento: Um objeto da classe MovimentoChave contando o ID do movimento de chave a ser excluido.
 
         :return: True se a inativação for bem-sucedida, False caso contrário.
         """

@@ -50,7 +50,7 @@ class ManterTerceiroDao:
         :return: Um objeto da classe Terceiro com os detalhes do terceiro encontrado.
         """
 
-        terceiro = CDA009.query.filter(CDA009.id_terceiro==id, CDA009.te_delete!=True, CDA009.te_ativo!=True).first()
+        terceiro = CDA009.query.filter(CDA009.id_terceiro==id, CDA009.te_delete!=True).first()
 
         terceiroMov = Terceiro(id=terceiro.id_terceiro, codigo=terceiro.te_codigo, nome=terceiro.te_nome, cpf=terceiro.te_cpf,
                                ativo=terceiro.te_ativo, delete=terceiro.te_delete)

@@ -4,13 +4,16 @@ errosBlue = Blueprint("erros", __name__)
 
 @errosBlue.app_errorhandler(404)
 def notFound(erro):
-    print(erro)
     return render_template("public/error/404.html"), 404
+
+
+@errosBlue.app_errorhandler(405)
+def methodNotAllowed(erro):
+    return render_template("public/index.html"), 405
 
 
 @errosBlue.app_errorhandler(500)
 def serverError(erro):
-    print(erro)
     return render_template("public/error/500.html"), 500
 
 

@@ -1,5 +1,5 @@
 from ..models.dao.ManterFuncionarioDao import ManterFuncionarioDao
-from ..models.dao.VerificamovimentoDao import VerificaMovimentoDao
+from ..models.dao.VerificaMovimentoDao import VerificaMovimentoDao
 from ..models.dao.ConsultaIdsDao import ConsultaIdsDao
 from ..models.entity.Funcionario import Funcionario
 from ..models.dao.GeraLogDao import GeraLogDao

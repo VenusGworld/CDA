@@ -68,18 +68,18 @@ class VerificaMovimentoDao:
 
         movimento = 0
 
-        if CDA003.query.filter(CDA003.mge_idFunc==id).first():
+        if CDA003.query.filter(CDA003.mge_idFunc==id, CDA003.mge_delete!=True).first():
             movimento += 1
 
         #Verifica se o funcionário foi responsável pele retirada da chave
-        if CDA002.query.filter(CDA002.mch_respRet==id).first():
+        if CDA002.query.filter(CDA002.mch_respRet==id, CDA002.mch_delete!=True).first():
             movimento += 1
 
         #Verifica se o funcionário foi responsável pele devolução da chave
-        if CDA002.query.filter(CDA002.mch_respDev==id).first():
+        if CDA002.query.filter(CDA002.mch_respDev==id, CDA002.mch_delete!=True).first():
             movimento += 1
 
-        if CDA004.query.filter(CDA004.mte_idFunc==id).first():
+        if CDA004.query.filter(CDA004.mte_idFunc==id, CDA004.mte_delete!=True).first():
             movimento += 1
         
         if movimento == 0:
@@ -102,7 +102,7 @@ class VerificaMovimentoDao:
 
         movimento = 0
 
-        if CDA002.query.filter(CDA002.mch_idChav==id).first():
+        if CDA002.query.filter(CDA002.mch_idChav==id, CDA002.mch_delete!=True).first():
             movimento += 1
 
         if movimento == 0:

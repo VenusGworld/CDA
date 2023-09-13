@@ -138,8 +138,10 @@ def deleteFuncionarioAdm(id):
         respControle = controleManterFuncionario.excluirFuncionario(int(id))
         if respControle == 1:
             flash("Funcionário excluido com sucesso!", "success")
-        else:
+        elif respControle == 2:
             flash("Funcionário possue movimentação no sistema, então foi desativado", "success")
+        else:
+            flash("Funcionário não pode ser excluido pois existe movimento(s) em aberto", "danger")
 
         return redirect(url_for("funcionarioAdmBlue.listaFuncionariosAdm"))
     except:

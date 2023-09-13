@@ -56,7 +56,11 @@
 <script>
     new gridjs.Grid({
         columns: colunasTerceiro,
-        data: dadosTerceiro,
+        data: () => {
+            return new Promise(resolve => {
+                setTimeout(() => resolve(dadosTerceiro), 2000);
+            });
+        },
         search: true,
         sort: true,
         paginationAutoPageSize: true,

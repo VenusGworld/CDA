@@ -78,7 +78,7 @@ function verificaCrachaMaquina(){
     } else if (!respMaquina){
         div.classList.remove('none');
         msg.innerHTML = "";
-        msg.innerHTML = "<h6 class='msg-alert'>O máquina informada não existe</h6>";
+        msg.innerHTML = "<h6 class='msg-alert'>A máquina informada não existe</h6>";
         setTimeout(() =>{
             div.classList.add('none');
         }, 6000);

@@ -1,5 +1,8 @@
 from ..models.dao.ManterFuncionarioDao import ManterFuncionarioDao
 from ..models.dao.VerificaMovimentoDao import VerificaMovimentoDao
+from ..models.dao.ControleTerceiroDao import ControleTerceiroDao
+from ..models.dao.ControleGerenteDao import ControleGerenteDao
+from ..models.dao.ControleChaveDao import ControleChaveDao
 from ..models.dao.ConsultaIdsDao import ConsultaIdsDao
 from ..models.entity.Funcionario import Funcionario
 from ..models.dao.GeraLogDao import GeraLogDao
@@ -123,10 +126,38 @@ class ControleManterFuncionario:
         :param id: O ID do funcionário a ser excluído.
 
         :return: Um código indicando o resultado da operação:
-            - 1: Funcionário excluído com sucesso.
-            - 2: Funcionário inativado com sucesso (quando funcionário tem movimentação no sistema).
+            - 1 Funcionário excluído com sucesso.
+            - 2 Funcionário inativado com sucesso (quando funcionário tem movimentação no sistema).
+            - 3 se existem movimentos em aberto associados ao gerente.
         """
 
+        #Verifica se o funcionário está em algum movimento de gerente aberto
+        controleGerenteDao = ControleGerenteDao()
+        #Consulta os ids dos movimentos
+        idsMov = controleGerenteDao.verificaMovIdGerente(id)
+        for idMov in idsMov:
+            #Verifica se existe algum movimento em abeto
+            if controleGerenteDao.consultaMovAbertoGerente(idMov[0]):
+                return 3
+        
+        #Verifica se o funcionário está em algum movimento de terceiro aberto
+        controleterceiroDao = ControleTerceiroDao()
+        #Consulta os ids dos movimentos
+        idsMov = controleterceiroDao.verificaMovIdFuncionario(id)
+        for idMov in idsMov:
+            #Verifica se existe algum movimento em abeto
+            if controleterceiroDao.consultaMovAbertoTerc(idMov[0]):
+                return 3
+
+        #Verifica se o funcionário está em algum movimento de chave aberto
+        controleChaveDao = ControleChaveDao()
+        #Consulta os ids dos movimentos
+        idsMov = controleChaveDao.verificaMovIdFuncionario(id)
+        for idMov in idsMov:
+            #Verifica se existe algum movimento em abeto
+            if controleChaveDao.consultaMovAbertoChave(idMov[0]):
+                return 3
+            
         manterFuncionarioDao = ManterFuncionarioDao()
         verificaMovimento = VerificaMovimentoDao()
         consultaIdUser = ConsultaIdsDao()

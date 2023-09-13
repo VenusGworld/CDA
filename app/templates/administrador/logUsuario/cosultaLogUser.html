@@ -5,121 +5,76 @@
 {% endblock %}
 {% include "public/header.html" %}
 {% if context.modal == 1 %}
-    {% include "public/modalLog/modalLogInsertUser.html" %}
+    {% include "public/modalLogManter/modalLogInsertUser.html" %}
 {% elif context.modal == 2 %}
-    {% include "public/modalLog/modalLogUpdateUser.html" %}
+    {% include "public/modalLogManter/modalLogUpdateUser.html" %}
 {% elif context.modal == 3 %}
-    {% include "public/modalLog/modalLogActiveDeletUser.html" %}
+    {% include "public/modalLogManter/modalLogActiveDeleteUser.html" %}
 {% endif %}
 <section class="content">
     <div class="container-fluid p-0">
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#insert" type="button"
-                    role="tab" aria-controls="insert" aria-selected="true"><i class="fa-solid fa-plus"></i>
-                    INSERT</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#update" type="button"
-                    role="tab" aria-controls="update" aria-selected="false"><i class="fa-solid fa-pen"></i>
-                    UPDATE</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#active" type="button"
-                    role="tab" aria-controls="active" aria-selected="false"><i class="fa-solid fa-check"></i>
-                    ACTIVE</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#delete" type="button"
-                    role="tab" aria-controls="delete" aria-selected="false"><i class="fa-solid fa-x"></i>
-                    DELETE</button>
-            </li>
-        </ul>
-        <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="insert" role="tabpanel" aria-labelledby="insert">
-                <div class="acoes p-1 mb-1">
-                    <div class="dropdown">
-                        <a class="btn btn-secondary dropdown" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa-solid fa-sliders"></i>
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col">
-                                        <label for="">Meses Select:</label>
-                                        <input type="text" class="form-control">
-                                    </div>
+        <div>
+            <div class="acoes" >
+                <div class="dropdown">
+                    <a class="btn btn-secondary dropdown" href="#" role="button" id="dropdownMenuLink"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-solid fa-sliders"></i>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <label for="">Meses Select:</label>
+                                    <input type="text" class="form-control" id="PAR_LOG_MANT_USER"
+                                        value="{{ context.meses }}">
+                                    <button class="btnConfirmMeses btn btn-primary btn-sm ml-4 mt-2">Confirmar</button>
                                 </div>
                             </div>
-                        </ul>
-                    </div>
+                        </div>
+                    </ul>
                 </div>
+            </div>
+            <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#insert"
+                        type="button" role="tab" aria-controls="insert" aria-selected="true"><i
+                            class="fa-solid fa-plus"></i>
+                        INSERT</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#update" type="button"
+                        role="tab" aria-controls="update" aria-selected="false"><i class="fa-solid fa-pen"></i>
+                        UPDATE</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#active" type="button"
+                        role="tab" aria-controls="active" aria-selected="false"><i class="fa-solid fa-check"></i>
+                        ACTIVE</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#delete" type="button"
+                        role="tab" aria-controls="delete" aria-selected="false"><i class="fa-solid fa-x"></i>
+                        DELETE</button>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="insert" role="tabpanel" aria-labelledby="insert">
                 <div class="tabela p-3">
                     <div id="lista-logs-insert"></div>
                 </div>
             </div>
             <div class="tab-pane fade" id="update" role="tabpanel" aria-labelledby="update">
-                <div class="acoes p-1 mb-1">
-                    <div class="dropdown">
-                        <a class="btn btn-secondary dropdown" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa-solid fa-sliders"></i>
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col">
-                                        <label for="">Meses Select:</label>
-                                        <input type="text" class="form-control">
-                                    </div>
-                                </div>
-                            </div>
-                        </ul>
-                    </div>
-                </div>
                 <div class="tabela p-3 m-2">
                     <div id="lista-logs-update"></div>
                 </div>
             </div>
             <div class="tab-pane fade" id="active" role="tabpanel" aria-labelledby="active">
-                <div class="acoes p-1 mb-1">
-                    <div class="dropdown">
-                        <a class="btn btn-secondary dropdown" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa-solid fa-sliders"></i>
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col">
-                                        <label for="">Meses Select:</label>
-                                        <input type="text" class="form-control">
-                                    </div>
-                                </div>
-                            </div>
-                        </ul>
-                    </div>
-                </div>
                 <div class="tabela p-3 m-2">
                     <div id="lista-logs-active"></div>
                 </div>
             </div>
             <div class="tab-pane fade" id="delete" role="tabpanel" aria-labelledby="delete">
-                <div class="acoes p-1 mb-1">
-                    <div class="dropdown">
-                        <a class="btn btn-secondary dropdown" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa-solid fa-sliders"></i>
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col">
-                                        <label for="">Meses Select:</label>
-                                        <input type="text" class="form-control">
-                                    </div>
-                                </div>
-                            </div>
-                        </ul>
-                    </div>
-                </div>
                 <div class="tabela p-3 m-2">
                     <div id="lista-logs-delete"></div>
                 </div>
@@ -127,12 +82,17 @@
         </div>
     </div>
 </section>
+{% endblock %}
 {% block script %}
 <script src="{{ url_for('static', filename='js/logUsuario/dataLogInsert.js') }}"></script>
 <script>
     new gridjs.Grid({
         columns: colunasLogUserInsert,
-        data: dadosLogUserInsert,
+        data: () => {
+            return new Promise(resolve => {
+                setTimeout(() => resolve(dadosLogUserInsert), 2000);
+            });
+        },
         search: true,
         sort: true,
         paginationAutoPageSize: true,
@@ -145,7 +105,11 @@
 <script>
     new gridjs.Grid({
         columns: colunasLogUserUpdate,
-        data: dadosLogUserUpdate,
+        data: () => {
+            return new Promise(resolve => {
+                setTimeout(() => resolve(dadosLogUserUpdate), 2000);
+            });
+        },
         search: true,
         sort: true,
         paginationAutoPageSize: true,
@@ -158,7 +122,11 @@
 <script>
     new gridjs.Grid({
         columns: colunasLogUserActive,
-        data: dadosLogUserActive,
+        data: () => {
+            return new Promise(resolve => {
+                setTimeout(() => resolve(dadosLogUserActive), 2000);
+            });
+        },
         search: true,
         sort: true,
         paginationAutoPageSize: true,
@@ -171,7 +139,11 @@
 <script>
     new gridjs.Grid({
         columns: colunasLogUserDelete,
-        data: dadosLogUserDelete,
+        data: () => {
+            return new Promise(resolve => {
+                setTimeout(() => resolve(dadosLogUserDelete), 2000);
+            });
+        },
         search: true,
         sort: true,
         paginationAutoPageSize: true,
@@ -179,5 +151,4 @@
         suppressPaginationPanel: true
     }).render(document.getElementById("lista-logs-delete"));
 </script>
-{% endblock %}
 {% endblock %}

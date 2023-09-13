@@ -1,7 +1,10 @@
-from ..models.dao.ManterUsuarioDao import ManterUsuarioDao
-from ..models.dao.ConsultaLogUserDao import ConsultaLogUserDao
+from ..models.dao.ConsultaParametrosDao import ConsultaParametrosDao
 from ..extensions.FiltrosJson import filtroDataHora, filtroNome
+from ..models.dao.ConsultaLogUserDao import ConsultaLogUserDao
+from ..models.dao.ManterUsuarioDao import ManterUsuarioDao
+from dateutil.relativedelta import relativedelta
 from ..models.entity.Log import Log
+from datetime import datetime
 import json as js
 
 class ControleConsultarLogUser:
@@ -14,14 +17,21 @@ class ControleConsultarLogUser:
 
     def consultaLogUserInsert(self) -> list[dict]:
         """
-        Consulta e retorna uma lista de logs de inserção de usuários.
+        Consulta e retorna uma lista de logs de inserção de usuários de acordo com a data na tabela de parâmetros('LOGMTUSER_INSERT').
 
         :return: Uma lista de dicionários contendo informações sobre os logs de inserção de usuários.
             Cada dicionário possui chaves "id", "dataHora", "acao", "resp" e "usuario".
         """
 
+        #Consulta a data na tabela de parametros para fazer a pesquisa apartir desta data
+        consultaParametro = ConsultaParametrosDao()
+        mesesAtras = consultaParametro.consultaParametros("PAR_LOG_MANT_USER")
+        dataDe = datetime.now()
+        dataDe = dataDe - relativedelta(months=mesesAtras)
+        dataDe = dataDe.strftime("%Y-%m-01")
+
         consultaLogDao = ConsultaLogUserDao()
-        respDao = consultaLogDao.consultaLogsUserInsert()
+        respDao = consultaLogDao.consultaLogsUserInsert(dataDe)
         listaLogs = []
 
         for log in respDao:
@@ -46,8 +56,15 @@ class ControleConsultarLogUser:
             Cada dicionário possui chaves "id", "dataHora", "acao", "resp" e "usuario".
         """
 
+        #Consulta a data na tabela de parametros para fazer a pesquisa apartir desta data
+        consultaParametro = ConsultaParametrosDao()
+        mesesAtras = consultaParametro.consultaParametros("PAR_LOG_MANT_USER")
+        dataDe = datetime.now()
+        dataDe = dataDe - relativedelta(months=mesesAtras)
+        dataDe = dataDe.strftime("%Y-%m-01")
+
         consultaLogDao = ConsultaLogUserDao()
-        respDao = consultaLogDao.consultaLogsUserUpdate()
+        respDao = consultaLogDao.consultaLogsUserUpdate(dataDe)
         listaLogs = []
 
         for log in respDao:
@@ -72,8 +89,15 @@ class ControleConsultarLogUser:
             Cada dicionário possui chaves "id", "dataHora", "acao", "resp" e "usuario".
         """
 
+        #Consulta a data na tabela de parametros para fazer a pesquisa apartir desta data
+        consultaParametro = ConsultaParametrosDao()
+        mesesAtras = consultaParametro.consultaParametros("PAR_LOG_MANT_USER")
+        dataDe = datetime.now()
+        dataDe = dataDe - relativedelta(months=mesesAtras)
+        dataDe = dataDe.strftime("%Y-%m-01")
+
         consultaLogDao = ConsultaLogUserDao()
-        respDao = consultaLogDao.consultaLogsUserDelete()
+        respDao = consultaLogDao.consultaLogsUserDelete(dataDe)
         listaLogs = []
 
         for log in respDao:
@@ -98,8 +122,15 @@ class ControleConsultarLogUser:
             Cada dicionário possui chaves "id", "dataHora", "acao", "resp" e "usuario".
         """
 
+        #Consulta a data na tabela de parametros para fazer a pesquisa apartir desta data
+        consultaParametro = ConsultaParametrosDao()
+        mesesAtras = consultaParametro.consultaParametros("PAR_LOG_MANT_USER")
+        dataDe = datetime.now()
+        dataDe = dataDe - relativedelta(months=mesesAtras)
+        dataDe = dataDe.strftime("%Y-%m-01")
+
         consultaLogDao = ConsultaLogUserDao()
-        respDao = consultaLogDao.consultaLogsUserActive()
+        respDao = consultaLogDao.consultaLogsUserActive(dataDe)
         listaLogs = []
 
         for log in respDao:

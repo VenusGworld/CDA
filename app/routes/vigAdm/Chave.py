@@ -39,7 +39,10 @@ def cadastroChave():
             context = {"titulo": "Cadastro de Chaves", "active": "cadChave", "codigo": codigo}
             return render_template("vigAdm/chave/cadastroChave.html", context=context)
         else:
-            return redirect(url_for("chaveVigBlue.listaChaves"))
+            if session["grupo"] == "ADM":
+                return redirect(url_for("chaveAdmBlue.listaChaves"))
+            else:
+                return redirect(url_for("chaveVigBlue.listaChaves"))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
@@ -56,7 +59,10 @@ def insertChave():
         controleManterChave = ControleManterChave()
         if controleManterChave.incluirChave(request.form["codigo"].upper().strip(), request.form["nome"].upper().strip()):
             flash("Chave incluida com sucesso!", "success")
-            return redirect(url_for("chaveVigBlue.listaChaves"))
+            if session["grupo"] == "ADM":
+                return redirect(url_for("chaveAdmBlue.listaChaves"))
+            else:
+                return redirect(url_for("chaveVigBlue.listaChaves"))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
@@ -76,7 +82,10 @@ def modalEditarChave(id):
             context = {"titulo": "Listagem de Chaves", "active": "cadChave", "modal": 2, "chave": chave}
             return render_template("vigAdm/chave/listaChaves.html", context=context)
         else:
-            return redirect(url_for("chaveVigBlue.listaChaves"))
+            if session["grupo"] == "ADM":
+                return redirect(url_for("chaveAdmBlue.listaChaves"))
+            else:
+                return redirect(url_for("chaveVigBlue.listaChaves"))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
@@ -93,7 +102,10 @@ def editChave():
         controleManterChave = ControleManterChave()
         if controleManterChave.editarChave(int(request.form["idChav"]), request.form["codigoChav"], request.form["nomeChave"].upper().strip(), request.form["observacaoEditar"].upper().strip()):
             flash("Chave alterada com sucesso!", "success")
-            return redirect(url_for("chaveVigBlue.listaChaves"))
+            if session["grupo"] == "ADM":
+                return redirect(url_for("chaveAdmBlue.listaChaves"))
+            else:
+                return redirect(url_for("chaveVigBlue.listaChaves"))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
@@ -113,7 +125,10 @@ def modalDeleteChave(id):
             context = {"titulo": "Listagem de Chaves", "active": "cadChave", "modal": 1, "chave": chave}
             return render_template("vigAdm/chave/listaChaves.html", context=context)
         else:
-            return redirect(url_for("chaveVigBlue.listaChaves"))
+            if session["grupo"] == "ADM":
+                return redirect(url_for("chaveAdmBlue.listaChaves"))
+            else:
+                return redirect(url_for("chaveVigBlue.listaChaves"))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
@@ -136,7 +151,10 @@ def deleteChave():
         else:
             flash("Chave não pode ser excluida pois existe movimento em aberto", "danger")
         
-        return redirect(url_for("chaveVigBlue.listaChaves"))
+        if session["grupo"] == "ADM":
+            return redirect(url_for("chaveAdmBlue.listaChaves"))
+        else:
+            return redirect(url_for("chaveVigBlue.listaChaves"))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()

@@ -5,26 +5,24 @@
 {% endblock %}
 {% include "public/header.html" %}
 {% if context.modal == 1 %}
-    {% include "public/modalLog/modalLogMensagem.html" %}
+    {% include "public/modalLogManter/modalLogMensagem.html" %}
 {% endif %}
 <section class="content">
     <div class="container-fluid p-0">
-        <div class="acoes p-1 mb-1">
+        <div class="acoes p-2" >
             <div class="dropdown">
-                <a class="btn btn-secondary dropdown" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="btn btn-secondary dropdown" href="#" role="button" id="dropdownMenuLink"
+                    data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa-solid fa-sliders"></i>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <div class="container">
-                        <div class="row" style="width: 13rem;">
-                            <div class="col mb-2">
-                                <label for="">Meses Select:</label>
-                                <input type="text" class="form-control">
-                            </div>
-                        </div>
-                        <div class="row" style="width: 13rem;">
+                        <div class="row">
                             <div class="col">
-                                <a href="javascript:history.back()" class="btn btn-outline-primary" type="button">OK</a>
+                                <label for="">Meses Select:</label>
+                                <input type="text" class="form-control" id="PAR_LOG_MENSAGEM"
+                                    value="{{ context.meses }}">
+                                <button class="btnConfirmMeses btn btn-primary btn-sm ml-4 mt-2">Confirmar</button>
                             </div>
                         </div>
                     </div>
@@ -41,7 +39,11 @@
 <script>
     new gridjs.Grid({
         columns: colunasLogMen,
-        data: dadosLogMen,
+        data: () => {
+            return new Promise(resolve => {
+                setTimeout(() => resolve(dadosLogMen), 2000);
+            });
+        },
         search: true,
         sort: true,
         pagination: true,

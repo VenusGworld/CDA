@@ -180,3 +180,19 @@ class ControleTerceiroDao:
         DB.session.commit()
 
         return True
+    
+
+    def verificaMovIdFuncionario(self, idFunc: int) -> CDA004:
+        """
+        Verifica se existem movimentos de terceiros abertos associados a uma gerente específico.
+
+        :param idFunc: O ID do gerente para a qual deseja verificar a existência de movimentos abertos.
+
+        :return: Um objeto de consulta contendo os IDs dos movimentos de terceiros abertos associados ao gerente fornecida.
+        """
+
+        idsMov = DB.session.query(CDA004.id_movTerc).filter(CDA004.mte_idFunc==idFunc)
+
+        return idsMov
+    
+

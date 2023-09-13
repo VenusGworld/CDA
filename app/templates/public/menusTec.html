@@ -2,7 +2,7 @@
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <li class="nav-item">
-                <a href="{{url_for('dashTecBlue.dashboardTec')}}" class="nav-link">
+                <a href="{{url_for('dashTecBlue.dashboardTec')}}" class="nav-link {% if context.active == 'dashboard' %}active{% endif %}">
                     <i class="fa-solid fa-gauge icon-space"></i>
                     <p class="font-p">
                         Dashboard
@@ -19,7 +19,7 @@
                     </p>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item {% if context.active in ['logChave', 'logTerc', 'logControlChav', 'logControlTerc', 'logControlGere', 'logMsg'] %}menu-open{% endif %}">
                 <a href="#" class="nav-link">
                     <i class="fa-solid fa-file-invoice icon-space"></i>
                     <p class="font-p">
@@ -47,15 +47,15 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="./index3.html" class="nav-link">
+                        <a href="{{url_for('logTercTecBlue.listagemLogTerceiro')}}" class="nav-link {% if context.active == 'logTerc' %}active{% endif %}">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Manter Terceiro</p>
+                            <p>Terceiro</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="./index3.html" class="nav-link">
+                        <a href="{{url_for('logChavTecBlue.listagemLogChave')}}" class="nav-link {% if context.active == 'logChave' %}active{% endif %}">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Manter Chaves</p>
+                            <p>Chaves</p>
                         </a>
                     </li>
                 </ul>

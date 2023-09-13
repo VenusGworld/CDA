@@ -12,7 +12,7 @@ dashTecBlue = Blueprint("dashTecBlue", __name__)
 @login_required
 def dashboardTec():
     try:
-        context = {"titulo": "Dashboard"}
+        context = {"titulo": "Dashboard", "active": "dashboard"}
         return render_template("tecSeguranca/dashboard.html", context=context)
     except:
         log = LogErro()

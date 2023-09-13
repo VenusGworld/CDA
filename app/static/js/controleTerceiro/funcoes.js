@@ -42,8 +42,12 @@ function adicionarInput() {
             input.addEventListener('keyup', function() {
                 pesquisaCpf(input);
             });
+            input.addEventListener('keypress', function() {
+                verificaCpfDiv(input);
+            });
             input.addEventListener('blur', function() {
                 buscaCPF(input);
+                verificaCpfDiv(input);
             });
         });
     }
@@ -228,7 +232,12 @@ function verificaCpfDiv(input){
 
     cpf = cpf.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
 
-    if (cpf.length !== 11) {
+    if (cpf.trim().length === 0){
+        labelCpf.classList.remove("cpf-invalido-label");
+        spanAlerta.classList.add("none");
+        input.classList.remove("cpf-invalido");
+        return 0
+    }else if (cpf.length !== 11) {
         labelCpf.classList.add("cpf-invalido-label");
         spanAlerta.classList.remove("none");
         input.classList.add("cpf-invalido");

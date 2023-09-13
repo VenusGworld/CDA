@@ -39,7 +39,10 @@ def cadastroTerceiro():
             context = {"titulo": "Cadastro de Terceiro", "active": "cadTerc", "codigo": codigo}
             return render_template("vigAdm/terceiro/cadastroTerceiro.html", context=context)
         else:
-            return redirect(url_for("chaveVigBlue.listaChaves"))
+            if session["grupo"] == "ADM":
+                return redirect(url_for("terceiroAdmBlue.listaTerceiros"))
+            else:
+                return redirect(url_for("terceiroVigBlue.listaTerceiros"))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
@@ -56,7 +59,10 @@ def insertTerceiro():
         controleManterFuncionario = ControleManterTerceiro()
         if controleManterFuncionario.incluirTerceiro(request.form["codigo"].upper().strip(), request.form["nome"].upper().strip(), request.form["cpf"]):
             flash("Terceiro incluido com sucesso!", "success")
-            return redirect(url_for("terceiroVigBlue.listaTerceiros"))
+            if session["grupo"] == "ADM":
+                return redirect(url_for("terceiroAdmBlue.listaTerceiros"))
+            else:
+                return redirect(url_for("terceiroVigBlue.listaTerceiros"))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
@@ -76,7 +82,10 @@ def modalEditarTerceiro(id):
             context = {"titulo": "Listagem de Terceiros", "active": "cadTerc", "modal": 2, "terceiro": terceiro}
             return render_template("vigAdm/terceiro/listaTerceiros.html", context=context)
         else:
-            return redirect(url_for("terceiroVigBlue.listaTerceiros"))
+            if session["grupo"] == "ADM":
+                return redirect(url_for("terceiroAdmBlue.listaTerceiros"))
+            else:
+                return redirect(url_for("terceiroVigBlue.listaTerceiros"))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
@@ -93,7 +102,10 @@ def editTerceiro():
         controleManterFuncionario = ControleManterTerceiro()
         if controleManterFuncionario.editarTerceiro(int(request.form["idTerc"]), request.form["codigoTerc"], request.form["cpfTerc"].upper().strip(), request.form["nomeTerc"].upper().strip(), request.form["observacaoEditar"].upper().strip()):
             flash("Terceiro alterado com sucesso!", "success")
-            return redirect(url_for("terceiroVigBlue.listaTerceiros"))
+            if session["grupo"] == "ADM":
+                return redirect(url_for("terceiroAdmBlue.listaTerceiros"))
+            else:
+                return redirect(url_for("terceiroVigBlue.listaTerceiros"))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
@@ -113,7 +125,10 @@ def modalDeleteTerceiro(id):
             context = {"titulo": "Listagem de Terceiros", "active": "cadTerc", "modal": 1, "terceiro": terceiro}
             return render_template("vigAdm/terceiro/listaTerceiros.html", context=context)
         else:
-            return redirect(url_for("terceiroVigBlue.listaTerceiros"))
+            if session["grupo"] == "ADM":
+                return redirect(url_for("terceiroAdmBlue.listaTerceiros"))
+            else:
+                return redirect(url_for("terceiroVigBlue.listaTerceiros"))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
@@ -136,7 +151,10 @@ def deleteTerceiro():
         else:
             flash("Terceiro não pode ser excluido pois existe movimento(s) em aberto", "danger")
         
-        return redirect(url_for("terceiroVigBlue.listaTerceiros"))
+        if session["grupo"] == "ADM":
+            return redirect(url_for("terceiroAdmBlue.listaTerceiros"))
+        else:
+            return redirect(url_for("terceiroVigBlue.listaTerceiros"))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()

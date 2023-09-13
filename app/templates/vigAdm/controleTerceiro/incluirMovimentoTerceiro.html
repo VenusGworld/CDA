@@ -3,7 +3,6 @@
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styleUsuarios.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styleControleTerceiro.css') }}">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
 {% endblock %}
 {% include "public/header.html" %}
 <section class="content">
@@ -84,6 +83,9 @@
     document.getElementById('cpf_1').addEventListener('input', function(event) {
         verificaCpfDiv(this);
     });
+    document.getElementById('cpf_1').addEventListener('blur', function(event) {
+        verificaCpfDiv(this);
+    });
 </script>
 <script>
     $("#pessoaVisit").keyup(function(){
@@ -104,7 +106,7 @@
                 source: pessoas,
             });
 
-            $(".ui-helper-hidden-accessible").css("display", "none")
+            $(".ui-helper-hidden-accessible").css("display", "none");
         }
     })
 </script>
@@ -190,9 +192,16 @@
             }) 
         }else{
             isSubmitting = false;
-        }
-        
+        } 
     }
+</script>
+<script>
+    setInterval(() => {
+        const inputsCPF = document.querySelectorAll('input[id^="cpf"]');
+        inputsCPF.forEach((input) => {
+            verificaCpfDiv(input); 
+        });
+    }, 500);
 </script>
 {% endblock %}
 {% endblock %}

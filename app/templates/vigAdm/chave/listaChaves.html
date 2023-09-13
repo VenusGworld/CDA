@@ -54,22 +54,19 @@
 <script src="{{ url_for('static', filename='js/chave/funcoes.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/login/funcaoLogin.js') }}"></script>
 <script>
-     if (window.innerHeight > 900){
-        rowsPerPage = 12
-    }else{
-        rowsPerPage = 6
-    }
-
     new gridjs.Grid({
         columns: colunasChave,
-        data: dadosChave,
+        data: () => {
+            return new Promise(resolve => {
+                setTimeout(() => resolve(dadosChave), 2000);
+            });
+        },
         search: true,
         sort: true,
-        pagination:{
-            limit: rowsPerPage
-        },
-        with: 1500
-        }).render(document.getElementById("lista-chaves"));
+        paginationAutoPageSize: true,
+        pagination: true,
+        suppressPaginationPanel: true,
+    }).render(document.getElementById("lista-chaves"));
 </script>
 {% endblock %}
 {% endblock %}

@@ -61,7 +61,11 @@
 <script>
     new gridjs.Grid({
         columns: colunasGerEntrada,
-        data: dadosGerEntrada,
+        data: () => {
+            return new Promise(resolve => {
+                setTimeout(() => resolve(dadosGerEntrada), 2000);
+            });
+        },
         search: true,
         sort: true,
         paginationAutoPageSize: true,

@@ -148,3 +148,31 @@ class ControleGerenteDao:
                 .filter(CDA003.mge_dataSaid!=None, CDA003.mge_horaSaid!=None,CDA003.mge_delete!=True)
         
         return movimentos
+    
+
+    def verificaMovIdGerente(self, idFunc: int) -> CDA003:
+        """
+        Verifica se existem movimentos de gerentes abertos associados a uma gerente específico.
+
+        :param idFunc: O ID do gerente para a qual deseja verificar a existência de movimentos abertos.
+
+        :return: Um objeto de consulta contendo os IDs dos movimentos de gerente abertos associados ao gerente fornecida.
+        """
+
+        idsMov = DB.session.query(CDA003.id_movGere).filter(CDA003.mge_idFunc==idFunc)
+
+        return idsMov
+    
+
+    def consultaMovAbertoGerente(self, id: int) -> CDA003:
+        """
+        Consulta um movimento de gerente aberto pelo seu ID.
+
+        :param id: O ID do movimento de gerente que deseja consultar.
+
+        :return: O objeto de movimento de gerente aberto correspondente ao ID fornecido.
+        """
+
+        movimento = CDA003.query.filter(CDA003.id_movGere==id, CDA003.mge_dataSaid==None, CDA003.mge_horaSaid==None).first()
+
+        return movimento

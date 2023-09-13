@@ -46,7 +46,11 @@
 <script>
     new gridjs.Grid({
         columns: colunasUser,
-        data: dadosUser,
+        data: () => {
+            return new Promise(resolve => {
+                setTimeout(() => resolve(dadosUser), 2000);
+            });
+        },
         search: true,
         sort: true,
         paginationAutoPageSize: true,

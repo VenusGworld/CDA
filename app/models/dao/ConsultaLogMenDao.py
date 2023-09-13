@@ -17,7 +17,7 @@ class ConsultaLogMenDao:
         :return: Uma lista contendos os logs de mensagens enviadas.
         """
 
-        logs = DB.session.query(CDA014.id_logMens, CDA014.lme_dataHora, CDA014.lme_mensagem, SysUser.us_nome.label("nomeUser"))\
+        logs = DB.session.query(CDA014.id_logMens, CDA014.lme_dataHora, CDA014.lme_mensagem, SysUser.us_usuario.label("nomeUser"))\
             .join(SysUser, CDA014.lme_idUsua == SysUser.id)\
                 .order_by(CDA014.lme_dataHora)
 

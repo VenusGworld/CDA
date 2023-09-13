@@ -4,7 +4,6 @@ from ..Tables import CDA002, CDA005, CDA007
 from .ManterChaveDao import ManterChaveDao
 from ...configurations.Database import DB
 
-
 class ControleChaveDao:
     """
     Classe Dao para funções do contole de chave
@@ -208,5 +207,19 @@ class ControleChaveDao:
         DB.session.commit()
 
         return True
+    
+
+    def verificaMovIdFuncionario(self, idFunc: int) -> CDA002:
+        """
+        Verifica se existem movimentos de chave abertos associados a uma gerente específico.
+
+        :param idFunc: O ID do gerente para a qual deseja verificar a existência de movimentos abertos.
+
+        :return: Um objeto de consulta contendo os IDs dos movimentos de chave abertos associados ao gerente fornecida.
+        """
+
+        idsMov = DB.session.query(CDA002.id_movChave).filter(CDA002.mch_respRet==idFunc)
+
+        return idsMov
 
 

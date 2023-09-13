@@ -2,9 +2,11 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Log {{ context.log.acao }}</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Log INSERT</h5>
             </div>
-            <div class="modal-body">
+            <div class="alert" id="alert-modal" style="display: none; margin-left: 1rem; margin-right: 1rem; margin-top: 1rem;" role="alert">
+            </div>
+            <div class="modal-body overflow-scroll">
                 <div class="container">
                     <div class="row mb-3">
                         <div class="col-2">
@@ -20,26 +22,22 @@
                             <input type="text" name="horaEnt" id="horaEnt" class="form-control" value="{{ context.log.usuario.nome }}" readonly>
                         </div>
                     </div>
-                    <label class="titulo-container">Dados Usuário:</label>
-                    <div class="container container-border mb-3">
+                    <label class="titulo-container">Dados do Terceiro Inserido:</label>
+                    <div class="container container-border">
                         <div class="row">
-                            <div class="col">
-                                <label for="recipient-name" class="col-form-label">Nome:</label>
-                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosAntigos.nome }}" readonly>
+                            <div class="col-3">
+                                <label for="recipient-name" class="col-form-label">Código:</label>
+                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.codigo }}" readonly>
                             </div>
                             <div class="col">
-                                <label for="recipient-name" class="col-form-label">E-mail:</label>
-                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosAntigos.email }}" readonly>
+                                <label for="recipient-name" class="col-form-label">CPF:</label>
+                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.cpf | cpf  }}" readonly>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row mb-3">
                             <div class="col">
-                                <label for="recipient-name" class="col-form-label">Usuário:</label>
-                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosAntigos.usuario }}" readonly>
-                            </div>
-                            <div class="col mb-2">
-                                <label for="recipient-name" class="col-form-label">Grupo:</label>
-                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosAntigos.grupo }}" readonly>
+                                <label for="recipient-name" class="col-form-label">Nome:</label>
+                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.nome }}" readonly>
                             </div>
                         </div>
                     </div>
@@ -51,5 +49,3 @@
         </div>
     </div>
 </section>
-{% block script %}
-{% endblock %}

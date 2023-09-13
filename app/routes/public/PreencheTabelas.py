@@ -1,4 +1,6 @@
 from ...controllers.ControleManterFuncionario import ControleManterFuncionario
+from ...controllers.ControleConsultarLogChave import ControleConsultarLogChave
+from ...controllers.ControleConsultarLogTerc import ControleConsultarLogTerc
 from ...controllers.ControleConsultarLogUser import ControleConsultarLogUser
 from ...controllers.ControleConsultarLogFunc import ControleConsultarLogFunc
 from ...controllers.ControleConsultarLogMen import ControleConsultarLogMen
@@ -162,5 +164,43 @@ def listaLogsMenAPI():
 def listaTerceiroManutAPI():
     controleTerceiro = ControleTerceiro()
     respControle = controleTerceiro.listaTercManut()
+    resp = Response(response=json.dumps({"login": session["grupo"], "data": respControle}), status=200, mimetype="application/json")
+    return resp
+
+
+#Rota para preencher a lista de logs de chaves
+@preencheTabelasBlue.route('/lista-logs-chaves', methods=["POST"])
+@login_required
+def listaLogsChaveAPI():
+    data = request.get_json()
+    controleConsultarLogChave = ControleConsultarLogChave()
+    if data["tipo"] == "INSERT":
+        respControle = controleConsultarLogChave.consultaLogChaveInsert()
+    elif data["tipo"] == "UPDATE":
+        respControle = controleConsultarLogChave.consultaLogChaveUpdate()
+    elif data["tipo"] == "ACTIVE":
+        respControle = controleConsultarLogChave.consultaLogChaveActive()
+    else:
+        respControle = controleConsultarLogChave.consultaLogChaveDelete()
+    
+    resp = Response(response=json.dumps({"login": session["grupo"], "data": respControle}), status=200, mimetype="application/json")
+    return resp
+
+
+#Rota para preencher a lista de logs de terceiros
+@preencheTabelasBlue.route('/lista-logs-terceiros', methods=["POST"])
+@login_required
+def listaLogsTerceiroAPI():
+    data = request.get_json()
+    controleConsultarLogTerc = ControleConsultarLogTerc()
+    if data["tipo"] == "INSERT":
+        respControle = controleConsultarLogTerc.consultaLogTercInsert()
+    elif data["tipo"] == "UPDATE":
+        respControle = controleConsultarLogTerc.consultaLogTercUpdate()
+    elif data["tipo"] == "ACTIVE":
+        respControle = controleConsultarLogTerc.consultaLogTercActive()
+    else:
+        respControle = controleConsultarLogTerc.consultaLogTercDelete()
+    
     resp = Response(response=json.dumps({"login": session["grupo"], "data": respControle}), status=200, mimetype="application/json")
     return resp

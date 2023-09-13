@@ -153,8 +153,37 @@
             })
         });
     </script>
+    <script>
+        $(document).ready(function(){
+            $(".btnConfirmMeses").click(function(){
+                const inputsData = [];
+                const inputs = document.querySelectorAll('input[id^="PAR_"]');
+    
+                inputs.forEach((input) => {
+                    inputsData.push({ "codigo": input.id, "valor": parseInt(input.value) });
+                });
+    
+                $.ajax({
+                    url: "/altera-parametros",
+                    type: 'POST',
+                    async: false,
+                    dataType: 'json',
+                    contentType: 'application/json;charset=UTF-8',
+                    data: JSON.stringify({
+                        inputs: inputsData,
+                    }),
+                    success: function (resp) {
+                        window.location.reload();
+                    },
+                    error: function (resp) {
+                        window.location = '/error_500';
+                        isSubmitting = false;
+                    }
+                })
+            })
+        })
+    </script>
     {% block script %}
     {% endblock %}
 </body>
-
 </html>

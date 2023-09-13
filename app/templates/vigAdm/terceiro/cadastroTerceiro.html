@@ -1,8 +1,9 @@
 {% extends "public/base.html" %}
-{% block content %}
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styleUsuarios.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleControleTerceiro.css') }}">
 {% endblock %}
+{% block content %}
 {% include "public/header.html" %}
 <section class="content">
     <div class="container-fluid p-2">
@@ -24,7 +25,8 @@
                     <input type="text" name="nome" id="nome" class="form-control upper" maxlength="45" autocomplete="off" tabindex="1" required>
                 </div>
                 <div class="col-4 mb-3">
-                    <label for="">CPF:</label>
+                    <label for="" class="cpf">CPF:</label>
+                    <span class="alerta-cpf none">*CPF inválido</span>
                     <input type="text" name="cpf" id="cpf" class="form-control upper" maxlength="14" autocomplete="off" tabindex="2" oninput="formatCPF()" required>
                 </div>
             </div>
@@ -39,7 +41,24 @@
         </form>
     </div>
 </section>
+{% endblock %}
 {% block script %}
 <script src="{{ url_for('static', filename='js/terceiro/funcoes.js') }}"></script>
-{% endblock %}
+<script src="{{ url_for('static', filename='js/ControleTerceiro/funcoes.js') }}"></script>
+<script>
+    let intervalId = null;
+
+    $('#cpf').focus(function(){
+        intervaalId = setInterval(() => {
+            const inputsCPF = document.querySelectorAll('#cpf');
+            inputsCPF.forEach((input) => {
+                verificaCpfDiv(input); 
+            });
+        }, 500);
+    });
+
+    document.getElementById("cpf").addEventListener('blur', () => {
+        clearInterval(intervalId);
+    });
+</script>
 {% endblock %}

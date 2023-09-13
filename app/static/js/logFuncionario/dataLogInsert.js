@@ -16,8 +16,9 @@ $.ajax({
             acao: resp[x].acao,
             data: resp[x].dataHora,
             resp: resp[x].resp,
-            func: resp[x].func.nome,
-            visualizar: gridjs.html(`<div style="width: 100%;display: flex;align-items: center;text-align: center;justify-content: center;"><a href="/admin/controle-chave/incluir-devolucao/${resp[x].id}" class="btn btn-primary btn-sm" title="VIZUALIZAR"><i class="fa-regular fa-eye"></i></a></div>`)
+            cracha: resp[x].func.cracha,
+            func: resp[x].func.nome.substring(0, 15),
+            visualizar: gridjs.html(`<div style="width: 100%;display: flex;align-items: center;text-align: center;justify-content: center;"><a href="/admin/log/log-manter-funcionario/${resp[x].id}" class="btn btn-primary btn-sm" title="VIZUALIZAR"><i class="fa-regular fa-eye"></i></a></div>`)
            }
            dadosLogFuncInsert.push(dataresp)
         }
@@ -28,7 +29,8 @@ $.ajax({
 var colunasLogFuncInsert = [
     {
         id: 'acao',
-        name: 'Ação'
+        name: 'Ação',
+        width: '120px'
     },
     {
         id: 'data',
@@ -37,6 +39,10 @@ var colunasLogFuncInsert = [
     {
         id: 'resp',
         name: "Responsável"
+    },
+    {
+        id: 'cracha',
+        name: "Crachá"
     },
     {
         id: 'func',

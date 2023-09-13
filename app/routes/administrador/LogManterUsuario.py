@@ -1,3 +1,4 @@
+from ...controllers.ControleConsultaParametros import ControleConsultaParametros
 from ...controllers.ControleConsultarLogUser import ControleConsultarLogUser
 from flask import Blueprint, render_template, request, abort
 from ...extensions.LogErro import LogErro
@@ -15,9 +16,11 @@ logUserAdmBlue = Blueprint("logUserAdmBlue", __name__)
 #Rota para tela de log de usuários
 @logUserAdmBlue.route("/log/log-manter-usuario", methods=["GET"])
 @login_required
-def listagemLog():
+def listagemLogUser():
     try:
-        context = {"titulo": "Logs Manter Usuário", "active": "logUser"}
+        constroleConsultaParametros = ControleConsultaParametros()
+        meses = constroleConsultaParametros.consultaParametros("PAR_LOG_MANT_USER")
+        context = {"titulo": "Logs Manter Usuário", "active": "logUser", "meses": meses}
         return render_template("administrador/logUsuario/cosultaLogUser.html", context=context)
     except:
         log = LogErro()

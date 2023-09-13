@@ -33,6 +33,31 @@
 {% endif %}
 <section class="content">
     <div class="container-fluid p-0">
+        <div class="acoes d-flex justify-content-between">
+            {% if session.grupo != 'ADM' %}
+                <a href="{{url_for('controleGerVigBlue.controleGerente')}}" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Voltar</a>
+            {% else %}
+                <a href="{{url_for('controleGerAdmBlue.controleGerente')}}" class="btn btn-primary"><i class="fa-solid fa-arrow-left"></i> Voltar</a>
+            {% endif %}
+            <div class="dropdown">
+                <a class="btn btn-secondary dropdown" href="#" role="button" id="dropdownMenuLink"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-sliders"></i>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <label for="">Meses Select:</label>
+                                <input type="text" class="form-control" id="PAR_MANUT_CONTROL_GER"
+                                    value="{{ context.meses }}">
+                                <button class="btnConfirmMeses btn btn-primary btn-sm ml-4 mt-2">Confirmar</button>
+                            </div>
+                        </div>
+                    </div>
+                </ul>
+            </div>
+        </div>
         <div class="tabela p-3">
             <div id="lista-gerente-manut"></div>
         </div>
@@ -46,7 +71,11 @@
 <script>
     new gridjs.Grid({
         columns: colunasGerManut,
-        data: dadosGerManut,
+        data: () => {
+            return new Promise(resolve => {
+                setTimeout(() => resolve(dadosGerManut), 2000);
+            });
+        },
         search: true,
         sort: true,
         paginationAutoPageSize: true,

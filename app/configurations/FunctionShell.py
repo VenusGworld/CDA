@@ -1,28 +1,33 @@
-from flask import Blueprint
+from .Database import DB
 
-functionShellBlue = Blueprint('functionShellBlue', __name__)
-
-def criarBanco():
-    from app.models import Tables 
-    from app import create_app
-    from app.configurations.Database import DB
-
-    DB.create_all()
-
-
-def apagarBanco():
-    from app.models import Tables 
-    from app import create_app
-    from app.configurations.Database import DB
-
-    DB.drop_all()
+def function_shell(app):
+    
+    @app.cli.command("create_db")
+    def create_db():
+        with app.app_context():
+            DB.create_all()
+            insereParametros()
 
 
-@functionShellBlue.app_context_processor
-def criaBanco():
-    return dict(criarBanco=criarBanco())
+    @app.cli.command("drop_db")
+    def drop_db():
+        with app.app_context():
+            DB.drop_all()
 
 
-@functionShellBlue.app_context_processor
-def apagaBanco():
-    return {'apagarBanco': apagarBanco}
+
+def insereParametros():
+    DB.session.execute("""
+            INSERT INTO public.cda015
+            (par_codigo, par_valor)
+            VALUES
+                ('PAR_MANUT_CONTROL_CHAV', '12'),
+                ('PAR_MANUT_CONTROL_TERC', '12'),
+                ('PAR_MANUT_CONTROL_GER', '12'),
+                ('PAR_LOG_MANT_USER', '12'),
+                ('PAR_LOG_MANT_FUNC', '12'),
+                ('PAR_LOG_MANT_CHAV', '12'),
+                ('PAR_LOG_MANT_TERC', '12');
+            """)
+    
+    DB.session.commit()

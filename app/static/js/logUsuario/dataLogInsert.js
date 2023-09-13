@@ -27,7 +27,8 @@ $.ajax({
 var colunasLogUserInsert = [
     {
         id: 'acao',
-        name: 'Ação'
+        name: 'Ação',
+        width: '120px'
     },
     {
         id: 'data',

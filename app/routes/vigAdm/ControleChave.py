@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, redirect, request, Response, session, url_for, abort, flash
+from ...controllers.ControleConsultaParametros import ControleConsultaParametros
 from ...controllers.ControleChave import ControleChave
 from ...extensions.LogErro import LogErro
 from flask_login import login_required
@@ -37,7 +38,10 @@ def incluirRetiradaChav():
             context = {"titulo": "Retirada de Chave", "active": "controlChav", "data": data}
             return render_template("vigAdm/controleChave/incluirMovimentoChave.html", context=context)
         else:
-            return redirect(url_for('controleChaveVigBlue.controleChave'))
+            if session["grupo"] == "ADM":
+                return redirect(url_for('controleChaveAdmBlue.controleChave'))
+            else:
+                return redirect(url_for('controleChaveVigBlue.controleChave'))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
@@ -54,7 +58,10 @@ def insertRetiradaChav():
         controleChave = ControleChave()
         if controleChave.inserirRetirada(request.form["dtRet"], request.form["hrRet"], request.form["chave"], request.form["responsavel"]):
             flash("Retirada incluida com sucesso!", "success")
-            return redirect(url_for("controleChaveVigBlue.controleChave"))
+            if session["grupo"] == "ADM":
+                return redirect(url_for('controleChaveAdmBlue.controleChave'))
+            else:
+                return redirect(url_for('controleChaveVigBlue.controleChave'))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
@@ -75,7 +82,10 @@ def incluirDevolucaoChav(id):
             context = {"active": "controlChav", "modal": 1, "movimento": movimento, "dataAtual": data}
             return render_template("vigAdm/controleChave/controleChave.html", context=context)
         else:
-            return redirect(url_for('controleChaveVigBlue.controleChave'))
+            if session["grupo"] == "ADM":
+                return redirect(url_for('controleChaveAdmBlue.controleChave'))
+            else:
+                return redirect(url_for('controleChaveVigBlue.controleChave'))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
@@ -109,7 +119,9 @@ def insertDevolucaoChav():
 def manutencaoChave():
     try:
         session["loginVig"] = False
-        context = {"titulo": "Manutenção movimento de Chave", "active": "controlChav"}
+        constroleConsultaParametros = ControleConsultaParametros()
+        meses = constroleConsultaParametros.consultaParametros("PAR_MANUT_CONTROL_CHAV")
+        context = {"titulo": "Manutenção movimento de Chave", "active": "controlChav", "meses": meses}
         return render_template("vigAdm/controleChave/manutencaoChave.html", context=context)
     except:
         log = LogErro()
@@ -147,7 +159,10 @@ def editarMovimentoChave(id):
             context = {"titulo": "Edição de Movimento de Chave", "active": "controlChav", "movimento": movimento}
             return render_template("vigAdm/controleChave/editarmovimentoChave.html", context=context)
         else:
-            return redirect(url_for('controleChaveVigBlue.controleChave'))
+            if session["grupo"] == "ADM":
+                return redirect(url_for('controleChaveAdmBlue.manutencaoChave'))
+            else:
+                return redirect(url_for('controleChaveVigBlue.manutencaoChave'))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
@@ -167,7 +182,10 @@ def editMovimentoChave():
                                            request.form["observacaoEditar"].upper().strip())
         
         flash("Movimento alterado com sucesso!", "success")
-        return redirect(url_for('controleChaveVigBlue.manutencaoChave'))
+        if session["grupo"] == "ADM":
+            return redirect(url_for('controleChaveAdmBlue.manutencaoChave'))
+        else:
+            return redirect(url_for('controleChaveVigBlue.manutencaoChave'))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
@@ -187,7 +205,10 @@ def modalExclirMovimentoChave(id):
             context = {"titulo": "Manutenção movimento de Chave", "active": "controlChav", "modal": 2, "movimento": movimento}
             return render_template("vigAdm/controleChave/manutencaoChave.html", context=context)
         else:
-            return redirect(url_for('controleChaveVigBlue.controleChave'))
+            if session["grupo"] == "ADM":
+                return redirect(url_for('controleChaveAdmBlue.manutencaoChave'))
+            else:
+                return redirect(url_for('controleChaveVigBlue.manutencaoChave'))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
@@ -204,7 +225,10 @@ def excluirMovimentoChave():
         controleChave = ControleChave()
         controleChave.excluirMovimentoChave(request.form["idExcluir"], request.form["observacaoExcluir"].upper().strip())
         flash("Movimento excluido com sucesso!", "success")
-        return redirect(url_for('controleChaveVigBlue.manutencaoChave'))
+        if session["grupo"] == "ADM":
+            return redirect(url_for('controleChaveAdmBlue.manutencaoChave'))
+        else:
+            return redirect(url_for('controleChaveVigBlue.manutencaoChave'))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()

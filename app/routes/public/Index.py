@@ -9,8 +9,8 @@ indexBlue = Blueprint("indexBlue", __name__)
 ##############################################################
 
 #Rota o index do sistema
-@indexBlue.route("/")
-@indexBlue.route("/index")
+@indexBlue.route("/", methods=['GET'])
+@indexBlue.route("/index", methods=['GET'])
 def index():
     session["base"] = BaseDados.verificaBase()
     return render_template("public/index.html")

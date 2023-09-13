@@ -117,15 +117,21 @@ class ControleConsultarLogFunc:
         
         
     def consultaLogFuncInsertDetelhado(self, id: int):
+        """
+        Consulta e retorna detalhes de um registro de log de funcionário específico.
+
+        :param id: O ID do registro de log de funcionário.
+        
+        :return: Um objeto Log contendo detalhes do registro de log de funcionário.
+        """
+
         consultaLogDao = ConsultaLogFuncDao()
         manterUsuarioDao = ManterUsuarioDao()
-        respDao = consultaLogDao.consultaLogsFuncInsert()
+        respDao = consultaLogDao.consultaLogsFuncDetalhado(id)
+        
+        usuario = manterUsuarioDao.consultarUsuarioDetalhado(respDao.lfu_idUsua)
+        logFunc = Log(id=respDao.id_logFunc, dataHora=respDao.lfu_dataHora, acao=respDao.lfu_acao, usuario=usuario)
+        logFunc.converteDictDadosAntigos(respDao.lfu_dadosAntigos)
+        logFunc.converteDictDadosNovos(respDao.lfu_dadosNovos)
 
-        for log in respDao:
-            logUser = Log()
-            logUser.id = log.id_logFunc
-            logUser.dataHora = log.lfu_dataHora
-            logUser.acao = log.lfu_acao
-            logUser.converteDictDadosAntigos(log.lfu_dadosAntigos)
-            logUser.converteDictDadosNovos(log.lfu_dadosNovos)
-            logUser.usuario = manterUsuarioDao.consultarUsuarioDetalhado(log.lus_idUsua)
+        return logFunc

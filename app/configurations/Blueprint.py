@@ -25,8 +25,8 @@ def rotasMain(app):
     from ..routes.public.Relatorio import relatorioBlue
     app.register_blueprint(relatorioBlue)
 
-    from .FunctionShell import functionShellBlue
-    app.register_blueprint(functionShellBlue)
+    from ..routes.public.Parametros import parametrosBlue
+    app.register_blueprint(parametrosBlue)
 
 
 
@@ -80,6 +80,14 @@ def rotasAdm(app):
     from ..routes.administrador.LogMensagem import logMenAdmBlue
     app.register_blueprint(logMenAdmBlue, url_prefix="/admin")
 
+    #Rota para os logs do manter Chave com usuário admin
+    from ..routes.tecAdm.LogManterChave import logChavTecBlue
+    app.register_blueprint(logChavTecBlue, url_prefix="/admin", name="logChavAdmBlue")
+
+    #Rota para os logs do manter Terceiro com usuário tec
+    from ..routes.tecAdm.LogManterTerceiro import logTercTecBlue
+    app.register_blueprint(logTercTecBlue, url_prefix="/admin", name="logTercAdmBlue")
+
 
 
 #Adicionando as rotas relcionadas ao Tec. de Segurança
@@ -87,6 +95,14 @@ def rotasTec(app):
     #Rota para a DashBoard do Tec. de Segurança
     from ..routes.tecSeguranca.Dashboard import dashTecBlue
     app.register_blueprint(dashTecBlue, url_prefix="/tec")
+
+    #Rota para os logs do manter Chave com usuário tec
+    from ..routes.tecAdm.LogManterChave import logChavTecBlue
+    app.register_blueprint(logChavTecBlue, url_prefix="/tec")
+
+    #Rota para os logs do manter Terceiro com usuário tec
+    from ..routes.tecAdm.LogManterTerceiro import logTercTecBlue
+    app.register_blueprint(logTercTecBlue, url_prefix="/tec")
 
 
 

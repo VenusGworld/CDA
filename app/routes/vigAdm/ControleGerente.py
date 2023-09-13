@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, redirect, request, Response, session, url_for, abort, flash
+from ...controllers.ControleConsultaParametros import ControleConsultaParametros
 from ...controllers.ControleGerente import ControleDeGerente
 from ...extensions.LogErro import LogErro
 from flask_login import login_required
@@ -37,7 +38,10 @@ def incluirEntradaGer():
             context = {"titulo": "Entrada de Gerente", "active": "controlGer", "data": data}
             return render_template("vigAdm/controleGerente/incluirMovimentoGerente.html", context=context)
         else:
-            return redirect(url_for('controleGerVigBlue.controleGerente'))
+            if session["grupo"] == "ADM":
+                return redirect(url_for('controleGerAdmBlue.controleGerente'))
+            else:
+                return redirect(url_for('controleGerVigBlue.controleGerente'))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
@@ -54,7 +58,10 @@ def insertEntradaGer():
         controleGerente = ControleDeGerente()
         if controleGerente.inserirEntrada(request.form["dtEnt"], request.form["hrEnt"], request.form["gerente"]):
             flash("Entrada incluida com sucesso!", "success")
-            return redirect(url_for('controleGerVigBlue.controleGerente'))
+            if session["grupo"] == "ADM":
+                return redirect(url_for('controleGerAdmBlue.controleGerente'))
+            else:
+                return redirect(url_for('controleGerVigBlue.controleGerente'))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
@@ -75,7 +82,10 @@ def incluirSaidaGer(id):
             context = {"active": "controlChav", "modal": 1, "movimento": movimento, "dataAtual": data}
             return render_template("vigAdm/controleGerente/controleGerente.html", context=context)
         else:
-            return redirect(url_for('controleGerVigBlue.controleGerente'))
+            if session["grupo"] == "ADM":
+                return redirect(url_for('controleGerAdmBlue.controleGerente'))
+            else:
+                return redirect(url_for('controleGerVigBlue.controleGerente'))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
@@ -108,7 +118,10 @@ def insertSaidaGer():
 @login_required
 def manutencaoGerente():
     try:
-        context = {"titulo": "Manutenção movimento de Gerente", "active": "controlGer"}
+        session["loginVig"] = False
+        constroleConsultaParametros = ControleConsultaParametros()
+        meses = constroleConsultaParametros.consultaParametros("PAR_MANUT_CONTROL_GER")
+        context = {"titulo": "Manutenção movimento de Gerente", "active": "controlGer", "meses": meses}
         return render_template("vigAdm/controleGerente/manutencaoGerente.html", context=context)
     except:
         log = LogErro()
@@ -129,7 +142,10 @@ def editarMovimentoGerente(id):
             context = {"titulo": "Edição de Movimento de Gerente", "active": "controlGer", "movimento": movimento}
             return render_template("vigAdm/controleGerente/editarMovimentoGerente.html", context=context)
         else:
-            return redirect(url_for('controleGerVigBlue.manutencaoGerente'))
+            if session["grupo"] == "ADM":
+                return redirect(url_for('controleGerAdmBlue.manutencaoGerente'))
+            else:
+                return redirect(url_for('controleGerVigBlue.manutencaoGerente'))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
@@ -149,7 +165,10 @@ def editMovimentoGerente():
                                                request.form["observacaoEditar"].upper().strip())
         
         flash("Movimento alterado com sucesso!", "success")
-        return redirect(url_for('controleGerVigBlue.manutencaoGerente'))
+        if session["grupo"] == "ADM":
+            return redirect(url_for('controleGerAdmBlue.manutencaoGerente'))
+        else:
+            return redirect(url_for('controleGerVigBlue.manutencaoGerente'))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
@@ -169,7 +188,10 @@ def modalExclirMovimentoGerente(id):
             context = {"titulo": "Manutenção movimento de Gerente", "active": "controlGer", "modal": 1, "movimento": movimento}
             return render_template("vigAdm/controleGerente/manutencaoGerente.html", context=context)
         else:
-            return redirect(url_for('controleGerVigBlue.manutencaoGerente'))
+            if session["grupo"] == "ADM":
+                return redirect(url_for('controleGerAdmBlue.manutencaoGerente'))
+            else:
+                return redirect(url_for('controleGerVigBlue.manutencaoGerente'))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
@@ -186,7 +208,10 @@ def exclirMovimentoGerente():
         controleGerente = ControleDeGerente()
         controleGerente.excluirMovimentoGerente(request.form["idExcluir"], request.form["crachaGer"], request.form["observacaoExcluir"])
         flash("Movimento excluido com sucesso!", "success")
-        return redirect(url_for('controleGerVigBlue.manutencaoGerente'))
+        if session["grupo"] == "ADM":
+            return redirect(url_for('controleGerAdmBlue.manutencaoGerente'))
+        else:
+            return redirect(url_for('controleGerVigBlue.manutencaoGerente'))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()

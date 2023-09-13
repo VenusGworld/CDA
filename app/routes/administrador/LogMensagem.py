@@ -1,3 +1,4 @@
+from ...controllers.ControleConsultaParametros import ControleConsultaParametros
 from ...controllers.ControleConsultarLogMen import ControleConsultarLogMen
 from flask import Blueprint, render_template, request, abort
 from ...extensions.LogErro import LogErro
@@ -15,9 +16,11 @@ logMenAdmBlue = Blueprint("logMenAdmBlue", __name__)
 #Rota para tela de log de Mensagem
 @logMenAdmBlue.route("/log/log-mensagem")
 @login_required
-def listagemLog():
+def listagemLogMen():
     try:
-        context = {"titulo": "Logs Mensagem", "active": "logMsg"}
+        constroleConsultaParametros = ControleConsultaParametros()
+        meses = constroleConsultaParametros.consultaParametros("PAR_LOG_MENSAGEM")
+        context = {"titulo": "Logs Mensagem", "active": "logMsg", "meses": meses}
         return render_template("administrador/logMansagem/cosultaLogMen.html", context=context)
     except:
         log = LogErro()

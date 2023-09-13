@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, redirect, request, Response, jsonify, session, url_for, abort, flash
+from ...controllers.ControleConsultaParametros import ControleConsultaParametros
 from ...controllers.ControleTerceiro import ControleTerceiro
 from ...extensions.LogErro import LogErro
 from flask_login import login_required
@@ -36,7 +37,10 @@ def incluirEntradaTerc():
             context = {"titulo": "Entrada de Terceiro", "active": "controlTerc", "data": data}
             return render_template("vigAdm/controleTerceiro/incluirMovimentoTerceiro.html", context=context)
         else:
-            return redirect(url_for('controleTercVigBlue.controleTerceiro'))
+            if session["grupo"] == "ADM":
+                return redirect(url_for('controleTercAdmBlue.controleTerceiro'))
+            else:
+                return redirect(url_for('controleTercVigBlue.controleTerceiro'))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
@@ -77,7 +81,10 @@ def incluirSaidaModalTerc(id):
             context = {"active": "controlTerc", "modal": 1, "movimento": movimento, "dataAtual": data}
             return render_template("vigAdm/controleTerceiro/controleTerceiro.html", context=context)
         else:
-            return redirect(url_for('controleTercVigBlue.controleTerceiro'))
+            if session["grupo"] == "ADM":
+                return redirect(url_for('controleTercAdmBlue.controleTerceiro'))
+            else:
+                return redirect(url_for('controleTercVigBlue.controleTerceiro'))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
@@ -111,7 +118,9 @@ def insertSaidaTerc():
 def manutencaoTerceiro():
     try:
         session["loginVig"] = False
-        context = {"titulo": "Manutenção movimento de Terceiro", "active": "controlTerc"}
+        constroleConsultaParametros = ControleConsultaParametros()
+        meses = constroleConsultaParametros.consultaParametros("PAR_MANUT_CONTROL_TERC")
+        context = {"titulo": "Manutenção movimento de Terceiro", "active": "controlTerc", "meses": meses}
         return render_template("vigAdm/controleTerceiro/manutencaoTerceiro.html", context=context)
     except:
         log = LogErro()
@@ -149,7 +158,10 @@ def editarMovimentoTerceiro(id):
             context = {"titulo": "Edição de Movimento de Terceiro", "active": "controlTerc", "movimento": movimento}
             return render_template("vigAdm/controleTerceiro/editarMovimentoTerceiro.html", context=context)
         else:
-            return redirect(url_for('controleTercVigBlue.manutencaoTerceiro'))
+            if session["grupo"] == "ADM":
+                return redirect(url_for('controleTercAdmBlue.manutencaoTerceiro'))
+            else:
+                return redirect(url_for('controleTercVigBlue.manutencaoTerceiro'))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
@@ -169,7 +181,10 @@ def editMovimentoTerceiro():
                                                 request.form["observacaoEditar"].upper().strip())
         
         flash("Movimento alterado com sucesso!", "success")
-        return redirect(url_for('controleTercVigBlue.manutencaoTerceiro'))
+        if session["grupo"] == "ADM":
+            return redirect(url_for('controleTercAdmBlue.manutencaoTerceiro'))
+        else:
+            return redirect(url_for('controleTercVigBlue.manutencaoTerceiro'))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
@@ -189,7 +204,10 @@ def modalExcluirMovimentoTerceiro(id):
             context = {"titulo": "Manutenção movimento de Terceiro", "active": "controlTerc", "modal": 2, "movimento": movimento}
             return render_template("vigAdm/controleTerceiro/manutencaoTerceiro.html", context=context)
         else:
-            return redirect(url_for('controleTercVigBlue.manutencaoTerceiro'))
+            if session["grupo"] == "ADM":
+                return redirect(url_for('controleTercAdmBlue.manutencaoTerceiro'))
+            else:
+                return redirect(url_for('controleTercVigBlue.manutencaoTerceiro'))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
@@ -207,7 +225,10 @@ def excluirMovimentoTerceiro():
         controleTerceiro = ControleTerceiro()
         controleTerceiro.excluirMovimentoTerceiro(request.form["idExcluir"], request.form["crachaPessoaVisit"], request.form["observacaoExcluir"].upper().strip())
         flash("Movimento excluido com sucesso!", "success")
-        return redirect(url_for('controleTercVigBlue.manutencaoTerceiro'))
+        if session["grupo"] == "ADM":
+            return redirect(url_for('controleTercAdmBlue.manutencaoTerceiro'))
+        else:
+            return redirect(url_for('controleTercVigBlue.manutencaoTerceiro'))
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()

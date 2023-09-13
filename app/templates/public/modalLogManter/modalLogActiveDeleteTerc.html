@@ -1,0 +1,49 @@
+<section class="modal-alert">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Log {{ context.log.acao }}</h5>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row mb-3">
+                        <div class="col-2">
+                            <label for="recipient-name" class="col-form-label">Ação:</label>
+                            <input type="text" name="gerente" id="gerente" class="form-control upper" value="{{ context.log.acao }}" readonly>
+                        </div>
+                        <div class="col-3">
+                            <label for="recipient-name" class="col-form-label">Data:</label>
+                            <input type="text" name="dataEnt" id="dataEnt" class="form-control" value="{{ context.log.dataHora | dataTime }}" readonly>
+                        </div>
+                        <div class="col mb-1">
+                            <label for="recipient-name" class="col-form-label">Responsável:</label>
+                            <input type="text" name="horaEnt" id="horaEnt" class="form-control" value="{{ context.log.usuario.nome }}" readonly>
+                        </div>
+                    </div>
+                    <label class="titulo-container">Dados Funcionário:</label>
+                    <div class="container container-border  mb-3">
+                        <div class="row">
+                            <div class="col-3">
+                                <label for="recipient-name" class="col-form-label">Código:</label>
+                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosAntigos.codigo }}" readonly>
+                            </div>
+                            <div class="col">
+                                <label for="recipient-name" class="col-form-label">CPF:</label>
+                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosAntigos.cpf | cpf  }}" readonly>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label for="recipient-name" class="col-form-label">Nome:</label>
+                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosAntigos.nome }}" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <a href="javascript:history.back()" class="btn btn-outline-danger">Voltar</a>
+            </div>
+        </div>
+    </div>
+</section>

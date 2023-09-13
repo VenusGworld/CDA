@@ -1,3 +1,5 @@
+from ...controllers.ControleConsultaParametros import ControleConsultaParametros
+from ...controllers.ControleConsultarLogFunc import ControleConsultarLogFunc
 from flask import Blueprint, render_template, request, abort
 from ...extensions.LogErro import LogErro
 from flask_login import login_required
@@ -12,11 +14,13 @@ logFuncAdmBlue = Blueprint("logFuncAdmBlue", __name__)
 ##############################################################
 
 #Rota para tela de log de Funcionários
-@logFuncAdmBlue.route("/log/log-manter-funcionario")
+@logFuncAdmBlue.route("/log/log-manter-funcionario", methods=["GET"])
 @login_required
-def listagemLog():
+def listagemLogFunc():
     try:
-        context = {"titulo": "Logs Manter Funcionário", "active": "logFunc"}
+        constroleConsultaParametros = ControleConsultaParametros()
+        meses = constroleConsultaParametros.consultaParametros("PAR_LOG_MANT_FUNC")
+        context = {"titulo": "Logs Manter Funcionário", "active": "logFunc", "meses": meses}
         return render_template("administrador/logFuncionario/cosultaLogFunc.html", context=context)
     except:
         log = LogErro()
@@ -27,11 +31,19 @@ def listagemLog():
 
 
 #Rota para tela de log de Funcionários
-@logFuncAdmBlue.route("/log/log-manter-funcionario")
+@logFuncAdmBlue.route("/log/log-manter-funcionario/<id>", methods=["GET"])
 @login_required
-def vizualizarLog():
+def vizualizarLog(id):
     try:
-        context = {"titulo": "Logs Manter Funcionário", "active": "logFunc"}
+        controleConsultaLogFunc = ControleConsultarLogFunc()
+        log = controleConsultaLogFunc.consultaLogFuncInsertDetelhado(id)
+        if log.acao == "INSERT":
+            modal = 1
+        elif log.acao == "UPDATE":
+            modal = 2
+        elif log.acao in ["DELETE", "ACTIVE"]:
+            modal = 3
+        context = {"titulo": "Logs Manter Funcionário", "active": "logFunc", "modal": modal, "log": log}
         return render_template("administrador/logFuncionario/cosultaLogFunc.html", context=context)
     except:
         log = LogErro()

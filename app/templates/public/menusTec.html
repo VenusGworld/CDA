@@ -35,13 +35,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="./index2.html" class="nav-link">
+                        <a href="{{url_for('logControlTercTecBlue.listagemLogControlTerc')}}" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Controle Terceiros</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="./index3.html" class="nav-link">
+                        <a href="{{url_for('logControlChavTecBlue.listagemLogControlChave')}}" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Controle Chaves</p>
                         </a>
@@ -55,7 +55,7 @@
                     <li class="nav-item">
                         <a href="{{url_for('logChavTecBlue.listagemLogChave')}}" class="nav-link {% if context.active == 'logChave' %}active{% endif %}">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Chaves</p>
+                            <p>Chave</p>
                         </a>
                     </li>
                 </ul>

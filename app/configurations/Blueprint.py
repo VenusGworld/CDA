@@ -84,9 +84,17 @@ def rotasAdm(app):
     from ..routes.tecAdm.LogManterChave import logChavTecBlue
     app.register_blueprint(logChavTecBlue, url_prefix="/admin", name="logChavAdmBlue")
 
-    #Rota para os logs do manter Terceiro com usuário tec
+    #Rota para os logs do manter Terceiro com usuário admin
     from ..routes.tecAdm.LogManterTerceiro import logTercTecBlue
     app.register_blueprint(logTercTecBlue, url_prefix="/admin", name="logTercAdmBlue")
+
+    #Rota para os logs do controle de chaves com usuário admin
+    from ..routes.tecAdm.LogControlChave import logControlChavTecBlue
+    app.register_blueprint(logControlChavTecBlue, url_prefix="/admin", name="logControlChavAdmBlue")
+
+    #Rota para os logs do controle de terceiros com usuário admin
+    from ..routes.tecAdm.LogControlTerc import logControlTercTecBlue
+    app.register_blueprint(logControlTercTecBlue, url_prefix="/admin", name="logControlTercAdmBlue")
 
 
 
@@ -103,6 +111,14 @@ def rotasTec(app):
     #Rota para os logs do manter Terceiro com usuário tec
     from ..routes.tecAdm.LogManterTerceiro import logTercTecBlue
     app.register_blueprint(logTercTecBlue, url_prefix="/tec")
+
+    #Rota para os logs do controle de chaves com usuário tec
+    from ..routes.tecAdm.LogControlChave import logControlChavTecBlue
+    app.register_blueprint(logControlChavTecBlue, url_prefix="/tec")
+
+    #Rota para os logs do controle de terceiros com usuário tec
+    from ..routes.tecAdm.LogControlTerc import logControlTercTecBlue
+    app.register_blueprint(logControlTercTecBlue, url_prefix="/tec")
 
 
 

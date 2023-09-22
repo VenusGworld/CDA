@@ -1,8 +1,10 @@
+from ..models.dao.ConsultaParametrosDao import ConsultaParametrosDao
 from ..models.dao.ManterFuncionarioDao import ManterFuncionarioDao
 from ..models.dao.ControleGerenteDao import ControleGerenteDao
 from ..models.entity.MovimentoGerente import MovimentoGerente
 from ..extensions.FiltrosJson import filtroData, filtroNome
 from ..models.dao.ConsultaIdsDao import ConsultaIdsDao
+from dateutil.relativedelta import relativedelta
 from ..models.dao.GeraLogDao import GeraLogDao
 from ..models.entity.Usuario import Usuario
 from ..models.entity.Log import Log
@@ -175,14 +177,21 @@ class ControleDeGerente:
 
     def listaGerentesManut(self) -> list[dict]:
         """
-        Lista os registros de movimentos de entrada e saída de gerentes para manutenção.
+        Lista os registros de movimentos de entrada e saída de gerentes para manutenção de acordo com a data na tabela de parâmetros('PAR_MANUT_CONTROL_GER').
 
         :return: Uma lista de dicionários contendo os detalhes dos movimentos de entrada e saída de gerentes.
             Cada dicionário possui chaves "id", "nome", "entrada" e "saida".
         """
 
+        #Consulta a data na tabela de parametros para fazer a pesquisa apartir desta data
+        consultaParametro = ConsultaParametrosDao()
+        mesesAtras = consultaParametro.consultaParametros("PAR_MANUT_CONTROL_GER")
+        dataDe = datetime.now()
+        dataDe = dataDe - relativedelta(months=mesesAtras)
+        dataDe = dataDe.strftime("%Y%m01")
+
         controleGerenteDao = ControleGerenteDao()
-        respDao = controleGerenteDao.consultaGerentesManut()
+        respDao = controleGerenteDao.consultaGerentesManut(dataDe)
         movimentosGerente = []
         for gerente in respDao:
             dictMov = {

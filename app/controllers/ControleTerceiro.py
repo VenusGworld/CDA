@@ -1,5 +1,6 @@
 from ..extensions.FiltrosJson import filtroData, filtroNome, filtroMotivo
 from ..controllers.ControleManterTerceiro import ControleManterTerceiro
+from ..models.dao.ConsultaParametrosDao import ConsultaParametrosDao
 from ..models.dao.ManterFuncionarioDao import ManterFuncionarioDao
 from ..models.dao.ControleTerceiroDao import ControleTerceiroDao
 from ..models.entity.MovimentoTerceiro import MovimentoTerceiro
@@ -8,6 +9,7 @@ from ..models.dao.ConsultaIdsDao import ConsultaIdsDao
 from ..models.entity.Funcionario import Funcionario
 from ..models.dao.PesquisaDao import PesquisaDao
 from ..models.dao.TerceiroDao import TerceiroDao
+from dateutil.relativedelta import relativedelta
 from ..models.dao.GeraLogDao import GeraLogDao
 from ..models.entity.Usuario import Usuario
 from ..models.entity.Log import Log
@@ -309,14 +311,21 @@ class ControleTerceiro:
 
     def listaTercManut(self) -> list[dict]:
         """
-        Lista os registros de movimentos de entrada e saída de terceiros para manutenção.
+        Lista os registros de movimentos de entrada e saída de terceiros para manutenção de acordo com a data na tabela de parâmetros('PAR_MANUT_CONTROL_TERC').
 
         :return: Uma lista de dicionários contendo os detalhes dos movimentos de entrada e saída de terceiros.
             Cada dicionário possui chaves 'id', "nomeTerc", "entrada", "saida", "motivo", "visitado" e  "empresa".
         """
 
+        #Consulta a data na tabela de parametros para fazer a pesquisa apartir desta data
+        consultaParametro = ConsultaParametrosDao()
+        mesesAtras = consultaParametro.consultaParametros("PAR_MANUT_CONTROL_TERC")
+        dataDe = datetime.now()
+        dataDe = dataDe - relativedelta(months=mesesAtras)
+        dataDe = dataDe.strftime("%Y%m01")
+
         controleTerceiroDao = ControleTerceiroDao()
-        movimentos = controleTerceiroDao.listaTercManut()
+        movimentos = controleTerceiroDao.listaTercManut(dataDe)
         manterTerceiroDao = ManterTerceiroDao()
         listaMovimentos = []
         for movimento in movimentos:

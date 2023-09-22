@@ -1,3 +1,4 @@
+from ..models.dao.ConsultaParametrosDao import ConsultaParametrosDao
 from ..models.dao.ManterFuncionarioDao import ManterFuncionarioDao
 from ..extensions.FiltrosJson import filtroData, filtroNome
 from ..models.dao.ControleChaveDao import ControleChaveDao
@@ -5,6 +6,7 @@ from ..models.entity.MovimentoChave import MovimentoChave
 from ..models.dao.ManterChaveDao import ManterChaveDao
 from ..models.dao.ConsultaIdsDao import ConsultaIdsDao
 from ..models.entity.Funcionario import Funcionario
+from dateutil.relativedelta import relativedelta
 from ..models.dao.GeraLogDao import GeraLogDao
 from ..models.entity.Usuario import Usuario
 from ..models.entity.Log import Log
@@ -196,14 +198,21 @@ class ControleChave:
     
     def listaChavesManut(self) -> list[dict]:
         """
-        Consulta e retorna uma lista de chaves que foram retiradas e devolvidas para manutenção.
+        Consulta e retorna uma lista de chaves que foram retiradas e devolvidas para manutenção de acordo com a data na tabela de parâmetros('PAR_MANUT_CONTROL_CHAV').
 
         :return: Uma lista de dicionários contendo informações sobre as chaves retiradas e devolvidas.
             Cada dicionário possui chaves "id", "nome", "retirada", "devolucao" e "respRet".
         """
+
+        #Consulta a data na tabela de parametros para fazer a pesquisa apartir desta data
+        consultaParametro = ConsultaParametrosDao()
+        mesesAtras = consultaParametro.consultaParametros("PAR_MANUT_CONTROL_CHAV")
+        dataDe = datetime.now()
+        dataDe = dataDe - relativedelta(months=mesesAtras)
+        dataDe = dataDe.strftime("%Y%m01")
         
         controleChaveDao = ControleChaveDao()
-        respDao = controleChaveDao.consultaChavesManut()
+        respDao = controleChaveDao.consultaChavesManut(dataDe)
         listaChave = []
         for movimento in respDao:
             dicChave ={

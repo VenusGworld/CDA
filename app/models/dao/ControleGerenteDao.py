@@ -136,7 +136,7 @@ class ControleGerenteDao:
         return mov.mge_idFunc
     
 
-    def consultaGerentesManut(self) -> CDA003:
+    def consultaGerentesManut(self, data: str) -> CDA003:
         """
         Consulta os registros de movimento de gerentes com entrada e saída (completos) para manutenções.
 
@@ -145,7 +145,7 @@ class ControleGerenteDao:
         
         movimentos = DB.session.query(CDA003.id_movGere, CDA003.mge_dataEntra, CDA003.mge_horaEntra, CDA003.mge_dataSaid, CDA003.mge_horaSaid, CDA007.fu_nome.label("nomeGer"))\
             .join(CDA007, CDA007.id_funcionario==CDA003.mge_idFunc)\
-                .filter(CDA003.mge_dataSaid!=None, CDA003.mge_horaSaid!=None,CDA003.mge_delete!=True)
+                .filter(CDA003.mge_dataSaid!=None, CDA003.mge_horaSaid!=None, CDA003.mge_delete!=True, CDA003.mge_dataEntra>=data)
         
         return movimentos
     

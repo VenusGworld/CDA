@@ -1,12 +1,10 @@
 <section class="modal-alert">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Log UPDATE</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Log {{ context.log.acao }}</h5>
             </div>
-            <div class="alert" id="alert-modal" style="display: none; margin-left: 1rem; margin-right: 1rem; margin-top: 1rem;" role="alert">
-            </div>
-            <div class="modal-body overflow-scroll">
+            <div class="modal-body">
                 <div class="container">
                     <div class="row mb-3">
                         <div class="col-2">
@@ -28,29 +26,32 @@
                             <textarea class="form-control" cols="30" rows="2" readonly>{{ context.log.observacao }}</textarea>
                         </div>
                     </div>
-                    <label class="titulo-container">Dados Antigos:</label>
+                    <label class="titulo-container">Movimento excluido:</label>
                     <div class="container container-border mb-3">
-                        <div class="row mb-3">
-                            <div class="col-3">
-                                <label for="recipient-name" class="col-form-label">Código:</label>
-                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosAntigos.codigo }}" readonly>
-                            </div>
+                        <div class="row">
                             <div class="col">
-                                <label for="recipient-name" class="col-form-label">Nome:</label>
-                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosAntigos.nome }}" readonly>
+                                <label for="recipient-name" class="col-form-label">Chave:</label>
+                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosAntigos.chave.nome }}" readonly>
                             </div>
                         </div>
-                    </div>
-                    <label class="titulo-container">Dados Novos:</label>
-                    <div class="container container-border">
-                        <div class="row mb-3">
+                        <div class="row mb">
                             <div class="col-3">
-                                <label for="recipient-name" class="col-form-label">Código:</label>
-                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.codigo }}" readonly>
+                                <label for="recipient-name" class="col-form-label">Data Retirada:</label>
+                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosAntigos.dataRet | dataLimite }} {{ context.log.dadosAntigos.horaRet }}" readonly>
                             </div>
                             <div class="col">
-                                <label for="recipient-name" class="col-form-label">Nome:</label>
-                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.nome }}" readonly>
+                                <label for="recipient-name" class="col-form-label">Resposável Retirada:</label>
+                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosAntigos.respRet.nome }}" readonly>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-3">
+                                <label for="recipient-name" class="col-form-label">Data Devolução:</label>
+                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosAntigos.dataDev | dataLimite }} {{ context.log.dadosAntigos.horaDev }}" readonly>
+                            </div>
+                            <div class="col">
+                                <label for="recipient-name" class="col-form-label">Resposável Devolução:</label>
+                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosAntigos.respDev.nome }}" readonly>
                             </div>
                         </div>
                     </div>
@@ -62,5 +63,3 @@
         </div>
     </div>
 </section>
-{% block script %}
-{% endblock %}

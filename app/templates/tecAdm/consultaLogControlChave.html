@@ -1,0 +1,154 @@
+{% extends "public/base.html" %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleUsuarios.css') }}">
+{% endblock %}
+{% block content %}
+{% include "public/header.html" %}
+{% if context.modal == 1 %}
+    {% include "public/modalLogControle/modalLogControlChavRet.html" %}
+{% elif context.modal == 2 %}
+    {% include "public/modalLogControle/modalLogControlChavDev.html" %}
+{% elif context.modal == 3 %}
+    {% include "public/modalLogControle/modalLogControlChavUp.html" %}
+{% elif context.modal == 4 %}
+    {% include "public/modalLogControle/modalLogControlChavDel.html" %}
+{% endif %}
+<section class="content">
+    <div class="container-fluid p-0">
+        <div class="acoes">
+            <div class="dropdown">
+                <a class="btn btn-secondary dropdown" href="#" role="button" id="dropdownMenuLink"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-sliders"></i>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <label for="">Meses Select:</label>
+                                <input type="text" class="form-control" id="PAR_MANUT_CONTROL_CHAV"
+                                    value="{{ context.meses }}">
+                                <button class="btnConfirmMeses btn btn-primary btn-sm ml-4 mt-2">Confirmar</button>
+                            </div>
+                        </div>
+                    </div>
+                </ul>
+            </div>
+        </div>
+        <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#retirada" type="button"
+                    role="tab" aria-controls="retirada" aria-selected="true">
+                    RETIRADA</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#devolucao" type="button"
+                    role="tab" aria-controls="devolucao" aria-selected="false">
+                    DEVOLUÇÃO</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#update" type="button"
+                    role="tab" aria-controls="update" aria-selected="false">
+                    UPDATE</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#delete" type="button"
+                    role="tab" aria-controls="delete" aria-selected="false">
+                    DELETE</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="retirada" role="tabpanel" aria-labelledby="retirada">
+                <div class="tabela p-3">
+                    <div id="lista-logs-retirada"></div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="devolucao" role="tabpanel" aria-labelledby="devolucao">
+                <div class="tabela p-3 m-2">
+                    <div id="lista-logs-devolucao"></div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="update" role="tabpanel" aria-labelledby="update">
+                <div class="tabela p-3 m-2">
+                    <div id="lista-logs-update"></div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="delete" role="tabpanel" aria-labelledby="delete">
+                <div class="tabela p-3 m-2">
+                    <div id="lista-logs-delete"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+{% block script %}
+<script src="{{ url_for('static', filename='js/logControleChav/dataLogRet.js') }}"></script>
+<script>
+    new gridjs.Grid({
+        columns: colunasLogControlChavRet,
+        data: () => {
+            return new Promise(resolve => {
+                setTimeout(() => resolve(dadosLogControlChavRet), 2000);
+            });
+        },
+        search: true,
+        sort: true,
+        paginationAutoPageSize: true,
+        pagination: true,
+        suppressPaginationPanel: true
+    }).render(document.getElementById("lista-logs-retirada"));
+</script>
+
+<script src="{{ url_for('static', filename='js/logControleChav/dataLogDev.js') }}"></script>
+<script>
+    new gridjs.Grid({
+        columns: colunasLogControlChavDev,
+        data: () => {
+            return new Promise(resolve => {
+                setTimeout(() => resolve(dadosLogControlChavDev), 2000);
+            });
+        },
+        search: true,
+        sort: true,
+        paginationAutoPageSize: true,
+        pagination: true,
+        suppressPaginationPanel: true
+    }).render(document.getElementById("lista-logs-devolucao"));
+</script>
+
+<script src="{{ url_for('static', filename='js/logControleChav/dataLogUpdate.js') }}"></script>
+<script>
+    new gridjs.Grid({
+        columns: colunasLogControlChavUp,
+        data: () => {
+            return new Promise(resolve => {
+                setTimeout(() => resolve(dadosLogControlChavUp), 2000);
+            });
+        },
+        search: true,
+        sort: true,
+        paginationAutoPageSize: true,
+        pagination: true,
+        suppressPaginationPanel: true
+    }).render(document.getElementById("lista-logs-update"));
+</script>
+
+<script src="{{ url_for('static', filename='js/logControleChav/dataLogDelete.js') }}"></script>
+<script>
+    const searchInput = document.getElementById('teste');
+    new gridjs.Grid({
+        columns: colunasLogControlChavDel,
+        data: () => {
+            return new Promise(resolve => {
+                setTimeout(() => resolve(dadosLogControlChavDel), 2000);
+            });
+        },
+        search: true,
+        sort: true,
+        paginationAutoPageSize: true,
+        pagination: true,
+        suppressPaginationPanel: true
+    }).render(document.getElementById("lista-logs-delete"));
+</script>
+{% endblock %}

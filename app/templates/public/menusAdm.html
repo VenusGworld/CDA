@@ -93,19 +93,19 @@
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="./index.html" class="nav-link {% if context.active == 'logControlGere' %}active{% endif %}">
+                        <a href="#" class="nav-link {% if context.active == 'logControlGere' %}active{% endif %}">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Controle Gerentes</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="./index2.html" class="nav-link {% if context.active == 'logControlTerc' %}active{% endif %}">
+                        <a href="{{url_for('logControlTercAdmBlue.listagemLogControlTerc')}}" class="nav-link {% if context.active == 'logControlTerc' %}active{% endif %}">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Controle Terceiros</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="./index3.html" class="nav-link {% if context.active == 'logControlChav' %}active{% endif %}">
+                        <a href="{{url_for('logControlChavAdmBlue.listagemLogControlChave')}}" class="nav-link {% if context.active == 'logControlChav' %}active{% endif %}">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Controle Chaves</p>
                         </a>
@@ -119,7 +119,7 @@
                     <li class="nav-item">
                         <a href="{{url_for('logChavAdmBlue.listagemLogChave')}}" class="nav-link {% if context.active == 'logChave' %}active{% endif %}">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Chaves</p>
+                            <p>Chave</p>
                         </a>
                     </li>
                     <li class="nav-item">

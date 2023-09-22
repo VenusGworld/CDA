@@ -10,7 +10,7 @@ class ConsultaLogMenDao:
     @since - 16/08/2023
     """
 
-    def consultaLogsMen(self) -> CDA014:
+    def consultaLogsMen(self, data: str) -> CDA014:
         """
         Consulta e retorna uma lista de registros contendo os logs de mensagens enviadas.
         
@@ -18,8 +18,9 @@ class ConsultaLogMenDao:
         """
 
         logs = DB.session.query(CDA014.id_logMens, CDA014.lme_dataHora, CDA014.lme_mensagem, SysUser.us_usuario.label("nomeUser"))\
-            .join(SysUser, CDA014.lme_idUsua == SysUser.id)\
-                .order_by(CDA014.lme_dataHora)
+            .filter(CDA014.lme_dataHora>=data)\
+                .join(SysUser, CDA014.lme_idUsua == SysUser.id)\
+                    .order_by(CDA014.lme_dataHora)
 
         return logs
     

@@ -44,7 +44,7 @@
             {% endwith %}
             <div class="body-card">
                 <form action="/login" method="POST" class="body-card">
-                    <div class="row" style="width: 16rem;">
+                    <div class="row mb-4" style="width: 16rem;">
                         <label for="">Usuário:</label>
                         <div class="form-group">
                             <i class="fa-solid fa-user"></i>
@@ -55,17 +55,22 @@
                             <i class="fa-solid fa-lock"></i>
                             <input type="password" class="form-control upper" id="pssd" name="pssd" maxlength="8" required>
                         </div>
+                        {% if context %}
+                            {% if context.qtde == 0 %}
+                                <span class="obs">*O primeiro login deve ser efetuado com o usuário ADMIN</span>
+                            {% endif %}
+                        {% endif %}
                     </div>
-                </div>
-                <div class="btn-ok">
-                    <input type="submit" class="btn btn-outline-success btn-sm btn-login" value="Acessar">
-                </div>
-            </form>
-            <div class="footer-card">
-                <a href="/esqueci-senha-modal">Esqueceu a senha?
-                    <div class="barra">
+                    <div class="btn-ok">
+                        <input type="submit" class="btn btn-outline-success btn-sm btn-login" value="Acessar">
                     </div>
-                </a>
+                </form>
+                <div class="footer-card">
+                    <a href="/esqueci-senha-modal">Esqueceu a senha?
+                        <div class="barra">
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
     </div>

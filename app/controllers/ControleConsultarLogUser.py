@@ -17,7 +17,7 @@ class ControleConsultarLogUser:
 
     def consultaLogUserInsert(self) -> list[dict]:
         """
-        Consulta e retorna uma lista de logs de inserção de usuários de acordo com a data na tabela de parâmetros('LOGMTUSER_INSERT').
+        Consulta e retorna uma lista de logs de inserção de usuários de acordo com a data na tabela de parâmetros('PAR_LOG_MANT_USER').
 
         :return: Uma lista de dicionários contendo informações sobre os logs de inserção de usuários.
             Cada dicionário possui chaves "id", "dataHora", "acao", "resp" e "usuario".
@@ -50,7 +50,7 @@ class ControleConsultarLogUser:
 
     def consultaLogUserUpdate(self) -> list[dict]:
         """
-        Consulta e retorna uma lista de logs de alteração de usuários.
+        Consulta e retorna uma lista de logs de alteração de usuários de acordo com a data na tabela de parâmetros('PAR_LOG_MANT_USER').
 
         :return: Uma lista de dicionários contendo informações sobre os logs de alteração de usuários.
             Cada dicionário possui chaves "id", "dataHora", "acao", "resp" e "usuario".
@@ -83,7 +83,7 @@ class ControleConsultarLogUser:
 
     def consultaLogUserDelete(self) -> list[dict]:
         """
-        Consulta e retorna uma lista de logs de exclusão de usuários.
+        Consulta e retorna uma lista de logs de exclusão de usuários de acordo com a data na tabela de parâmetros('PAR_LOG_MANT_USER').
 
         :return: Uma lista de dicionários contendo informações sobre os logs de exclusão de usuários.
             Cada dicionário possui chaves "id", "dataHora", "acao", "resp" e "usuario".
@@ -116,7 +116,7 @@ class ControleConsultarLogUser:
 
     def consultaLogUserActive(self) -> list[dict]:
         """
-        Consulta e retorna uma lista de logs de ativação de usuários.
+        Consulta e retorna uma lista de logs de ativação de usuários de acordo com a data na tabela de parâmetros('PAR_LOG_MANT_USER').
 
         :return: Uma lista de dicionários contendo informações sobre os logs de ativação de usuários.
             Cada dicionário possui chaves "id", "dataHora", "acao", "resp" e "usuario".

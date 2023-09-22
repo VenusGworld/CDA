@@ -67,7 +67,18 @@ class LoginDao:
 
         DB.session.commit()
         return True
-        
+    
+
+    def consultaQuantideUsers(self) -> int:
+        """
+        Consulta a quantidade de usuários cadastrados.
+
+        :return: A quantidade de usuários.
+        """
+
+        quantidade = SysUser.query.count()
+
+        return int(quantidade)
             
     
          

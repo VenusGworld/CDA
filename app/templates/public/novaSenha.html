@@ -56,52 +56,63 @@
             </div>
         </div>
     </section>
-</body>
-<script type="text/javascript">
-    $(document).ready(function(){
-        $("#btnEnviar").click(function(){
-            var senha = $("#senha").val();
-            var confirmSenha = $("#senhaConfirm").val()
-            if ( senha != "" && confirmSenha != "" && senha === confirmSenha){
-                $.ajax({
-                    url: '/esqueci-senha',
-                    type: 'POST',
-                    dataType: 'json',
-                    contentType: 'application/json',
-                    data:JSON.stringify({
-                        hash: $("#hash").val(),
-                        senha: $("#senha").val(),
-                    }),
-                    success: function(data, status){
-                        var h6 = `Senha alterada com sucesso!`;
-                        $("#texto").empty();
-                        $("#modal").removeClass("inativo");
-                        $("#card").removeClass("vermelho");
-                        $("#texto").append(h6);
-                        $("#modal").addClass("ativo");
-                        $("#card").addClass("verde");
-                        $("#email").val("");
-                        $("#userEsqueci").val("");
-                        setTimeout(function(){ 
-                            window.close();
-                        }, 7000);
-                    }
-                });
-            }else{
-                var h6 = `As Senhas não coincidem!`;
-                $("#texto").empty();
-                $("#modal").removeClass("inativo");
-                $("#card").removeClass("verde");
-                $("#texto").append(h6);
-                $("#modal").addClass("ativo");
-                $("#card").addClass("vermelho");
-                window.setTimeout(function() {
-                    $("#modal").removeClass("ativo");
-                    $("#modal").addClass("inativo");
-                }, 5000);
-            }
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#btnEnviar").click(function(){
+                var senha = $("#senha").val();
+                var confirmSenha = $("#senhaConfirm").val()
+                if ( senha != "" && confirmSenha != "" && senha === confirmSenha){
+                    $.ajax({
+                        url: '/esqueci-senha',
+                        type: 'POST',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        data:JSON.stringify({
+                            hash: $("#hash").val(),
+                            senha: $("#senha").val(),
+                        }),
+                        success: function(data, status){
+                            var h6 = `Senha alterada com sucesso!<br>Saindo em <span id="contador">8</span>`;
+                            $("#texto").empty();
+                            $("#modal").removeClass("inativo");
+                            $("#card").removeClass("vermelho");
+                            $("#texto").append(h6);
+                            $("#modal").addClass("ativo");
+                            $("#card").addClass("verde");
+                            $("#email").val("");
+                            $("#userEsqueci").val("");
+                            atualizarContador()
+                            setTimeout(function(){ 
+                                window.close();
+                            }, 7000);
+                        }
+                    });
+                }else{
+                    var h6 = `As Senhas não coincidem!`;
+                    $("#texto").empty();
+                    $("#modal").removeClass("inativo");
+                    $("#card").removeClass("verde");
+                    $("#texto").append(h6);
+                    $("#modal").addClass("ativo");
+                    $("#card").addClass("vermelho");
+                    window.setTimeout(function() {
+                        $("#modal").removeClass("ativo");
+                        $("#modal").addClass("inativo");
+                    }, 5000);
+                }
+            });
         });
-    });
-</script>
+    </script>
+    <script>
+        function atualizarContador() {
+            var contadorElement = document.getElementById("contador");
+            var contadorAtual = parseInt(contadorElement.innerText);
 
+            contadorAtual--;
+
+            contadorElement.innerText = contadorAtual;
+        }
+        setInterval(atualizarContador, 1000);
+    </script>
+</body>
 </html>

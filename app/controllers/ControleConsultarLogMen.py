@@ -1,7 +1,10 @@
 from ..extensions.FiltrosJson import filtroDataHora, filtroMensagem, filtroNome
+from ..models.dao.ConsultaParametrosDao import ConsultaParametrosDao
 from ..models.dao.ConsultaLogMenDao import ConsultaLogMenDao
 from ..models.dao.ManterUsuarioDao import ManterUsuarioDao
+from dateutil.relativedelta import relativedelta
 from ..models.entity.Log import Log
+from datetime import datetime
 
 class ControleConsultarLogMen:
     """
@@ -13,14 +16,21 @@ class ControleConsultarLogMen:
 
     def consultaLogMen(self) -> list[dict]:
         """
-        Consulta e retorna uma lista de logs de mensagens envidas.
+        Consulta e retorna uma lista de logs de mensagens envidas de acordo com a data na tabela de parâmetros('PAR_LOG_MENSAGEM').
 
         :return: Uma lista de dicionários contendo informações sobre os logs de mensagens envidas.
             Cada dicionário possui chaves "id", "dataHora", "resp" e "msg".
         """
+
+        #Consulta a data na tabela de parametros para fazer a pesquisa apartir desta data
+        consultaParametro = ConsultaParametrosDao()
+        mesesAtras = consultaParametro.consultaParametros("PAR_LOG_MENSAGEM")
+        dataDe = datetime.now()
+        dataDe = dataDe - relativedelta(months=mesesAtras)
+        dataDe = dataDe.strftime("%Y-%m-01")
         
         consultaLogMenDao = ConsultaLogMenDao()
-        respDao = consultaLogMenDao.consultaLogsMen()
+        respDao = consultaLogMenDao.consultaLogsMen(dataDe)
         listaLogs = []
 
         for log in respDao:

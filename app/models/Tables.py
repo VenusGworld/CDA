@@ -5,12 +5,12 @@ from datetime import datetime
 
 '''
 @author Fabio
-@version 4.0
-@since 27/06/2023
+@version 5.0
+@since 06/09/2023
 '''
 
 #Tabela de Usuários
-class SysUser(UserMixin, DB.Model):
+class SysUser(UserMixin, DB.Model): 
     id = Column(Integer, primary_key=True, nullable=False)
     us_nome = Column(String(45), nullable=False)
     us_email = Column(String(80), nullable=False)
@@ -311,8 +311,9 @@ class CDA014(DB.Model):
 #Tabela de Parametros
 class CDA015(DB.Model):
     id_parametros = Column(Integer, primary_key=True, nullable=False)
-    par_codigo = Column(String(10), nullable=False)
+    par_codigo = Column(String(25), nullable=False)
     par_valor = Column(String(10), nullable=False)
+    par_desc = Column(String(255), nullable=False)
 
 
 #Tabela de ligação Terceiro e Movimento Terceiro

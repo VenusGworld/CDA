@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERRO 405</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='plugins/fontawesome/css/all.min.css') }}">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            align-items: start;
+            justify-content: center;
+            background-color: #f4f7ff;
+            overflow: hidden;
+            margin-left: 1rem;
+            margin-right: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .toast {
+            position: relative;
+            top: 25px;
+            border-radius: 12px;
+            background: #e64b4b20;
+            padding: 20px 35px 20px 25px;
+            box-shadow: 0 6px 20px -5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transform: translateX(calc(100% + 30px));
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.35);
+            width: 100%;
+        }
+
+        .toast.active {
+            transform: translateX(0%);
+        }
+
+        .toast .toast-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .toast-content .check {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 35px;
+            min-width: 35px;
+            color: #e64b4b;
+            font-size: 30px;
+            border-radius: 50%;
+        }
+
+        .toast-content .message {
+            display: flex;
+            flex-direction: column;
+            margin: 0 20px;
+        }
+
+        .message .text {
+            font-size: 16px;
+            font-weight: 400;
+            color: #494949;
+        }
+
+        .message .text.text-1 {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .toast .close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            padding: 5px;
+            cursor: pointer;
+            opacity: 0.7;
+        }
+
+        .toast .close:hover {
+            opacity: 1;
+        }
+
+        .toast .progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 5px;
+            width: 100%;
+
+        }
+
+        .toast .progress:before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            height: 100%;
+            width: 100%;
+            background-color: #e64b4b;
+        }
+
+        .progress.active:before {
+            animation: progress 8s linear forwards;
+        }
+
+        @keyframes progress {
+            100% {
+                right: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="toast active">
+        <div class="toast-content">
+            <i class="fa-solid fa-circle-exclamation icon-size check"></i>
+            <div class="message">
+                <span class="text text-1">Erro</span>
+                <span class="text text-2">Por favor, faça o login para acessar esta página.</span>
+            </div>
+        </div>
+        <div class="progress active"></div>
+    </div>
+
+    <script>
+        setTimeout(() => {
+            window.location = "/index"
+        }, 8000);
+    </script>
+</body>
+
+</html>

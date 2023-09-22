@@ -1,12 +1,15 @@
-from ..extensions.FiltrosJson import filtroDataHora, filtroNome
+from ..models.dao.ConsultaParametrosDao import ConsultaParametrosDao
 from ..models.dao.ConsultaLogTercDao import ConsultaLogTercDao
 from ..models.dao.ManterUsuarioDao import ManterUsuarioDao
+from ..extensions.FiltrosJson import filtroDataHora
+from dateutil.relativedelta import relativedelta
 from ..models.entity.Log import Log
+from datetime import datetime
 import json as js
 
 class ControleConsultarLogTerc:
     """
-    Classe Controller para as funções de consulta de logs da terceiro
+    Classe Controller para as funções de consulta de logs do terceiro
     @author - Fabio
     @version - 1.0
     @since - 05/09/2023
@@ -14,14 +17,21 @@ class ControleConsultarLogTerc:
 
     def consultaLogTercInsert(self) -> list[dict]:
         """
-        Consulta e retorna uma lista de logs de inserção de tercerios.
+        Consulta e retorna uma lista de logs de inserção de tercerios de acordo com a data na tabela de parâmetros('PAR_LOG_MANT_TERC').
 
         :return: Uma lista de dicionários contendo informações sobre os logs de inserção de tercerios.
             Cada dicionário possui tercerios "id", "dataHora", "acao", "resp" e "terc".
         """
 
+        #Consulta a data na tabela de parametros para fazer a pesquisa apartir desta data
+        consultaParametro = ConsultaParametrosDao()
+        mesesAtras = consultaParametro.consultaParametros("PAR_LOG_MANT_TERC")
+        dataDe = datetime.now()
+        dataDe = dataDe - relativedelta(months=mesesAtras)
+        dataDe = dataDe.strftime("%Y-%m-01")
+
         consultaLogDao = ConsultaLogTercDao()
-        respDao = consultaLogDao.consultaLogsTercInsert()
+        respDao = consultaLogDao.consultaLogsTercInsert(dataDe)
         listaLogs = []
 
         for log in respDao:
@@ -40,14 +50,21 @@ class ControleConsultarLogTerc:
 
     def consultaLogTercUpdate(self) -> list[dict]:
         """
-        Consulta e retorna uma lista de logs de alteração de tercerios.
+        Consulta e retorna uma lista de logs de alteração de tercerios de acordo com a data na tabela de parâmetros('PAR_LOG_MANT_TERC').
 
         :return: Uma lista de dicionários contendo informações sobre os logs de alteração de tercerios.
             Cada dicionário possui tercerios "id", "dataHora", "acao", "resp" e "terc".
         """
 
+        #Consulta a data na tabela de parametros para fazer a pesquisa apartir desta data
+        consultaParametro = ConsultaParametrosDao()
+        mesesAtras = consultaParametro.consultaParametros("PAR_LOG_MANT_TERC")
+        dataDe = datetime.now()
+        dataDe = dataDe - relativedelta(months=mesesAtras)
+        dataDe = dataDe.strftime("%Y-%m-01")
+
         consultaLogDao = ConsultaLogTercDao()
-        respDao = consultaLogDao.consultaLogsTercUpdate()
+        respDao = consultaLogDao.consultaLogsTercUpdate(dataDe)
         listaLogs = []
 
         for log in respDao:
@@ -66,14 +83,21 @@ class ControleConsultarLogTerc:
 
     def consultaLogTercDelete(self) -> list[dict]:
         """
-        Consulta e retorna uma lista de logs de exclusão de tercerios.
+        Consulta e retorna uma lista de logs de exclusão de tercerios de acordo com a data na tabela de parâmetros('PAR_LOG_MANT_TERC').
 
         :return: Uma lista de dicionários contendo informações sobre os logs de exclusão de tercerios.
             Cada dicionário possui tercerios "id", "dataHora", "acao", "resp" e "terc".
         """
 
+        #Consulta a data na tabela de parametros para fazer a pesquisa apartir desta data
+        consultaParametro = ConsultaParametrosDao()
+        mesesAtras = consultaParametro.consultaParametros("PAR_LOG_MANT_TERC")
+        dataDe = datetime.now()
+        dataDe = dataDe - relativedelta(months=mesesAtras)
+        dataDe = dataDe.strftime("%Y-%m-01")
+
         consultaLogDao = ConsultaLogTercDao()
-        respDao = consultaLogDao.consultaLogsTercDelete()
+        respDao = consultaLogDao.consultaLogsTercDelete(dataDe)
         listaLogs = []
 
         for log in respDao:
@@ -92,14 +116,21 @@ class ControleConsultarLogTerc:
 
     def consultaLogTercActive(self) -> list[dict]:
         """
-        Consulta e retorna uma lista de logs de ativação de tercerios.
+        Consulta e retorna uma lista de logs de ativação de tercerios de acordo com a data na tabela de parâmetros('PAR_LOG_MANT_TERC').
 
         :return: Uma lista de dicionários contendo informações sobre os logs de ativação de tercerios.
             Cada dicionário possui tercerios "id", "dataHora", "acao", "resp" e "terc".
         """
 
+        #Consulta a data na tabela de parametros para fazer a pesquisa apartir desta data
+        consultaParametro = ConsultaParametrosDao()
+        mesesAtras = consultaParametro.consultaParametros("PAR_LOG_MANT_TERC")
+        dataDe = datetime.now()
+        dataDe = dataDe - relativedelta(months=mesesAtras)
+        dataDe = dataDe.strftime("%Y-%m-01")
+
         consultaLogDao = ConsultaLogTercDao()
-        respDao = consultaLogDao.consultaLogsTercActive()
+        respDao = consultaLogDao.consultaLogsTercActive(dataDe)
         listaLogs = []
 
         for log in respDao:
@@ -130,7 +161,7 @@ class ControleConsultarLogTerc:
         respDao = consultaLogDao.consultaLogsTercDetalhado(id)
         
         usuario = manterUsuarioDao.consultarUsuarioDetalhado(respDao.lte_idUsua)
-        logUser = Log(id=respDao.id_logTerc, dataHora=respDao.lte_dataHora, acao=respDao.lte_acao, usuario=usuario)
+        logUser = Log(id=respDao.id_logTerc, dataHora=respDao.lte_dataHora, acao=respDao.lte_acao, observacao=respDao.lte_observacao, usuario=usuario)
         logUser.converteDictDadosAntigos(respDao.lte_dadosAntigos)
         logUser.converteDictDadosNovos(respDao.lte_dadosNovos)
 

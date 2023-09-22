@@ -124,17 +124,16 @@ class ControleTerceiroDao:
         return movimento
     
 
-    def listaTercManut(self) -> CDA004:
+    def listaTercManut(self, data: str) -> CDA004:
         """
         Consulta os registros de movimento de terceiros com entrada e saída (completos) para manutenções.
 
         :return: Uma consulta que retorna os registros de movimento de terceiros para a manutenção.
         """
         
-        movimentos = DB.session\
-            .query(CDA004.id_movTerc, CDA004.mte_dataEntra, CDA004.mte_horaEntra, CDA004.mte_dataSaid, CDA004.mte_horaSaid, CDA004.mte_motivo, CDA004.mte_empresa, CDA007.fu_nome.label("nomeFunc"))\
-                .join(CDA007, CDA007.id_funcionario == CDA004.mte_idFunc)\
-                    .filter(CDA004.mte_dataSaid!=None, CDA004.mte_horaSaid!=None, CDA004.mte_delete!=True)
+        movimentos = DB.session.query(CDA004.id_movTerc, CDA004.mte_dataEntra, CDA004.mte_horaEntra, CDA004.mte_dataSaid, CDA004.mte_horaSaid, CDA004.mte_motivo, CDA004.mte_empresa, CDA007.fu_nome.label("nomeFunc"))\
+            .join(CDA007, CDA007.id_funcionario == CDA004.mte_idFunc)\
+                .filter(CDA004.mte_dataSaid!=None, CDA004.mte_horaSaid!=None, CDA004.mte_delete!=True, CDA004.mte_dataEntra>=data)
         
         return movimentos
     

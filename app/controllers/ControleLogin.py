@@ -162,6 +162,19 @@ class ControleLogin:
             pass
 
 
+    def verificaQuantidadeUser(self) -> int:
+        """
+        Essa Função vai consultar a quantidade de usuários no sistema, para verificar se é preciso efetuar o primeiro login com o usuário ADMIN.
+
+        :return: A quantidade de usuário no sistema.
+        """
+        
+        loginDao = LoginDao()
+        qtde = loginDao.consultaQuantideUsers()
+
+        return qtde
+
+
     def logout(self) -> None:
         """
         Realiza o logout do usuário.

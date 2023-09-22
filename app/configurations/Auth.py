@@ -3,8 +3,8 @@ from flask_login import LoginManager
 
 def init_app(app):
     login_manager = LoginManager()
-    login_manager.login_view = 'autenticacaoBlue.login'
-    login_manager.login_message = "Por favor, faça o login para acessar esta página."
+    login_manager.login_view = 'errosBlue.methodNOTALLOWED'
+    login_manager.login_message = False
     login_manager.init_app(app)
     
     from ..models.Tables import SysUser

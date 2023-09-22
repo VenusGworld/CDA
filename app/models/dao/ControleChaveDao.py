@@ -90,17 +90,16 @@ class ControleChaveDao:
         return chavesRetiradas
     
 
-    def consultaChavesManut(self) -> CDA002:
+    def consultaChavesManut(self, data: str) -> CDA002:
         """
         Consulta os registros de movimento de chaves com retirada e devolução (completos) para manutenções.
 
         :return: Um objeto de consulta contendo detalhes dos movimentos de chave para a manutenção.
         """
         
-        chavesRetiradas = DB.session\
-            .query(CDA002.id_movChave, CDA002.mch_horaRet, CDA002.mch_dataRet, CDA002.mch_respRet, CDA002.mch_dataDev, CDA002.mch_horaDev, CDA005.ch_nome.label("nomeChave"), CDA007.fu_nome.label("nomeResp"))\
+        chavesRetiradas = DB.session.query(CDA002.id_movChave, CDA002.mch_horaRet, CDA002.mch_dataRet, CDA002.mch_respRet, CDA002.mch_dataDev, CDA002.mch_horaDev, CDA005.ch_nome.label("nomeChave"), CDA007.fu_nome.label("nomeResp"))\
             .join(CDA005, CDA005.id_chave == CDA002.mch_idChav).join(CDA007, CDA007.id_funcionario == CDA002.mch_respRet)\
-                .filter(CDA002.mch_dataDev!=None, CDA002.mch_horaDev!=None, CDA002.mch_delete!=True)
+                .filter(CDA002.mch_dataDev!=None, CDA002.mch_horaDev!=None, CDA002.mch_delete!=True, CDA002.mch_dataRet>=data)
        
         return chavesRetiradas
     

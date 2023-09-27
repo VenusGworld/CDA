@@ -32,10 +32,6 @@ def rotasMain(app):
 
 #Adicionando as rotas relcionadas ao Administrador
 def rotasAdm(app):
-    #Rota para a DashBoard do Administrador
-    from ..routes.vigAdm.Dashboard import dashVigBlue
-    app.register_blueprint(dashVigBlue, url_prefix="/admin", name="dashAdmBlue")
-
     #Rota relacionadas ao CRUD Usuários
     from ..routes.administrador.Usuarios import usuarioAdmBlue
     app.register_blueprint(usuarioAdmBlue, url_prefix="/admin")
@@ -44,17 +40,25 @@ def rotasAdm(app):
     from ..routes.administrador.Funcionarios import funcionarioAdmBlue
     app.register_blueprint(funcionarioAdmBlue, url_prefix="/admin")
 
-    #Rotas relacionadas ao controle de Chaves com usuário admin
-    from ..routes.vigAdm.ControleChave import controleChaveVigBlue
-    app.register_blueprint(controleChaveVigBlue, url_prefix="/admin", name="controleChaveAdmBlue")
-
-    #Rotas relaciondas ao CRUD de Chave com usuário admin
-    from ..routes.vigAdm.Chave import chaveVigBlue
-    app.register_blueprint(chaveVigBlue, url_prefix="/admin", name="chaveAdmBlue")
-
     #Rotas relaciondas ao log de Usuários
     from ..routes.administrador.LogManterUsuario import logUserAdmBlue
     app.register_blueprint(logUserAdmBlue, url_prefix="/admin")
+
+    #Rotas recionadas ao enviar mensagem
+    from ..routes.administrador.Mensagem import mensagemAdmBlue
+    app.register_blueprint(mensagemAdmBlue, url_prefix="/admin")
+
+    #Rotas relaciondas ao log de Funcionário
+    from ..routes.administrador.LogManterFunc import logFuncAdmBlue
+    app.register_blueprint(logFuncAdmBlue, url_prefix="/admin")
+
+    #Rotas relaciondas ao log de Funcionário
+    from ..routes.administrador.LogMensagem import logMenAdmBlue
+    app.register_blueprint(logMenAdmBlue, url_prefix="/admin")
+
+    #Rota para a DashBoard do Administrador
+    from ..routes.vigAdm.Dashboard import dashVigBlue
+    app.register_blueprint(dashVigBlue, url_prefix="/admin", name="dashAdmBlue")
 
     #Rotas relacionadas ao CRUD de terceiros com usuário admin
     from ..routes.vigAdm.Terceiro import terceiroVigBlue
@@ -68,17 +72,13 @@ def rotasAdm(app):
     from ..routes.vigAdm.ControleGerente import controleGerVigBlue
     app.register_blueprint(controleGerVigBlue, url_prefix="/admin", name="controleGerAdmBlue")
 
-    #Rotas recionadas ao enviar mensagem
-    from ..routes.administrador.Mensagem import mensagemAdmBlue
-    app.register_blueprint(mensagemAdmBlue, url_prefix="/admin")
+    #Rotas relacionadas ao controle de Chaves com usuário admin
+    from ..routes.vigAdm.ControleChave import controleChaveVigBlue
+    app.register_blueprint(controleChaveVigBlue, url_prefix="/admin", name="controleChaveAdmBlue")
 
-    #Rotas relaciondas ao log de Funcionário
-    from ..routes.administrador.LogManterFunc import logFuncAdmBlue
-    app.register_blueprint(logFuncAdmBlue, url_prefix="/admin")
-
-    #Rotas relaciondas ao log de Funcionário
-    from ..routes.administrador.LogMensagem import logMenAdmBlue
-    app.register_blueprint(logMenAdmBlue, url_prefix="/admin")
+    #Rotas relaciondas ao CRUD de Chave com usuário admin
+    from ..routes.vigAdm.Chave import chaveVigBlue
+    app.register_blueprint(chaveVigBlue, url_prefix="/admin", name="chaveAdmBlue")
 
     #Rota para os logs do manter Chave com usuário admin
     from ..routes.tecAdm.LogManterChave import logChavTecBlue
@@ -95,6 +95,10 @@ def rotasAdm(app):
     #Rota para os logs do controle de terceiros com usuário admin
     from ..routes.tecAdm.LogControlTerc import logControlTercTecBlue
     app.register_blueprint(logControlTercTecBlue, url_prefix="/admin", name="logControlTercAdmBlue")
+
+    #Rota para os logs do controle de gerentes com usuário tec
+    from ..routes.tecAdm.LogControlGer import logControlGerTecBlue
+    app.register_blueprint(logControlGerTecBlue, url_prefix="/admin", name="logControlGerAdmBlue")
 
 
 
@@ -119,6 +123,10 @@ def rotasTec(app):
     #Rota para os logs do controle de terceiros com usuário tec
     from ..routes.tecAdm.LogControlTerc import logControlTercTecBlue
     app.register_blueprint(logControlTercTecBlue, url_prefix="/tec")
+
+    #Rota para os logs do controle de gerentes com usuário tec
+    from ..routes.tecAdm.LogControlGer import logControlGerTecBlue
+    app.register_blueprint(logControlGerTecBlue, url_prefix="/tec")
 
 
 

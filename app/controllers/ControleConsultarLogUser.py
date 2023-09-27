@@ -15,7 +15,7 @@ class ControleConsultarLogUser:
     @since - 07/07/2023
     """
 
-    def consultaLogUserInsert(self) -> list[dict]:
+    def consultaLogUserInsert(self, acao: str) -> list[dict]:
         """
         Consulta e retorna uma lista de logs de inserção de usuários de acordo com a data na tabela de parâmetros('PAR_LOG_MANT_USER').
 
@@ -31,7 +31,7 @@ class ControleConsultarLogUser:
         dataDe = dataDe.strftime("%Y-%m-01")
 
         consultaLogDao = ConsultaLogUserDao()
-        respDao = consultaLogDao.consultaLogsUserInsert(dataDe)
+        respDao = consultaLogDao.consultaLogsUser(dataDe, acao)
         listaLogs = []
 
         for log in respDao:
@@ -40,111 +40,12 @@ class ControleConsultarLogUser:
                 "dataHora": filtroDataHora(log.lus_dataHora),
                 "acao": log.lus_acao,
                 "resp": filtroNome(log.nomeUser),
-                "usuario": js.loads(log.lus_dadosNovos.decode("utf-8"))
+                "usuario": js.loads(log.lus_dadosAntigos.decode("utf-8")) if acao in ["ACTIVE", "DELETE"] else js.loads(log.lus_dadosNovos.decode("utf-8"))
             }
 
             listaLogs.append(dictLog)
 
-        return listaLogs    
-
-
-    def consultaLogUserUpdate(self) -> list[dict]:
-        """
-        Consulta e retorna uma lista de logs de alteração de usuários de acordo com a data na tabela de parâmetros('PAR_LOG_MANT_USER').
-
-        :return: Uma lista de dicionários contendo informações sobre os logs de alteração de usuários.
-            Cada dicionário possui chaves "id", "dataHora", "acao", "resp" e "usuario".
-        """
-
-        #Consulta a data na tabela de parametros para fazer a pesquisa apartir desta data
-        consultaParametro = ConsultaParametrosDao()
-        mesesAtras = consultaParametro.consultaParametros("PAR_LOG_MANT_USER")
-        dataDe = datetime.now()
-        dataDe = dataDe - relativedelta(months=mesesAtras)
-        dataDe = dataDe.strftime("%Y-%m-01")
-
-        consultaLogDao = ConsultaLogUserDao()
-        respDao = consultaLogDao.consultaLogsUserUpdate(dataDe)
-        listaLogs = []
-
-        for log in respDao:
-            dictLog = {
-                "id": log.id_logUsua,
-                "dataHora": filtroDataHora(log.lus_dataHora),
-                "acao": log.lus_acao,
-                "resp": filtroNome(log.nomeUser),
-                "usuario": js.loads(log.lus_dadosNovos.decode("utf-8"))
-            }
-
-            listaLogs.append(dictLog)
-
-        return listaLogs 
-
-
-    def consultaLogUserDelete(self) -> list[dict]:
-        """
-        Consulta e retorna uma lista de logs de exclusão de usuários de acordo com a data na tabela de parâmetros('PAR_LOG_MANT_USER').
-
-        :return: Uma lista de dicionários contendo informações sobre os logs de exclusão de usuários.
-            Cada dicionário possui chaves "id", "dataHora", "acao", "resp" e "usuario".
-        """
-
-        #Consulta a data na tabela de parametros para fazer a pesquisa apartir desta data
-        consultaParametro = ConsultaParametrosDao()
-        mesesAtras = consultaParametro.consultaParametros("PAR_LOG_MANT_USER")
-        dataDe = datetime.now()
-        dataDe = dataDe - relativedelta(months=mesesAtras)
-        dataDe = dataDe.strftime("%Y-%m-01")
-
-        consultaLogDao = ConsultaLogUserDao()
-        respDao = consultaLogDao.consultaLogsUserDelete(dataDe)
-        listaLogs = []
-
-        for log in respDao:
-            dictLog = {
-                "id": log.id_logUsua,
-                "dataHora": filtroDataHora(log.lus_dataHora),
-                "acao": log.lus_acao,
-                "resp": filtroNome(log.nomeUser),
-                "usuario": js.loads(log.lus_dadosAntigos.decode("utf-8"))
-            }
-
-            listaLogs.append(dictLog)
-
-        return listaLogs  
-    
-
-    def consultaLogUserActive(self) -> list[dict]:
-        """
-        Consulta e retorna uma lista de logs de ativação de usuários de acordo com a data na tabela de parâmetros('PAR_LOG_MANT_USER').
-
-        :return: Uma lista de dicionários contendo informações sobre os logs de ativação de usuários.
-            Cada dicionário possui chaves "id", "dataHora", "acao", "resp" e "usuario".
-        """
-
-        #Consulta a data na tabela de parametros para fazer a pesquisa apartir desta data
-        consultaParametro = ConsultaParametrosDao()
-        mesesAtras = consultaParametro.consultaParametros("PAR_LOG_MANT_USER")
-        dataDe = datetime.now()
-        dataDe = dataDe - relativedelta(months=mesesAtras)
-        dataDe = dataDe.strftime("%Y-%m-01")
-
-        consultaLogDao = ConsultaLogUserDao()
-        respDao = consultaLogDao.consultaLogsUserActive(dataDe)
-        listaLogs = []
-
-        for log in respDao:
-            dictLog = {
-                "id": log.id_logUsua,
-                "dataHora": filtroDataHora(log.lus_dataHora),
-                "acao": log.lus_acao,
-                "resp": filtroNome(log.nomeUser),
-                "usuario": js.loads(log.lus_dadosAntigos.decode("utf-8"))
-            }
-
-            listaLogs.append(dictLog)
-
-        return listaLogs  
+        return listaLogs
         
         
     def consultaLogUsertDetelhado(self, id: int) -> Log:

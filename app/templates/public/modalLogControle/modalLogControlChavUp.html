@@ -35,23 +35,47 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-3">
-                                <label for="recipient-name" class="col-form-label">Data Retirada:</label>
-                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosAntigos.dataRet | dataLimite }} {{ context.log.dadosAntigos.horaRet }}" readonly>
-                            </div>
                             <div class="col">
                                 <label for="recipient-name" class="col-form-label">Resposável Retirada:</label>
                                 <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosAntigos.respRet.nome }}" readonly>
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-3">
-                                <label for="recipient-name" class="col-form-label">Data Devolução:</label>
-                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosAntigos.dataDev | dataLimite }} {{ context.log.dadosAntigos.horaDev }}" readonly>
+                        <div class="row">
+                            <div class="col">
+                                <label for="recipient-name" class="col-form-label">Data Retirada:</label>
+                                {% if context.log.dadosAntigos.dataRet != context.log.dadosNovos.dataRet %}
+                                    <span class="campo-alterado-label">* Campo Alterado</span>
+                                {% endif %}
+                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosAntigos.dataRet | dataLimite }}" readonly>
                             </div>
+                            <div class="col">
+                                <label for="recipient-name" class="col-form-label">Hora Retirada:</label>
+                                {% if context.log.dadosAntigos.horaRet != context.log.dadosNovos.horaRet %}
+                                    <span class="campo-alterado-label">* Campo Alterado</span>
+                                {% endif %}
+                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosAntigos.horaRet }}" readonly>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col">
                                 <label for="recipient-name" class="col-form-label">Resposável Devolução:</label>
                                 <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosAntigos.respDev.nome }}" readonly>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label for="recipient-name" class="col-form-label">Data Devolução:</label>
+                                {% if context.log.dadosAntigos.dataDev != context.log.dadosNovos.dataDev %}
+                                    <span class="campo-alterado-label">* Campo Alterado</span>
+                                {% endif %}
+                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosAntigos.dataDev | dataLimite }}" readonly>
+                            </div>
+                            <div class="col">
+                                <label for="recipient-name" class="col-form-label">Hora Devolução:</label>
+                                {% if context.log.dadosAntigos.horaDev != context.log.dadosNovos.horaDev %}
+                                    <span class="campo-alterado-label">* Campo Alterado</span>
+                                {% endif %}
+                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosAntigos.horaDev }}" readonly>
                             </div>
                         </div>
                     </div>
@@ -59,28 +83,34 @@
                     <div class="container container-border mb-3">
                         <div class="row">
                             <div class="col">
-                                <label for="recipient-name" class="col-form-label">Chave:</label>
-                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.chave.nome }}" readonly>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-3">
                                 <label for="recipient-name" class="col-form-label">Data Retirada:</label>
-                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.dataRet | dataLimite }} {{ context.log.dadosNovos.horaRet }}" readonly>
+                                {% if context.log.dadosNovos.dataRet != context.log.dadosAntigos.dataRet %}
+                                    <span class="campo-alterado-label">* Campo Alterado</span>
+                                {% endif %}
+                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.dataRet | dataLimite }}" readonly>
                             </div>
                             <div class="col">
-                                <label for="recipient-name" class="col-form-label">Resposável Retirada:</label>
-                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.respRet.nome }}" readonly>
+                                <label for="recipient-name" class="col-form-label">Hora Retirada:</label>
+                                {% if context.log.dadosNovos.horaRet != context.log.dadosAntigos.horaRet %}
+                                    <span class="campo-alterado-label">* Campo Alterado</span>
+                                {% endif %}
+                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.horaRet }}" readonly>
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <div class="col-3">
+                            <div class="col">
                                 <label for="recipient-name" class="col-form-label">Data Devolução:</label>
-                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.dataDev | dataLimite }} {{ context.log.dadosNovos.horaDev }}" readonly>
+                                {% if context.log.dadosNovos.dataDev != context.log.dadosAntigos.dataDev %}
+                                    <span class="campo-alterado-label">* Campo Alterado</span>
+                                {% endif %}
+                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.dataDev | dataLimite }}" readonly>
                             </div>
                             <div class="col">
-                                <label for="recipient-name" class="col-form-label">Resposável Devolução:</label>
-                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.respDev.nome }}" readonly>
+                                <label for="recipient-name" class="col-form-label">Hora Devolução:</label>
+                                {% if context.log.dadosNovos.horaDev != context.log.dadosAntigos.horaDev %}
+                                    <span class="campo-alterado-label">* Campo Alterado</span>
+                                {% endif %}
+                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.horaDev }}" readonly>
                             </div>
                         </div>
                     </div>

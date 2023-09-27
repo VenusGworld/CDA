@@ -15,7 +15,7 @@ class ControleConsultarLogChave:
     @since - 05/09/2023
     """
 
-    def consultaLogChaveInsert(self) -> list[dict]:
+    def consultaLogChave(self, acao: str) -> list[dict]:
         """
         Consulta e retorna uma lista de logs de inserção de chaves de acordo com a data na tabela de parâmetros('PAR_LOG_MANT_CHAV').
 
@@ -31,7 +31,7 @@ class ControleConsultarLogChave:
         dataDe = dataDe.strftime("%Y-%m-01")
 
         consultaLogDao = ConsultaLogChaveDao()
-        respDao = consultaLogDao.consultaLogsChaveInsert(dataDe)
+        respDao = consultaLogDao.consultaLogsChave(dataDe, acao)
         listaLogs = []
 
         for log in respDao:
@@ -40,111 +40,12 @@ class ControleConsultarLogChave:
                 "dataHora": filtroDataHora(log.lch_dataHora),
                 "acao": log.lch_acao,
                 "resp": log.nomeUser,
-                "chave": js.loads(log.lch_dadosNovos.decode("utf-8"))
+                "chave": js.loads(log.lch_dadosAntigos.decode("utf-8")) if acao in ["ACTIVE", "DELETE"] else js.loads(log.lch_dadosNovos.decode("utf-8"))
             }
 
             listaLogs.append(dictLog)
 
         return listaLogs    
-
-
-    def consultaLogChaveUpdate(self) -> list[dict]:
-        """
-        Consulta e retorna uma lista de logs de alteração de chaves de acordo com a data na tabela de parâmetros('PAR_LOG_MANT_CHAV').
-
-        :return: Uma lista de dicionários contendo informações sobre os logs de alteração de chaves.
-            Cada dicionário possui chaves "id", "dataHora", "acao", "resp" e "chave".
-        """
-
-        #Consulta a data na tabela de parametros para fazer a pesquisa apartir desta data
-        consultaParametro = ConsultaParametrosDao()
-        mesesAtras = consultaParametro.consultaParametros("PAR_LOG_MANT_CHAV")
-        dataDe = datetime.now()
-        dataDe = dataDe - relativedelta(months=mesesAtras)
-        dataDe = dataDe.strftime("%Y-%m-01")
-
-        consultaLogDao = ConsultaLogChaveDao()
-        respDao = consultaLogDao.consultaLogsChaveUpdate(dataDe)
-        listaLogs = []
-
-        for log in respDao:
-            dictLog = {
-                "id": log.id_logChave,
-                "dataHora": filtroDataHora(log.lch_dataHora),
-                "acao": log.lch_acao,
-                "resp": log.nomeUser,
-                "chave": js.loads(log.lch_dadosNovos.decode("utf-8"))
-            }
-
-            listaLogs.append(dictLog)
-
-        return listaLogs 
-
-
-    def consultaLogChaveDelete(self) -> list[dict]:
-        """
-        Consulta e retorna uma lista de logs de exclusão de chaves de acordo com a data na tabela de parâmetros('PAR_LOG_MANT_CHAV').
-
-        :return: Uma lista de dicionários contendo informações sobre os logs de exclusão de chaves.
-            Cada dicionário possui chaves "id", "dataHora", "acao", "resp" e "chave".
-        """
-
-        #Consulta a data na tabela de parametros para fazer a pesquisa apartir desta data
-        consultaParametro = ConsultaParametrosDao()
-        mesesAtras = consultaParametro.consultaParametros("PAR_LOG_MANT_CHAV")
-        dataDe = datetime.now()
-        dataDe = dataDe - relativedelta(months=mesesAtras)
-        dataDe = dataDe.strftime("%Y-%m-01")
-
-        consultaLogDao = ConsultaLogChaveDao()
-        respDao = consultaLogDao.consultaLogsChaveDelete(dataDe)
-        listaLogs = []
-
-        for log in respDao:
-            dictLog = {
-                "id": log.id_logChave,
-                "dataHora": filtroDataHora(log.lch_dataHora),
-                "acao": log.lch_acao,
-                "resp": log.nomeUser,
-                "chave": js.loads(log.lch_dadosAntigos.decode("utf-8"))
-            }
-
-            listaLogs.append(dictLog)
-
-        return listaLogs  
-    
-
-    def consultaLogChaveActive(self) -> list[dict]:
-        """
-        Consulta e retorna uma lista de logs de ativação de chaves de acordo com a data na tabela de parâmetros('PAR_LOG_MANT_CHAV').
-
-        :return: Uma lista de dicionários contendo informações sobre os logs de ativação de chaves.
-            Cada dicionário possui chaves "id", "dataHora", "acao", "resp" e "chave".
-        """
-
-        #Consulta a data na tabela de parametros para fazer a pesquisa apartir desta data
-        consultaParametro = ConsultaParametrosDao()
-        mesesAtras = consultaParametro.consultaParametros("PAR_LOG_MANT_CHAV")
-        dataDe = datetime.now()
-        dataDe = dataDe - relativedelta(months=mesesAtras)
-        dataDe = dataDe.strftime("%Y-%m-01")
-
-        consultaLogDao = ConsultaLogChaveDao()
-        respDao = consultaLogDao.consultaLogsChaveActive(dataDe)
-        listaLogs = []
-
-        for log in respDao:
-            dictLog = {
-                "id": log.id_logChave,
-                "dataHora": filtroDataHora(log.lch_dataHora),
-                "acao": log.lch_acao,
-                "resp": log.nomeUser,
-                "chave": js.loads(log.lch_dadosAntigos.decode("utf-8"))
-            }
-
-            listaLogs.append(dictLog)
-
-        return listaLogs  
         
         
     def consultaLogChaveDetelhado(self, id: int) -> Log:

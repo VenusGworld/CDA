@@ -4,10 +4,10 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Saída de Terceiro</h5>
             </div>
+            <div class="alert d-none" id="alert-modal" style="margin-left: 0.5rem; margin-right: 0.5rem; margin-top: 0.5rem;" role="alert">
+            </div>
             <div class="modal-body">
                 <div class="container">
-                    <div class="alert" id="alert-modal" style="display: none; margin-left: 1rem; margin-right: 1rem; margin-top: 1rem;" role="alert">
-                    </div>
                     <div class="row">
                         <div class="col mb-1 d-none">
                             <input type="text" name="idMov" id="idMov" class="form-control upper" value="{{ context.movimento.id }}" readonly>

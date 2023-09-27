@@ -15,7 +15,7 @@ class ControleConsultarLogControlChav:
     @since - 14/09/2023
     """
 
-    def consultaLogControlChaveRet(self) -> list[dict]:
+    def consultaLogControlChave(self, acao: str) -> list[dict]:
         """
         Consulta e retorna uma lista de logs de inserção de tercerios de acordo com a data na tabela de parâmetros('PAR_MANUT_CONTROL_CHAV').
 
@@ -31,7 +31,7 @@ class ControleConsultarLogControlChav:
         dataDe = dataDe.strftime("%Y-%m-01")
 
         consultaControleChaveDao = ConsultaLogControlChaveDao()
-        respDao = consultaControleChaveDao.consultaLogsControlChaveRetirada(dataDe)
+        respDao = consultaControleChaveDao.consultaLogsControlChave(dataDe, acao)
         listaLogs = []
 
         for log in respDao:
@@ -40,111 +40,12 @@ class ControleConsultarLogControlChav:
                 "dataHora": filtroDataHora(log.lmch_dataHora),
                 "acao": log.lmch_acao,
                 "resp": log.nomeUser,
-                "movChav": js.loads(log.lmch_dadosNovos.decode("utf-8"))
+                "movChav": js.loads(log.lmch_dadosAntigos.decode("utf-8")) if acao in ["UPDATE", "DELETE"] else js.loads(log.lmch_dadosNovos.decode("utf-8"))
             }
 
             listaLogs.append(dictLog)
 
-        return listaLogs    
-
-
-    def consultaLogControlChaveDev(self) -> list[dict]:
-        """
-        Consulta e retorna uma lista de logs de alteração de tercerios de acordo com a data na tabela de parâmetros('PAR_MANUT_CONTROL_CHAV').
-
-        :return: Uma lista de dicionários contendo informações sobre os logs de alteração de tercerios.
-            Cada dicionário possui tercerios "id", "dataHora", "acao", "resp" e "movChav".
-        """
-
-        #Consulta a data na tabela de parametros para fazer a pesquisa apartir desta data
-        consultaParametro = ConsultaParametrosDao()
-        mesesAtras = consultaParametro.consultaParametros("PAR_MANUT_CONTROL_CHAV")
-        dataDe = datetime.now()
-        dataDe = dataDe - relativedelta(months=mesesAtras)
-        dataDe = dataDe.strftime("%Y-%m-01")
-
-        consultaControleChaveDao = ConsultaLogControlChaveDao()
-        respDao = consultaControleChaveDao.consultaLogsControlChaveDevolucao(dataDe)
-        listaLogs = []
-
-        for log in respDao:
-            dictLog = {
-                "id": log.id_logChave,
-                "dataHora": filtroDataHora(log.lmch_dataHora),
-                "acao": log.lmch_acao,
-                "resp": log.nomeUser,
-                "movChav": js.loads(log.lmch_dadosNovos.decode("utf-8"))
-            }
-
-            listaLogs.append(dictLog)
-
-        return listaLogs 
-
-
-    def consultaLogControlChaveUpdate(self) -> list[dict]:
-        """
-        Consulta e retorna uma lista de logs de exclusão de tercerios de acordo com a data na tabela de parâmetros('PAR_MANUT_CONTROL_CHAV').
-
-        :return: Uma lista de dicionários contendo informações sobre os logs de exclusão de tercerios.
-            Cada dicionário possui tercerios "id", "dataHora", "acao", "resp" e "movChav".
-        """
-
-        #Consulta a data na tabela de parametros para fazer a pesquisa apartir desta data
-        consultaParametro = ConsultaParametrosDao()
-        mesesAtras = consultaParametro.consultaParametros("PAR_MANUT_CONTROL_CHAV")
-        dataDe = datetime.now()
-        dataDe = dataDe - relativedelta(months=mesesAtras)
-        dataDe = dataDe.strftime("%Y-%m-01")
-
-        consultaControleChaveDao = ConsultaLogControlChaveDao()
-        respDao = consultaControleChaveDao.consultaLogsControlChaveUpdate(dataDe)
-        listaLogs = []
-
-        for log in respDao:
-            dictLog = {
-                "id": log.id_logChave,
-                "dataHora": filtroDataHora(log.lmch_dataHora),
-                "acao": log.lmch_acao,
-                "resp": log.nomeUser,
-                "movChav": js.loads(log.lmch_dadosAntigos.decode("utf-8"))
-            }
-
-            listaLogs.append(dictLog)
-
-        return listaLogs  
-    
-
-    def consultaLogControlChaveDelete(self) -> list[dict]:
-        """
-        Consulta e retorna uma lista de logs de ativação de tercerios de acordo com a data na tabela de parâmetros('PAR_MANUT_CONTROL_CHAV').
-
-        :return: Uma lista de dicionários contendo informações sobre os logs de ativação de tercerios.
-            Cada dicionário possui tercerios "id", "dataHora", "acao", "resp" e "movChav".
-        """
-
-        #Consulta a data na tabela de parametros para fazer a pesquisa apartir desta data
-        consultaParametro = ConsultaParametrosDao()
-        mesesAtras = consultaParametro.consultaParametros("PAR_MANUT_CONTROL_CHAV")
-        dataDe = datetime.now()
-        dataDe = dataDe - relativedelta(months=mesesAtras)
-        dataDe = dataDe.strftime("%Y-%m-01")
-
-        consultaControleChaveDao = ConsultaLogControlChaveDao()
-        respDao = consultaControleChaveDao.consultaLogsControlChaveDelete(dataDe)
-        listaLogs = []
-
-        for log in respDao:
-            dictLog = {
-                "id": log.id_logChave,
-                "dataHora": filtroDataHora(log.lmch_dataHora),
-                "acao": log.lmch_acao,
-                "resp": log.nomeUser,
-                "movChav": js.loads(log.lmch_dadosAntigos.decode("utf-8"))
-            }
-
-            listaLogs.append(dictLog)
-
-        return listaLogs  
+        return listaLogs      
         
         
     def consultaLogControlChaveDetelhado(self, id: int) -> Log:

@@ -13,7 +13,7 @@ indexBlue = Blueprint("indexBlue", __name__)
 @indexBlue.route("/", methods=['GET'])
 @indexBlue.route("/index", methods=['GET'])
 def index():
-    session["base"] = BaseDados.verificaBase()
+    # session["base"] = BaseDados.verificaBase()
     controleLogin = ControleLogin()
     quantide = controleLogin.verificaQuantidadeUser()
     context = {"qtde": quantide}

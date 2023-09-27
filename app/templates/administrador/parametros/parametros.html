@@ -1,0 +1,60 @@
+{% extends "public/base.html" %}
+{% block content %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleParametro.css') }}">
+{% endblock %}
+{% include "public/header.html" %}
+<section class="content">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <script>
+                    window.setTimeout(function() {
+                        $("#alert-list").fadeTo(500, 0).slideUp(500, function(){
+                            $(this).remove(); 
+                        });
+                    }, 10000);
+                </script>
+                <div class="alert alert-{{ category }} d-flex align-items-center alert-margin" role="alert" id="alert-list">
+                    {% if category == "success" %}
+                        <i class="fa-solid fa-circle-check icon-size"></i>
+                    {% else %}
+                        <i class="fa-solid fa-circle-exclamation icon-size"></i>
+                    {% endif %}
+                    <div>
+                        <h6 class="msg-alert">{{ message }}</h6>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="container-fluid p-2">
+        <div class="row">
+            {% for parametro in context.parms %}
+                <div class="col-5 m-2">
+                    <label for="">{{ parametro.codigo }}</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="{{ parametro.codigo }}" name="{{ parametro.codigo }}" value="{{ parametro.valor }}">
+                        <div class="input-group-append">
+                            <div class="dropdown">
+                                <a class="btn btn-warning dropdown" href="#" role="button" id="dropdownMenuLink"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-solid fa-info"></i>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <div class="desc">
+                                        <span>{{ parametro.desc }}</span>
+                                    </div>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="enviar">
+        <button class="btnConfirmParms btn btn-success">Confirmar</button>
+    </div>
+</section>
+{% endblock %}

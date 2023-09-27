@@ -37,9 +37,9 @@ def vizualizarLog(id):
     try:
         controlerConsultaLogControlterc = ControleConsultarLogControlTerc()
         log = controlerConsultaLogControlterc.consultaLogControlTercDetelhado(int(id))
-        if log.acao == "RETIRADA":
+        if log.acao == "ENTRADA":
             modal = 1
-        elif log.acao == "DEVOLUCAO":
+        elif log.acao == "SAIDA":
             modal = 2
         elif log.acao == "UPDATE":
             modal = 3

@@ -10,37 +10,10 @@ class ConsultaLogFuncDao:
     @since - 16/08/2023
     """
 
-    def consultaLogsFuncInsert(self, data: str) -> CDA011:
-        logs = DB.session.query(CDA011.id_logFunc, CDA011.lfu_acao, CDA011.lfu_dataHora, CDA011.lfu_dadosNovos, SysUser.us_usuario.label("nomeUser"))\
+    def consultaLogsFunc(self, data: str, acao: str) -> CDA011:
+        logs = DB.session.query(CDA011.id_logFunc, CDA011.lfu_acao, CDA011.lfu_dataHora, CDA011.lfu_dadosNovos, CDA011.lfu_dadosAntigos,  SysUser.us_usuario.label("nomeUser"))\
             .join(SysUser, CDA011.lfu_idUsua == SysUser.id)\
-                .filter(CDA011.lfu_acao=="INSERT", CDA011.lfu_dataHora>=data, CDA011.lfu_dataHora>=data)\
-                    .order_by(CDA011.lfu_dataHora)
-
-        return logs
-    
-
-    def consultaLogsFuncUpdate(self, data: str) -> CDA011:
-        logs = DB.session.query(CDA011.id_logFunc, CDA011.lfu_acao, CDA011.lfu_dataHora, CDA011.lfu_dadosNovos, SysUser.us_usuario.label("nomeUser"))\
-            .join(SysUser, CDA011.lfu_idUsua == SysUser.id)\
-                .filter(CDA011.lfu_acao=="UPDATE", CDA011.lfu_dataHora>=data)\
-                    .order_by(CDA011.lfu_dataHora)
-
-        return logs
-    
-
-    def consultaLogsFuncDelete(self, data: str) -> CDA011:
-        logs = DB.session.query(CDA011.id_logFunc, CDA011.lfu_acao, CDA011.lfu_dataHora, CDA011.lfu_dadosAntigos, SysUser.us_usuario.label("nomeUser"))\
-            .join(SysUser, CDA011.lfu_idUsua == SysUser.id)\
-                .filter(CDA011.lfu_acao=="DELETE", CDA011.lfu_dataHora>=data)\
-                    .order_by(CDA011.lfu_dataHora)
-
-        return logs
-    
-
-    def consultaLogsFuncActive(self, data: str) -> CDA011:
-        logs = DB.session.query(CDA011.id_logFunc, CDA011.lfu_acao, CDA011.lfu_dataHora, CDA011.lfu_dadosAntigos, SysUser.us_usuario.label("nomeUser"))\
-            .join(SysUser, CDA011.lfu_idUsua == SysUser.id)\
-                .filter(CDA011.lfu_acao=="ACTIVE", CDA011.lfu_dataHora>=data)\
+                .filter(CDA011.lfu_acao==acao, CDA011.lfu_dataHora>=data)\
                     .order_by(CDA011.lfu_dataHora)
 
         return logs

@@ -1,0 +1,116 @@
+<section class="modal-alert">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Log ENTRADA</h5>
+            </div>
+            <div class="alert" id="alert-modal" style="display: none; margin-left: 1rem; margin-right: 1rem; margin-top: 1rem;" role="alert">
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row mb-3">
+                        <div class="col-2">
+                            <label for="recipient-name" class="col-form-label">Ação:</label>
+                            <input type="text" name="gerente" id="gerente" class="form-control upper" value="{{ context.log.acao }}" readonly>
+                        </div>
+                        <div class="col-3">
+                            <label for="recipient-name" class="col-form-label">Data:</label>
+                            <input type="text" name="dataEnt" id="dataEnt" class="form-control" value="{{ context.log.dataHora | dataTime }}" readonly>
+                        </div>
+                        <div class="col mb-1">
+                            <label for="recipient-name" class="col-form-label">Responsável:</label>
+                            <input type="text" name="horaEnt" id="horaEnt" class="form-control" value="{{ context.log.usuario.nome }}" readonly>
+                        </div>
+                    </div>
+                    <label class="titulo-container">Entrada do terceiro:</label>
+                    <div class="container container-border mb-3">
+                        <div class="row">
+                            <div class="col-3">
+                                <label for="recipient-name" class="col-form-label">CPF:</label>
+                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.terceiro.cpf | cpf }}" readonly>
+                            </div>
+                            <div class="col">
+                                <label for="recipient-name" class="col-form-label">Nome:</label>
+                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.terceiro.nome }}" readonly>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label for="recipient-name" class="col-form-label">Placa:</label>
+                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.placa }}" readonly>
+                            </div>
+                            <div class="col">
+                                <label for="recipient-name" class="col-form-label">Veículo:</label>
+                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.veiculo }}" readonly>
+                            </div>
+                            <div class="col">
+                                <label for="recipient-name" class="col-form-label">Empresa:</label>
+                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.empresa }}" readonly>
+                            </div>
+                        </div>
+                        <div class="row mb-1">
+                            <div class="col">
+                                <label for="recipient-name" class="col-form-label">Motivo:</label>
+                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.motivo }}" readonly>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label for="recipient-name" class="col-form-label">Pessoa Visitada:</label>
+                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.pessoaVisit.nome}}" readonly>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label for="recipient-name" class="col-form-label">Data Entrada:</label>
+                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.dataEnt | dataLimite }}" readonly>
+                            </div>
+                            <div class="col">
+                                <label for="recipient-name" class="col-form-label">Hora Entrada:</label>
+                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.horaEnt }}" readonly>
+                            </div>
+                        </div>
+                        {% if context.log.dadosNovos.acomps | length > 0 %}
+                            <div class="row" id="check">
+                                <div class="col mb-1">
+                                    <label for="recipient-name" class="col-form-label">Mostrar acompanhantes?</label>
+                                    <input type="checkbox" value="False" name="checkResp"  id="checkResp" onclick="ativaAcompanhantes(this)">
+                                </div>
+                            </div>
+                            <div class="row mb-3" id="inputResp" style="display: none;">
+                                {% for acompanhante in context.log.dadosNovos.acomps %}
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <label for="respDev" class="col-form-label">CPF:</label>
+                                            <input type="text" name="cpfAcomp" id="cpfAcomp" class="form-control upper" value="{{ acompanhante.cpf | cpf }}" readonly>
+                                        </div>
+                                        <div class="col">
+                                            <label for="respDev" class="col-form-label">Nome:</label>
+                                            <input type="text" name="respDev" id="respDev" class="form-control upper" value="{{ acompanhante.nome }}" readonly>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <a href="javascript:history.back()" class="btn btn-outline-danger">Voltar</a>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    function ativaAcompanhantes(radio){
+        var input = document.getElementById("inputResp");
+
+        if (radio.checked) {
+            radio.value = "True";
+            input.style.display = "block";
+        }else{
+            radio.value = "False";
+            input.style.display = "none";
+        }
+    }
+</script>

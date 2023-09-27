@@ -93,7 +93,7 @@
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="#" class="nav-link {% if context.active == 'logControlGere' %}active{% endif %}">
+                        <a href="{{url_for('logControlGerAdmBlue.listagemLogControlGer')}}" class="nav-link {% if context.active == 'logControlGere' %}active{% endif %}">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Controle Gerentes</p>
                         </a>
@@ -148,6 +148,14 @@
                     <p class="font-p">
                         Mensagem
                         <!-- <span class="right badge badge-danger" style="font-size: 13px;">New</span> -->
+                    </p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{url_for('parametrosBlue.parametros')}}" class="nav-link {% if context.active == 'parametros' %}active{% endif %}">
+                    <i class="fa-solid fa-sliders icon-space"></i>
+                    <p class="font-p">
+                        Parametros
                     </p>
                 </a>
             </li>

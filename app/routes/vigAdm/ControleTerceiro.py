@@ -33,8 +33,10 @@ def controleTerceiro():
 def incluirEntradaTerc():
     try:
         if session["loginVig"] or session["grupo"] == "ADM": #Verifica se o usuário está tentando acessar a pagina usando a URL
+            constroleConsultaParametros = ControleConsultaParametros()
+            qtdeAcomps = constroleConsultaParametros.consultaParametros("PAR_QTDE_ACOMPS")
             data = datetime.now()
-            context = {"titulo": "Entrada de Terceiro", "active": "controlTerc", "data": data}
+            context = {"titulo": "Entrada de Terceiro", "active": "controlTerc", "data": data, "qtdeAcomps": qtdeAcomps}
             return render_template("vigAdm/controleTerceiro/incluirMovimentoTerceiro.html", context=context)
         else:
             if session["grupo"] == "ADM":

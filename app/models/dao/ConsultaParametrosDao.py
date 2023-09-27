@@ -22,6 +22,19 @@ class ConsultaParametrosDao:
         return int(valor.par_valor)
     
 
+    def consultaTodosParametros(self) -> CDA015:
+        """
+        Consulta o parametro para definir a data da consulta da tabela de logs insert de usuários.
+
+        :return: O número em meses para a consulta.
+        """
+
+        parametros = DB.session.query(CDA015.par_codigo, CDA015.par_valor, CDA015.par_desc).order_by(CDA015.par_codigo)
+
+        return parametros
+    
+    
+
     def aleterarParametros(self, codigo: str, valor: int) -> bool:
         """
         Altera os valores de qualquer parâmetro que for passado.

@@ -1,18 +1,41 @@
-
-
 {% extends "public/base.html" %}
-{% block content %}
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/styleUsuarios.css') }}">
 {% endblock %}
+{% block content %}
 {% include "public/header.html" %}
 {% if context.modal == 1 %}
-    {% include "public/modalLogManter/modalLogInsertChave.html" %}
+    {% include "public/modalLogControle/modalLogControlGerEnt.html" %}
 {% elif context.modal == 2 %}
-    {% include "public/modalLogManter/modalLogUpdateChave.html" %}
+    {% include "public/modalLogControle/modalLogControlGerSai.html" %}
 {% elif context.modal == 3 %}
-    {% include "public/modalLogManter/modalLogActiveDeleteChave.html" %}
+    {% include "public/modalLogControle/modalLogControlGerUp.html" %}
+{% elif context.modal == 4 %}
+    {% include "public/modalLogControle/modalLogControlGerDel.html" %}
 {% endif %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <script>
+                window.setTimeout(function() {
+                    $("#alert-list").fadeTo(500, 0).slideUp(500, function(){
+                        $(this).remove(); 
+                    });
+                }, 10000);
+            </script>
+            <div class="alert alert-{{ category }} d-flex align-items-center alert-margin" role="alert" id="alert-list">
+                {% if category == "success" %}
+                    <i class="fa-solid fa-circle-check icon-size"></i>
+                {% else %}
+                    <i class="fa-solid fa-circle-exclamation icon-size"></i>
+                {% endif %}
+                <div>
+                    <h6 class="msg-alert">{{ message }}</h6>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
 <section class="content">
     <div class="container-fluid p-0">
         <div class="acoes">
@@ -26,9 +49,9 @@
                         <div class="row">
                             <div class="col">
                                 <label for="">Meses Select:</label>
-                                <input type="text" class="form-control" id="PAR_LOG_MANT_CHAV"
+                                <input type="text" class="form-control" id="PAR_MANUT_CONTROL_GER"
                                     value="{{ context.meses }}">
-                                <button class="btnConfirmMeses btn btn-primary btn-sm ml-4 mt-2">Confirmar</button>
+                                <button class="btnConfirmParms btn btn-primary btn-sm ml-4 mt-2">Confirmar</button>
                             </div>
                         </div>
                     </div>
@@ -37,40 +60,40 @@
         </div>
         <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#insert" type="button"
-                    role="tab" aria-controls="insert" aria-selected="true"><i class="fa-solid fa-plus"></i>
-                    INSERT</button>
+                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#entrada" type="button"
+                    role="tab" aria-controls="entrada" aria-selected="true">
+                    ENTRADA</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#saida" type="button"
+                    role="tab" aria-controls="saida" aria-selected="false">
+                    SAÍDA</button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#update" type="button"
-                    role="tab" aria-controls="update" aria-selected="false"><i class="fa-solid fa-pen"></i>
+                    role="tab" aria-controls="update" aria-selected="false">
                     UPDATE</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#active" type="button"
-                    role="tab" aria-controls="active" aria-selected="false"><i class="fa-solid fa-check"></i>
-                    ACTIVE</button>
-            </li>
-            <li class="nav-item" role="presentation">
                 <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#delete" type="button"
-                    role="tab" aria-controls="delete" aria-selected="false"><i class="fa-solid fa-x"></i>
+                    role="tab" aria-controls="delete" aria-selected="false">
                     DELETE</button>
             </li>
         </ul>
         <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="insert" role="tabpanel" aria-labelledby="insert">
+            <div class="tab-pane fade show active" id="entrada" role="tabpanel" aria-labelledby="entrada">
                 <div class="tabela p-3">
-                    <div id="lista-logs-insert"></div>
+                    <div id="lista-logs-entrada"></div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="saida" role="tabpanel" aria-labelledby="saida">
+                <div class="tabela p-3 m-2">
+                    <div id="lista-logs-saida"></div>
                 </div>
             </div>
             <div class="tab-pane fade" id="update" role="tabpanel" aria-labelledby="update">
                 <div class="tabela p-3 m-2">
                     <div id="lista-logs-update"></div>
-                </div>
-            </div>
-            <div class="tab-pane fade" id="active" role="tabpanel" aria-labelledby="active">
-                <div class="tabela p-3 m-2">
-                    <div id="lista-logs-active"></div>
                 </div>
             </div>
             <div class="tab-pane fade" id="delete" role="tabpanel" aria-labelledby="delete">
@@ -83,13 +106,13 @@
 </section>
 {% endblock %}
 {% block script %}
-<script src="{{ url_for('static', filename='js/logChave/dataLogInsert.js') }}"></script>
+<script src="{{ url_for('static', filename='js/logControleGer/dataLogEnt.js') }}"></script>
 <script>
     new gridjs.Grid({
-        columns: colunasLogChaveInsert,
+        columns: colunasLogControlGerEnt,
         data: () => {
             return new Promise(resolve => {
-                setTimeout(() => resolve(dadosLogChaveInsert), 2000);
+                setTimeout(() => resolve(dadosLogControlGerEnt), 2000);
             });
         },
         search: true,
@@ -97,16 +120,33 @@
         paginationAutoPageSize: true,
         pagination: true,
         suppressPaginationPanel: true
-    }).render(document.getElementById("lista-logs-insert"));
+    }).render(document.getElementById("lista-logs-entrada"));
 </script>
 
-<script src="{{ url_for('static', filename='js/logChave/dataLogUpdate.js') }}"></script>
+<script src="{{ url_for('static', filename='js/logControleGer/dataLogSai.js') }}"></script>
 <script>
     new gridjs.Grid({
-        columns: colunasLogChaveUpdate,
+        columns: colunasLogControlGerSai,
         data: () => {
             return new Promise(resolve => {
-                setTimeout(() => resolve(dadosLogChaveUpdate), 2000);
+                setTimeout(() => resolve(dadosLogControlGerSai), 2000);
+            });
+        },
+        search: true,
+        sort: true,
+        paginationAutoPageSize: true,
+        pagination: true,
+        suppressPaginationPanel: true
+    }).render(document.getElementById("lista-logs-saida"));
+</script>
+
+<script src="{{ url_for('static', filename='js/logControleGer/dataLogUpdate.js') }}"></script>
+<script>
+    new gridjs.Grid({
+        columns: colunasLogControlGerUp,
+        data: () => {
+            return new Promise(resolve => {
+                setTimeout(() => resolve(dadosLogControlGerUp), 2000);
             });
         },
         search: true,
@@ -117,31 +157,13 @@
     }).render(document.getElementById("lista-logs-update"));
 </script>
 
-<script src="{{ url_for('static', filename='js/logChave/dataLogActive.js') }}"></script>
+<script src="{{ url_for('static', filename='js/logControleGer/dataLogDelete.js') }}"></script>
 <script>
     new gridjs.Grid({
-        columns: colunasLogChaveActive,
+        columns: colunasLogControlGerDel,
         data: () => {
             return new Promise(resolve => {
-                setTimeout(() => resolve(dadosLogChaveActive), 2000);
-            });
-        },
-        search: true,
-        sort: true,
-        paginationAutoPageSize: true,
-        pagination: true,
-        suppressPaginationPanel: true
-    }).render(document.getElementById("lista-logs-active"));
-</script>
-
-<script src="{{ url_for('static', filename='js/logChave/dataLogDelete.js') }}"></script>
-<script>
-    const searchInput = document.getElementById('teste');
-    new gridjs.Grid({
-        columns: colunasLogChaveDelete,
-        data: () => {
-            return new Promise(resolve => {
-                setTimeout(() => resolve(dadosLogChaveDelete), 2000);
+                setTimeout(() => resolve(dadosLogControlGerDel), 2000);
             });
         },
         search: true,

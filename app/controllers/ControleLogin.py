@@ -45,6 +45,7 @@ class ControleLogin:
                         session["nome"] = usuario.nome
                         session["usuario"] = usuario.usuario
                         session["grupo"] = usuario.grupo
+                        session["loginVig"] = False
                         if usuario.grupo == "ADM":
                             return 1
                         elif usuario.grupo == "TEC":
@@ -81,6 +82,7 @@ class ControleLogin:
                 session["nome"] = usuario.nome
                 session["usuario"] = usuario.usuario
                 session["grupo"] = usuario.grupo
+                session["loginVig"] = False
                 return 1
             else:
                 return 4
@@ -96,6 +98,7 @@ class ControleLogin:
                 session["nome"] = usuario.nome
                 session["usuario"] = usuario.usuario
                 session["grupo"] = usuario.grupo
+                session["loginVig"] = False
                 return 1
             else: 
                 return 4

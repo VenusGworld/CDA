@@ -7,7 +7,7 @@ $.ajax({
     dataType: 'json',
     contentType: 'application/json',
     data:JSON.stringify({
-        tipo: "UPDATE"
+        acao: "UPDATE"
     }),
     success: function(resp){
         for(x in resp.data){

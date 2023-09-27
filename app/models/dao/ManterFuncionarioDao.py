@@ -35,7 +35,7 @@ class ManterFuncionarioDao:
         if id != None:
             func = CDA007.query.get(id)
             funcionario = Funcionario(id=id, cracha=func.fu_cracha, nome=func.fu_nome, gerente=func.fu_gerente,
-                                      maquina=func.fu_maquina, ativo=func.fu_ativo, delete=func.fu_delete)
+                                      maquina=func.fu_maquina, ativo=func.fu_inativo, delete=func.fu_delete)
             
             return funcionario
         else:
@@ -53,7 +53,7 @@ class ManterFuncionarioDao:
 
         func = CDA007.query.filter(CDA007.fu_cracha==cracha).first()
         funcionario = Funcionario(id=func.id_funcionario, cracha=func.fu_cracha, nome=func.fu_nome, gerente=func.fu_gerente,
-                                      maquina=func.fu_maquina, ativo=func.fu_ativo, delete=func.fu_delete)
+                                      maquina=func.fu_maquina, ativo=func.fu_inativo, delete=func.fu_delete)
 
         return funcionario
     
@@ -72,7 +72,7 @@ class ManterFuncionarioDao:
         func.fu_nome = funcionario.nome
         func.fu_maquina = funcionario.maquina
         func.fu_gerente = funcionario.gerente
-        func.fu_ativo = funcionario.ativo
+        func.fu_inativo = funcionario.ativo
         func.fu_delete = funcionario.delete
 
         DB.session.commit()
@@ -89,7 +89,7 @@ class ManterFuncionarioDao:
         """
 
         func = CDA007.query.get(id)
-        func.fu_ativo = True
+        func.fu_inativo = True
 
         DB.session.commit()
         return True

@@ -28,7 +28,8 @@ def insereParametros():
                 ('PAR_LOG_MANT_FUNC', '12', 'Parâmetro para delimitar a data de consulta nas tabelas de logs de funcionários'),
                 ('PAR_LOG_MANT_CHAV', '12', 'Parâmetro para delimitar a data de consulta nas tabelas de logs de chaves'),
                 ('PAR_LOG_MANT_TERC', '12', 'Parâmetro para delimitar a data de consulta nas tabelas de logs de terceiros'),
-                ('PAR_LOG_MENSAGEM', '12', 'Parâmetro para delimitar a data de consulta nas tabelas de logs de mensagens');
+                ('PAR_LOG_MENSAGEM', '12', 'Parâmetro para delimitar a data de consulta nas tabelas de logs de mensagens'),
+                ('PAR_QTDE_ACOMPS', '5', 'Parâmetro para delimitar a quantidade de acompanhantes que um movimento de terceiros pode ter');
             """)
     
     DB.session.commit()

@@ -33,7 +33,7 @@
         src="{{ url_for('static', filename='plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='plugins/jquery/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='plugins/jquery/jquery-ui.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='plugins/chart.js/Chart.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='plugins/chart/chart.umd.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='plugins/sparklines/sparkline.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='plugins/jqvmap/jquery.vmap.min.js') }}"></script>
     <script type="text/javascript"
@@ -111,11 +111,11 @@
                 </div>
             </div>
             {% if session.grupo == 'ADM' %}
-            {% include "public/menusAdm.html" %}
+                {% include "public/menusAdm.html" %}
             {% elif session.grupo == 'TEC' %}
-            {% include "public/menusTec.html" %}
+                {% include "public/menusTec.html" %}
             {% else %}
-            {% include "public/menusVig.html" %}
+                {% include "public/menusVig.html" %}
             {% endif %}
         </aside>
         <div class="content-wrapper" style="min-height: 521px;">
@@ -155,7 +155,7 @@
     </script>
     <script>
         $(document).ready(function(){
-            $(".btnConfirmMeses").click(function(){
+            $(".btnConfirmParms").click(function(){
                 const inputsData = [];
                 const inputs = document.querySelectorAll('input[id^="PAR_"]');
     

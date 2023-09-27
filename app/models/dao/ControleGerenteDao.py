@@ -176,3 +176,38 @@ class ControleGerenteDao:
         movimento = CDA003.query.filter(CDA003.id_movGere==id, CDA003.mge_dataSaid==None, CDA003.mge_horaSaid==None).first()
 
         return movimento
+    
+
+    def consultaMovimentosRelatIdGerente(self, dataDe: str, dataAte: str, idFunc: int) -> CDA003:
+        """
+        Consulta os movimentos de um gerente específico que tem a data dentro do range passado.
+
+        :param dataDe: A data início da consulta no formato YYYYMMDD.
+        :param dataAte: A data final da consulta no formato YYYYMMDD.
+        :param idFunc: Um ID de um gerente específico para consultar os movimentos.
+
+        :return: Uma lista contendo as informações da cada movimento.
+        """
+
+        movimentos = CDA003.query.filter(CDA003.mge_dataEntra>=dataDe, CDA003.mge_dataEntra<=dataAte, CDA003.mge_horaSaid!=None, CDA003.mge_dataSaid!=None, CDA003.mge_idFunc==idFunc)\
+            .join(CDA007, CDA007.id_funcionario==CDA003.mge_idFunc)\
+                .order_by(CDA003.mge_dataEntra, CDA007.fu_nome, CDA003.mge_horaEntra)
+
+        return movimentos
+    
+
+    def consultaMovimentosRelatGerente(self, dataDe: str, dataAte: str) -> CDA003:
+        """
+        Consulta os movimentos do gerentes que tem a data dentro do range passado.
+
+        :param dataDe: A data início da consulta no formato YYYYMMDD.
+        :param dataAte: A data final da consulta no formato YYYYMMDD.
+
+        :return: Uma lista contendo as informações da cada movimento.
+        """
+
+        movimentos = CDA003.query.filter(CDA003.mge_dataEntra>=dataDe, CDA003.mge_dataEntra<=dataAte, CDA003.mge_horaSaid!=None, CDA003.mge_dataSaid!=None)\
+            .join(CDA007, CDA007.id_funcionario==CDA003.mge_idFunc)\
+                .order_by(CDA003.mge_dataEntra, CDA007.fu_nome, CDA003.mge_horaEntra)
+
+        return movimentos

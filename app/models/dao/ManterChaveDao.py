@@ -19,7 +19,7 @@ class ManterChaveDao:
         :return: Uma lista de chaves.
         """
 
-        chaves = CDA005.query.filter(CDA005.ch_delete!=True, CDA005.ch_ativo!=True)
+        chaves = CDA005.query.filter(CDA005.ch_delete!=True, CDA005.ch_inativo!=True)
 
         return chaves
 
@@ -36,7 +36,7 @@ class ManterChaveDao:
         chave = CDA005.query.filter(CDA005.id_chave==id).first()
 
         chav = Chave(id=chave.id_chave, codigo=chave.ch_codigo, nome=chave.ch_nome,
-                     ativo=chave.ch_ativo, delete=chave.ch_delete)
+                     ativo=chave.ch_inativo, delete=chave.ch_delete)
 
         return chav
     
@@ -53,7 +53,7 @@ class ManterChaveDao:
         chave = CDA005.query.filter(CDA005.ch_codigo==codigo).first()
 
         chav = Chave(id=chave.id_chave, codigo=chave.ch_codigo, nome=chave.ch_nome,
-                     ativo=chave.ch_ativo, delete=chave.ch_delete)
+                     ativo=chave.ch_inativo, delete=chave.ch_delete)
 
         return chav
 
@@ -133,7 +133,7 @@ class ManterChaveDao:
 
         chave = CDA005.query.get(id)
 
-        chave.ch_ativo = True
+        chave.ch_inativo = True
         DB.session.commit()
         
         return True

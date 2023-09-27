@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CDA | Relatório Controle Gerente</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleRelatorio.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='plugins/bootstrap/css/bootstrap.min.css') }}">
+</head>
+<body>
+    <header>
+        <div class="hearder">
+            <div class="img">
+                <img class="" src="{{ url_for('static', filename='img/logo6.png') }}" id="icon" alt="User Icon" />
+            </div>
+            <div class="titulo">
+                <label>Controle de Gerentes</label>
+                <label>de {{ context.de | dataLimite }} até {{ context.ate | dataLimite }}</label>
+            </div>
+            <div class="hora">
+                <label>{{ context.hora }}</label>
+                <label>{{ context.ano }}</label>
+            </div>
+        </div>
+    </header>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Gerente</th>
+                <th>Entrada</th>
+                <th>Saída</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for movimento in context.movimentos %}
+                {% if loop.index0 < 18 %}
+                    {% if movimento.gerente.nome == context.movimentos[loop.index0 + 1].gerente.nome %}
+                        <tr>
+                    {% else %}
+                        <tr style="border-bottom: 1.5px solid #000000;">
+                    {% endif %}
+                            <td>{{ movimento.gerente.nome}}</td>
+                            <td>{{ movimento.dataEnt | dataLimite }} {{ movimento.horaEnt }}</td>
+                            <td>{{ movimento.dataSai | dataLimite }} {{ movimento.horaSai }}</td>
+                        </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+    <table class="table footer">
+        <tr>
+            <td colspan="2">Emitido por: {{ session.nome }}</td>
+            <td colspan="2">Conferido por:________________</td>
+            <td>
+                <div class="page-number"></div>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

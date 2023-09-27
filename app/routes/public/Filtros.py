@@ -3,7 +3,6 @@ import dateutil.parser
 
 filtrosBlue = Blueprint("filtros", __name__)
 
-
 #Filtro para Data input
 @filtrosBlue.app_template_filter('dataInput')
 def _jinja2_filter_dataInput(date, fmt=None):
@@ -56,10 +55,22 @@ def _jinja2_filter_dataTime(date, fmt=None):
     return native.strftime(format) 
 
 
-#Filtro para Data input
+#Filtro para valores boleanos
 @filtrosBlue.app_template_filter('filtroBoleano')
 def _jinja2_filter_boleano(tipo, fmt=None):
     if tipo == True:
         return "SIM"
     else:
         return "NÃO"
+    
+
+#Filtro para valores boleanos
+@filtrosBlue.app_template_filter('nome')
+def _jinja2_filter_nome(nome, fmt=None):
+    return nome[:20]
+
+
+#Filtro para ver o tamnho das strings no template
+@filtrosBlue.app_template_filter('stripELength')
+def _jinja2_filter_strip_e_length(valor, fmt=None):
+    return len(valor.strip())

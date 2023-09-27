@@ -23,10 +23,10 @@ class ManterUsuarioDao:
 
         lisUsuarios = []
 
-        sysusers = SysUser.query.filter(SysUser.us_ativo!=True, SysUser.us_delete!=True)
+        sysusers = SysUser.query.filter(SysUser.us_inativo!=True, SysUser.us_delete!=True)
         for sysuser in sysusers:
             user = Usuario(id=sysuser.id, nome=sysuser.us_nome, email=sysuser.us_email, usuario=sysuser.us_usuario,
-                          senha=sysuser.us_senha, complex=sysuser.us_complex, grupo=sysuser.us_grupo, ativo=sysuser.us_ativo,
+                          senha=sysuser.us_senha, complex=sysuser.us_complex, grupo=sysuser.us_grupo, ativo=sysuser.us_inativo,
                           delete=sysuser.us_delete)
             lisUsuarios.append(user)
 
@@ -44,7 +44,7 @@ class ManterUsuarioDao:
 
         sysuser = SysUser.query.get(id)
         usuario = Usuario(id=sysuser.id, nome=sysuser.us_nome, email=sysuser.us_email, usuario=sysuser.us_usuario,
-                          senha=sysuser.us_senha, complex=sysuser.us_complex, grupo=sysuser.us_grupo, ativo=sysuser.us_ativo,
+                          senha=sysuser.us_senha, complex=sysuser.us_complex, grupo=sysuser.us_grupo, ativo=sysuser.us_inativo,
                           delete=sysuser.us_delete)
         
         return usuario
@@ -93,7 +93,7 @@ class ManterUsuarioDao:
         sysuser.us_senha = usuario.senha
         sysuser.us_grupo = usuario.grupo
         sysuser.us_complex = usuario.complex
-        sysuser.us_ativo = usuario.ativo
+        sysuser.us_inativo = usuario.ativo
         sysuser.us_delete = usuario.delete
 
         DB.session.commit()
@@ -126,7 +126,7 @@ class ManterUsuarioDao:
         """
 
         sysuser = SysUser.query.get(id)
-        sysuser.us_ativo = True
+        sysuser.us_inativo = True
         
         DB.session.commit()
         return True

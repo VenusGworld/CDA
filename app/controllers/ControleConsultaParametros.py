@@ -22,6 +22,30 @@ class ControleConsultaParametros:
         return parametrosMeses
     
 
+    def consultaTodosParametros(self) -> list[dict]:
+        """
+        Consulta e retorna um dicionário com todos os parâmetros do sistema.
+
+        :return: Um dicionário contendo informações sobre os cada parâmetro.
+                Dicionário possui chaves "codigo", "valor" e "desc".
+        """
+        
+        consultaParametrosDao = ConsultaParametrosDao()
+        parametros = consultaParametrosDao.consultaTodosParametros()
+
+        listaParametros = []
+        for parm in parametros:
+            dicParm = {
+                "codigo": parm.par_codigo,
+                "valor": parm.par_valor,
+                "desc": parm.par_desc
+            }
+
+            listaParametros.append(dicParm)
+
+        return listaParametros
+
+
     def aletarParametros(self, listaParams: list[dict]) -> bool:
         """
         Altera os parâmetros das tabelas de logs do menter usuários.

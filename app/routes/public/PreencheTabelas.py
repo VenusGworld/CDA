@@ -1,5 +1,6 @@
 from ...controllers.ControleConsultarLogControlChav import ControleConsultarLogControlChav
 from ...controllers.ControleConsultarLogControlTerc import ControleConsultarLogControlTerc
+from ...controllers.ControleConsultarLogControlGer import ControleConsultarLogControlGer
 from ...controllers.ControleManterFuncionario import ControleManterFuncionario
 from ...controllers.ControleConsultarLogChave import ControleConsultarLogChave
 from ...controllers.ControleConsultarLogTerc import ControleConsultarLogTerc
@@ -28,6 +29,7 @@ preencheTabelasBlue = Blueprint("preencheTabelasBlue", __name__)
 def listaUsuariosAPI():
     controleManterUsuario = ControleManterUsuario()
     respControle = controleManterUsuario.consultarUsuarios()
+    
     resp = Response(response=json.dumps(respControle), status=200, mimetype="application/json")
     return resp
 
@@ -38,6 +40,7 @@ def listaUsuariosAPI():
 def listaChavesRetAPI():
     controleChave = ControleChave()
     respControle = controleChave.listaChavesRetiradas()
+
     resp = Response(response=json.dumps({"login": session["grupo"], "data": respControle}), status=200, mimetype="application/json")
     return resp
 
@@ -48,6 +51,7 @@ def listaChavesRetAPI():
 def listaChavesManutAPI():
     controleChave = ControleChave()
     respControle = controleChave.listaChavesManut()
+
     resp = Response(response=json.dumps({"login": session["grupo"], "data": respControle}), status=200, mimetype="application/json")
     return resp
 
@@ -58,6 +62,7 @@ def listaChavesManutAPI():
 def listaFuncionariosAPI():
     controleManterFuncionario = ControleManterFuncionario()
     respControle = controleManterFuncionario.consultarFuncionarios()
+
     resp = Response(response=json.dumps(respControle), status=200, mimetype="application/json")
     return resp
 
@@ -68,28 +73,10 @@ def listaFuncionariosAPI():
 def listaChavesAPI():
     controleManterChave = ControleManterChave()
     respControle = controleManterChave.consultaChaves()
+
     resp = Response(response=json.dumps({"login": session["grupo"], "data": respControle}), status=200, mimetype="application/json")
     return resp
 
-
-#Rota para preencher a lista de logs de usuários
-@preencheTabelasBlue.route('/lista-logs-usuario', methods=["POST"])
-@login_required
-def listaLogsUserAPI():
-    data = request.get_json()
-    controleConsultaLogUser = ControleConsultarLogUser()
-    if data["tipo"] == "INSERT":
-        respControle = controleConsultaLogUser.consultaLogUserInsert()
-    elif data["tipo"] == "UPDATE":
-        respControle = controleConsultaLogUser.consultaLogUserUpdate()
-    elif data["tipo"] == "ACTIVE":
-        respControle = controleConsultaLogUser.consultaLogUserActive()
-    else:
-        respControle = controleConsultaLogUser.consultaLogUserDelete()
-    
-    resp = Response(response=json.dumps(respControle), status=200, mimetype="application/json")
-    return resp
-    
 
 #Rota para preencher a lista de Terceiros
 @preencheTabelasBlue.route('/lista-terceiros', methods=["POST"])
@@ -97,6 +84,7 @@ def listaLogsUserAPI():
 def listaTerceirosAPI():
     controleManterTerceiro = ControleManterTerceiro()
     respControle = controleManterTerceiro.consultarTerceiros()
+
     resp = Response(response=json.dumps({"login": session["grupo"], "data": respControle}), status=200, mimetype="application/json")
     return resp
 
@@ -107,6 +95,7 @@ def listaTerceirosAPI():
 def listaTerceirosEntradaAPI():
     controleTerceiro = ControleTerceiro()
     respControle = controleTerceiro.consultaTerceirosEntrada()
+
     resp = Response(response=json.dumps({"login": session["grupo"], "data": respControle}), status=200, mimetype="application/json")
     return resp
 
@@ -117,6 +106,7 @@ def listaTerceirosEntradaAPI():
 def listaGerestesEntradaAPI():
     controlegerente = ControleDeGerente()
     respControle = controlegerente.consultaGerentesEntrada()
+
     resp = Response(response=json.dumps({"login": session["grupo"], "data": respControle}), status=200, mimetype="application/json")
     return resp
 
@@ -127,7 +117,31 @@ def listaGerestesEntradaAPI():
 def listaGerManutAPI():
     controleDeGerente = ControleDeGerente()
     respControle = controleDeGerente.listaGerentesManut()
+
     resp = Response(response=json.dumps({"login": session["grupo"], "data": respControle}), status=200, mimetype="application/json")
+    return resp
+
+
+#Rotapara para preencher a lista de Movimento de Terceiro
+@preencheTabelasBlue.route('/lista-terceiro-manutencao', methods=["POST"])
+@login_required
+def listaTerceiroManutAPI():
+    controleTerceiro = ControleTerceiro()
+    respControle = controleTerceiro.listaTercManut()
+
+    resp = Response(response=json.dumps({"login": session["grupo"], "data": respControle}), status=200, mimetype="application/json")
+    return resp
+
+
+#Rota para preencher a lista de logs de usuários
+@preencheTabelasBlue.route('/lista-logs-usuario', methods=["POST"])
+@login_required
+def listaLogsUserAPI():
+    data = request.get_json()
+    controleConsultaLogUser = ControleConsultarLogUser()
+    respControle = controleConsultaLogUser.consultaLogUserInsert(data["acao"])
+    
+    resp = Response(response=json.dumps(respControle), status=200, mimetype="application/json")
     return resp
 
 
@@ -137,14 +151,7 @@ def listaGerManutAPI():
 def listaLogsFuncAPI():
     data = request.get_json()
     controleConsultaLogFunc = ControleConsultarLogFunc()
-    if data["tipo"] == "INSERT":
-        respControle = controleConsultaLogFunc.consultaLogFuncInsert()
-    elif data["tipo"] == "UPDATE":
-        respControle = controleConsultaLogFunc.consultaLogFuncUpdate()
-    elif data["tipo"] == "ACTIVE":
-        respControle = controleConsultaLogFunc.consultaLogFuncActive()
-    else:
-        respControle = controleConsultaLogFunc.consultaLogFuncDelete()
+    respControle = controleConsultaLogFunc.consultaLogFunc(data["acao"])
     
     resp = Response(response=json.dumps(respControle), status=200, mimetype="application/json")
     return resp
@@ -160,30 +167,13 @@ def listaLogsMenAPI():
     return resp
 
 
-#Rotapara para preencher a lista de Movimento de Terceiro
-@preencheTabelasBlue.route('/lista-terceiro-manutencao', methods=["POST"])
-@login_required
-def listaTerceiroManutAPI():
-    controleTerceiro = ControleTerceiro()
-    respControle = controleTerceiro.listaTercManut()
-    resp = Response(response=json.dumps({"login": session["grupo"], "data": respControle}), status=200, mimetype="application/json")
-    return resp
-
-
 #Rota para preencher a lista de logs de chaves
 @preencheTabelasBlue.route('/lista-logs-chaves', methods=["POST"])
 @login_required
 def listaLogsChaveAPI():
     data = request.get_json()
     controleConsultarLogChave = ControleConsultarLogChave()
-    if data["tipo"] == "INSERT":
-        respControle = controleConsultarLogChave.consultaLogChaveInsert()
-    elif data["tipo"] == "UPDATE":
-        respControle = controleConsultarLogChave.consultaLogChaveUpdate()
-    elif data["tipo"] == "ACTIVE":
-        respControle = controleConsultarLogChave.consultaLogChaveActive()
-    else:
-        respControle = controleConsultarLogChave.consultaLogChaveDelete()
+    respControle = controleConsultarLogChave.consultaLogChave(data["acao"])
     
     resp = Response(response=json.dumps({"login": session["grupo"], "data": respControle}), status=200, mimetype="application/json")
     return resp
@@ -195,14 +185,7 @@ def listaLogsChaveAPI():
 def listaLogsTerceiroAPI():
     data = request.get_json()
     controleConsultarLogTerc = ControleConsultarLogTerc()
-    if data["tipo"] == "INSERT":
-        respControle = controleConsultarLogTerc.consultaLogTercInsert()
-    elif data["tipo"] == "UPDATE":
-        respControle = controleConsultarLogTerc.consultaLogTercUpdate()
-    elif data["tipo"] == "ACTIVE":
-        respControle = controleConsultarLogTerc.consultaLogTercActive()
-    else:
-        respControle = controleConsultarLogTerc.consultaLogTercDelete()
+    respControle = controleConsultarLogTerc.consultaLogTerc(data["acao"])
     
     resp = Response(response=json.dumps({"login": session["grupo"], "data": respControle}), status=200, mimetype="application/json")
     return resp
@@ -214,14 +197,7 @@ def listaLogsTerceiroAPI():
 def listaLogsControlChavesAPI():
     data = request.get_json()
     controleConsultarLogControlChav = ControleConsultarLogControlChav()
-    if data["tipo"] == "RETIRADA":
-        respControle = controleConsultarLogControlChav.consultaLogControlChaveRet()
-    elif data["tipo"] == "DEVOLUCAO":
-        respControle = controleConsultarLogControlChav.consultaLogControlChaveDev()
-    elif data["tipo"] == "UPDATE":
-        respControle = controleConsultarLogControlChav.consultaLogControlChaveUpdate()
-    else:
-        respControle = controleConsultarLogControlChav.consultaLogControlChaveDelete()
+    respControle = controleConsultarLogControlChav.consultaLogControlChave(data["acao"])
     
     resp = Response(response=json.dumps({"login": session["grupo"], "data": respControle}), status=200, mimetype="application/json")
     return resp
@@ -233,14 +209,19 @@ def listaLogsControlChavesAPI():
 def listaLogsControlTerceirosAPI():
     data = request.get_json()
     controleConsultarLogControlTerc = ControleConsultarLogControlTerc()
-    if data["tipo"] == "ENTRADA":
-        respControle = controleConsultarLogControlTerc.consultaLogControlTercEnt()
-    elif data["tipo"] == "SAIDA":
-        respControle = controleConsultarLogControlTerc.consultaLogControlTercSai()
-    elif data["tipo"] == "UPDATE":
-        respControle = controleConsultarLogControlTerc.consultaLogControlTercUpdate()
-    else:
-        respControle = controleConsultarLogControlTerc.consultaLogControlTercDelete()
+    respControle = controleConsultarLogControlTerc.consultaLogControlTercEnt(data["acao"])
+    
+    resp = Response(response=json.dumps({"login": session["grupo"], "data": respControle}), status=200, mimetype="application/json")
+    return resp
+
+
+#Rota para preencher a lista de logs de controle de gerentes
+@preencheTabelasBlue.route('/lista-logs-controle-gerentes', methods=["POST"])
+@login_required
+def listaLogsControlGerentesAPI():
+    data = request.get_json()
+    controleConsultarLogControlGer = ControleConsultarLogControlGer()
+    respControle = controleConsultarLogControlGer.consultaLogControlGer(data["acao"])
     
     resp = Response(response=json.dumps({"login": session["grupo"], "data": respControle}), status=200, mimetype="application/json")
     return resp

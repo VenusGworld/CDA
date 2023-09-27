@@ -1,9 +1,12 @@
 @page {
     size: A4 landscape;
+    @bottom-right {
+        content: "Página " counter(page) " de " counter(pages);
+    }
 }
 
 .hearder{
-    background-color: rgb(175, 175, 175);
+    background-color: #afafaf;
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -16,6 +19,7 @@
     flex-direction: column;
     align-items: center;
     padding: 15px;
+    font-weight: bold;
 }
 
 .hora{
@@ -23,17 +27,29 @@
     flex-direction: column;
     align-items: center;
     padding: 15px;
+    font-weight: 600;
 }
 
 #icon{
-    width: 4.3rem;
+    width: 5.5rem;
     padding: 15px;
+    filter: grayscale(100%);
+}
+
+.table{
+    font-size: 13.5px !important;
+}
+
+.footer{
+    background-color: #afafaf;
+    font-weight: bold;
+    position: table-footer-group !important;
 }
 
 
 @media print {
     .hearder{
-        background-color: rgb(175, 175, 175);
+        background-color: #afafaf;
         width: 100%;
         display: flex;
         justify-content: space-between;
@@ -46,6 +62,7 @@
         flex-direction: column;
         align-items: center;
         padding: 15px;
+        font-weight: bold;
     }
     
     .hora{
@@ -53,10 +70,22 @@
         flex-direction: column;
         align-items: center;
         padding: 15px;
+        font-weight: 600;
     }
     
     #icon{
-        width: 4.3rem;
+        width: 5.5rem;
         padding: 15px;
+        filter: grayscale(100%);
+    }
+
+    .table{
+        font-size: 13.5px !important;
+    }
+
+    .footer{
+        background-color: #afafaf;
+        font-weight: bold;
+        position: table-footer-group !important;
     }
 }

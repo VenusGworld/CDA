@@ -11,6 +11,7 @@
             {% endif %}
                 <div class="modal-body">
                     <div class="alert alert-danger alert-dismissible fade show none" id="alert-excluir" style="margin-left: 1rem; margin-right: 1rem; margin-top: 1rem;" role="alert">
+                        <i class="fa-solid fa-circle-exclamation icon-size"></i>
                         <span>Observação precisa ter mais que 15 caracteres.</span>
                     </div>
                     <div class="container">
@@ -36,14 +37,14 @@
                                 <span class="obs-alert">* Observação deve ser preenchida</span>
                                 <div class="col">
                                     <label for="">Observação:</label>
-                                    <textarea class="form-control" id="observacaoEditar" name="observacaoEditar" rows="3" cols="50" maxlength="120"></textarea>
+                                    <textarea class="form-control upper" id="observacaoEditar" name="observacaoEditar" rows="3" cols="50" maxlength="120"></textarea>
                                 </div>
                             </div>
                         {% else %}
                             <div class="row" style="display: none;">
                                 <div class="col">
                                     <label for="">Observação:</label>
-                                    <textarea class="form-control" id="observacaoEditar" name="observacaoEditar" rows="3" cols="50" maxlength="120"></textarea>
+                                    <textarea class="form-control upper" id="observacaoEditar" name="observacaoEditar" rows="3" cols="50" maxlength="120"></textarea>
                                 </div>
                             </div>
                         {% endif %}

@@ -91,3 +91,14 @@ section.modal-alert {
     width: auto;
     position: relative;
 }
+
+.campo-alterado-label{
+    font-size: 13px;
+    color: #910000;
+}
+
+.campo-alterado-label-senha{
+    font-size: 20px;
+    color: #910000;
+    margin-bottom: 0.5rem;
+}

@@ -19,6 +19,7 @@ $.ajax({
                 var excluir = `<a class="btn btn-danger btn-sm" title="EXCLUIR" data-bs-toggle="modal" data-bs-target="#modalLogin" data-bs-acao="EXCLUIR_CONTROLE_CHAVE" data-bs-id=${resp.data[x].id} data-bs-url="/vig/controle-terceiro/manutencao-terceiro/modal-exclusão-controle-terceiro/${resp.data[x].id}" data-bs-toggle="modal"><i class="fa-solid fa-trash-can"></i></a>`
             }
            dataresp = {
+            cpf: resp.data[x].cpf,
             terceiro: resp.data[x].nomeTerc,
             entrada: resp.data[x].entrada,
             saida: resp.data[x].saida,
@@ -37,6 +38,12 @@ $.ajax({
 
 
 var colunasTerceiroManut = [
+    {
+        id: 'cpf',
+        name: 'CPF',
+        hidden: true,
+        
+    },
     {
         id: 'terceiro',
         name: 'Terceiro'

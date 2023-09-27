@@ -195,3 +195,37 @@ class ControleTerceiroDao:
         return idsMov
     
 
+    def consultaMovimentosRelatIdTerc(self, dataDe: str, dataAte: str, idTerc: int) -> CDA004:
+        """
+        Consulta os movimentos de um terceiros específico que tem a data dentro do range passado.
+
+        :param dataDe: A data início da consulta no formato YYYYMMDD.
+        :param dataAte: A data final da consulta no formato YYYYMMDD.
+        :param idTerc: Um ID de um terceiro específico para consultar os movimentos.
+
+        :return: Uma lista contendo as informações da cada movimento.
+        """
+
+        movimentos = CDA004.query.filter(CDA004.mte_dataEntra>=dataDe, CDA004.mte_dataEntra<=dataAte, CDA004.mte_dataSaid!=None, CDA004.mte_dataSaid!=None, CDA016.id_terceiro==idTerc)\
+            .join(CDA016, CDA016.id_terceiro==idTerc)\
+                .order_by(CDA004.mte_dataEntra)
+
+        return movimentos
+    
+
+    def consultaMovimentosRelatTerceiro(self, dataDe: str, dataAte: str) -> CDA004:
+        """
+        Consulta os movimentos do terceiros que tem a data dentro do range passado.
+
+        :param dataDe: A data início da consulta no formato YYYYMMDD.
+        :param dataAte: A data final da consulta no formato YYYYMMDD.
+
+        :return: Uma lista contendo as informações da cada movimento.
+        """
+
+        movimentos = CDA004.query.filter(CDA004.mte_dataEntra>=dataDe, CDA004.mte_dataEntra<=dataAte, CDA004.mte_dataSaid!=None, CDA004.mte_dataSaid!=None)\
+            .order_by(CDA004.mte_dataEntra)
+
+        return movimentos
+
+

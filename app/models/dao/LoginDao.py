@@ -27,7 +27,7 @@ class LoginDao:
             login.email = sysuser.us_email
             login.grupo = sysuser.us_grupo
             login.complex = sysuser.us_complex
-            login.ativo = sysuser.us_ativo
+            login.ativo = sysuser.us_inativo
             login.delete = sysuser.us_delete
             login.senhaCompara = sysuser.us_senha
             return sysuser

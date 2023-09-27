@@ -22,25 +22,40 @@
                             <input type="text" name="horaEnt" id="horaEnt" class="form-control" value="{{ context.log.usuario.nome }}" readonly>
                         </div>
                     </div>
+                    {% if context.log.dadosAntigos.senha != context.log.dadosNovos.senha %}
+                        <div class="campo-alterado-label-senha">* Senha foi alterada</div>
+                    {% endif %}
                     <label class="titulo-container">Dados Antigos:</label>
                     <div class="container container-border mb-3">
                         <div class="row">
                             <div class="col">
                                 <label for="recipient-name" class="col-form-label">Nome:</label>
+                                {% if context.log.dadosAntigos.nome != context.log.dadosNovos.nome %}
+                                    <span class="campo-alterado-label">* Campo Alterado</span>
+                                {% endif %}
                                 <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosAntigos.nome }}" readonly>
                             </div>
                             <div class="col">
                                 <label for="recipient-name" class="col-form-label">E-mail:</label>
+                                {% if context.log.dadosAntigos.email != context.log.dadosNovos.email %}
+                                    <span class="campo-alterado-label">* Campo Alterado</span>
+                                {% endif %}
                                 <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosAntigos.email }}" readonly>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
                                 <label for="recipient-name" class="col-form-label">Usuário:</label>
+                                {% if context.log.dadosAntigos.usuario != context.log.dadosNovos.usuario %}
+                                    <span class="campo-alterado-label">* Campo Alterado</span>
+                                {% endif %}
                                 <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosAntigos.usuario }}" readonly>
                             </div>
                             <div class="col mb-2">
                                 <label for="recipient-name" class="col-form-label">Grupo:</label>
+                                {% if context.log.dadosAntigos.grupo != context.log.dadosNovos.grupo %}
+                                    <span class="campo-alterado-label">* Campo Alterado</span>
+                                {% endif %}
                                 <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosAntigos.grupo }}" readonly>
                             </div>
                         </div>
@@ -50,20 +65,32 @@
                         <div class="row">
                             <div class="col">
                                 <label for="recipient-name" class="col-form-label">Nome:</label>
+                                {% if context.log.dadosNovos.nome != context.log.dadosAntigos.nome %}
+                                    <span class="campo-alterado-label">* Campo Alterado</span>
+                                {% endif %}
                                 <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.nome }}" readonly>
                             </div>
                             <div class="col">
                                 <label for="recipient-name" class="col-form-label">E-mail:</label>
+                                {% if context.log.dadosNovos.email != context.log.dadosAntigos.email %}
+                                    <span class="campo-alterado-label">* Campo Alterado</span>
+                                {% endif %}
                                 <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.email }}" readonly>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
                                 <label for="recipient-name" class="col-form-label">Usuário:</label>
+                                {% if context.log.dadosNovos.usuario != context.log.dadosAntigos.usuario %}
+                                    <span class="campo-alterado-label">* Campo Alterado</span>
+                                {% endif %}
                                 <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.usuario }}" readonly>
                             </div>
                             <div class="col mb-2">
                                 <label for="recipient-name" class="col-form-label">Grupo:</label>
+                                {% if context.log.dadosNovos.grupo != context.log.dadosAntigos.grupo %}
+                                    <span class="campo-alterado-label">* Campo Alterado</span>
+                                {% endif %}
                                 <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.grupo }}" readonly>
                             </div>
                         </div>

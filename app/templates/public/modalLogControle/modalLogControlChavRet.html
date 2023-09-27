@@ -25,19 +25,25 @@
                     <label class="titulo-container">Chave Retirada:</label>
                     <div class="container container-border mb-3">
                         <div class="row">
-                            <div class="col-3">
-                                <label for="recipient-name" class="col-form-label">Data Retirada:</label>
-                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.dataRet | dataLimite }} {{ context.log.dadosNovos.horaRet }}" readonly>
-                            </div>
                             <div class="col">
                                 <label for="recipient-name" class="col-form-label">Chave:</label>
                                 <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.chave.nome }}" readonly>
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row">
                             <div class="col">
                                 <label for="recipient-name" class="col-form-label">Resposável Retirada:</label>
                                 <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.respRet.nome }}" readonly>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label for="recipient-name" class="col-form-label">Data Retirada:</label>
+                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.dataRet | dataLimite }}" readonly>
+                            </div>
+                            <div class="col">
+                                <label for="recipient-name" class="col-form-label">Hora Retirada:</label>
+                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.horaRet }}" readonly>
                             </div>
                         </div>
                     </div>

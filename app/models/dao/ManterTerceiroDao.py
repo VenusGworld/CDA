@@ -19,7 +19,7 @@ class ManterTerceiroDao:
         :return: Uma lista de terceiros ordenados pelo nome.
         """
 
-        terceiros = CDA009.query.filter(CDA009.te_delete!=True, CDA009.te_ativo!=True).order_by(CDA009.te_nome)
+        terceiros = CDA009.query.filter(CDA009.te_delete!=True, CDA009.te_inativo!=True).order_by(CDA009.te_nome)
 
         return terceiros
     
@@ -33,10 +33,10 @@ class ManterTerceiroDao:
         :return: Um objeto da classe Terceiro com os detalhes do terceiro encontrado.
         """
 
-        terceiro = CDA009.query.filter(CDA009.te_cpf==cpf, CDA009.te_delete!=True, CDA009.te_ativo!=True).first()
+        terceiro = CDA009.query.filter(CDA009.te_cpf==cpf, CDA009.te_delete!=True, CDA009.te_inativo!=True).first()
 
         terceiroMov = Terceiro(id=terceiro.id_terceiro, codigo=terceiro.te_codigo, nome=terceiro.te_nome, cpf=terceiro.te_cpf,
-                               ativo=terceiro.te_ativo, delete=terceiro.te_delete)
+                               ativo=terceiro.te_inativo, delete=terceiro.te_delete)
 
         return terceiroMov
     
@@ -53,7 +53,7 @@ class ManterTerceiroDao:
         terceiro = CDA009.query.filter(CDA009.id_terceiro==id, CDA009.te_delete!=True).first()
 
         terceiroMov = Terceiro(id=terceiro.id_terceiro, codigo=terceiro.te_codigo, nome=terceiro.te_nome, cpf=terceiro.te_cpf,
-                               ativo=terceiro.te_ativo, delete=terceiro.te_delete)
+                               ativo=terceiro.te_inativo, delete=terceiro.te_delete)
 
         return terceiroMov
     
@@ -67,10 +67,10 @@ class ManterTerceiroDao:
         :return: Um objeto da classe Terceiro com os detalhes do terceiro encontrado.
         """
 
-        terceiro = CDA009.query.filter(CDA009.te_codigo==codigo, CDA009.te_delete!=True, CDA009.te_ativo!=True).first()
+        terceiro = CDA009.query.filter(CDA009.te_codigo==codigo, CDA009.te_delete!=True, CDA009.te_inativo!=True).first()
 
         terceiroMov = Terceiro(id=terceiro.id_terceiro, codigo=terceiro.te_codigo, nome=terceiro.te_nome, cpf=terceiro.te_cpf,
-                               ativo=terceiro.te_ativo, delete=terceiro.te_delete)
+                               ativo=terceiro.te_inativo, delete=terceiro.te_delete)
 
         return terceiroMov
     
@@ -122,7 +122,7 @@ class ManterTerceiroDao:
 
         terc = CDA009.query.get(id)
 
-        terc.te_ativo = True
+        terc.te_inativo = True
         DB.session.commit()
 
         return True
@@ -168,7 +168,7 @@ class ManterTerceiroDao:
         :return: O nome do terceiro associado ao movimento.
         """
 
-        terceiro = DB.session.query(CDA009.te_nome)\
+        terceiro = DB.session.query(CDA009.te_nome, CDA009.te_cpf)\
             .join(CDA016, CDA016.id_terceiro==CDA009.id_terceiro)\
                 .filter(CDA009.te_delete!=True, CDA016.id_movTerc==idMov).first()
 

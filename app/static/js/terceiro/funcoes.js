@@ -25,7 +25,7 @@ function verificaCpf(cpf){
     if (digito1 !== parseInt(cpf.charAt(9))) {
         div.classList.remove('none');
         msg.innerHTML = "";
-        msg.innerHTML = "<h6 class='msg-alert'>O CPF informado não é válido!</h6>";
+        msg.innerHTML = '<h6 class="msg-alert"><i class="fa-solid fa-circle-exclamation icon-size"></i> O CPF informado não é válido!</h6>';
         setTimeout(() =>{
             div.classList.add('none');
         }, 6000);
@@ -44,7 +44,7 @@ function verificaCpf(cpf){
     if (digito2 !== parseInt(cpf.charAt(10))) {
         div.classList.remove('none');
         msg.innerHTML = "";
-        msg.innerHTML = "<h6 class='msg-alert'>O CPF informado não é válido!</h6>";
+        msg.innerHTML = '<h6 class="msg-alert"><i class="fa-solid fa-circle-exclamation icon-size"></i> O CPF informado não é válido!</h6>';
         setTimeout(() =>{
             div.classList.add('none');
         }, 6000);

@@ -278,3 +278,58 @@ class ControlePesquisa:
         else:
             return True
     
+
+    def pesquisaChaveRelat(self, pesquisa: str) -> list[dict]:
+        """
+        Essa função recebe uma string para pesquisa de chaves no input, ela verifica
+        se o que foi digitado o código retorna a(s) chave(s) correspondente(s) ao código, se foi o 
+        nome retorna a(s) chave(s) correspondente(s) ao nome.
+
+        :param pesquisa: Nome ou Código da chave que foi digitado no input.
+        
+        :return Retorna uma lista com dicionário contendo as chave(s) correspondente(s) a pesquisa.
+            Cada dicionário possui chave "chave".
+        """
+
+        pesquisaDao = PesquisaDao()
+        listaChave = []
+        if pesquisa[0:3] in ["CH0", "CH1", "CH2", "CH3", "CH4", "CH5", "CH6", "CH7", "CH8", "CH9"] or pesquisa[0:2] == "CH":
+            respDao = pesquisaDao.pesquisaChaveCodigoDao(pesquisa, False)
+            for chave in respDao:
+                dictChave = {"chave": f"{chave.ch_codigo} - {chave.ch_nome}"}
+                listaChave.append(dictChave)
+            return listaChave
+        else:
+            respDao = pesquisaDao.pesquisaChaveNomeDao(pesquisa, False)
+            for chave in respDao:
+                dictChave = {"chave": f"{chave.ch_codigo} - {chave.ch_nome}"}
+                listaChave.append(dictChave)
+            return listaChave
+        
+
+    def pesquisaGerenteRelat(self, pesquisa: str) -> list[dict]:
+        """
+        Essa função recebe uma string para pesquisa de gerentes no input, se o que foi 
+        digitado for Crachá retorna o(s) gerente(s) correspondente(s) ao Crachá, se foi o 
+        nome retorna o(s) gerente(s) correspondente(s) ao nome.
+
+        :parm pesquisa: Nome ou Crachá do gerente que foi digitado no input.
+
+        :return: Retorna uma lista com dicionário contendo os gerente(s) correspondente(s) a pesquisa.
+            Cada dicionário possui chave "gerente".
+        """
+
+        pesquisaDao = PesquisaDao()
+        listaGerente = []
+        if pesquisa.isdigit():
+            respDao = pesquisaDao.pesquisaGerCrachaMovDao(pesquisa, False)
+            for gerente in respDao:
+                dictGer = {"gerente": f"{gerente.fu_cracha} - {gerente.fu_nome}"}
+                listaGerente.append(dictGer)
+            return listaGerente
+        else:
+            respDao = pesquisaDao.pesquisaGerNomeMovDao(pesquisa, False)
+            for gerente in respDao:
+                dictGer = {"gerente": f"{gerente.fu_cracha} - {gerente.fu_nome}"}
+                listaGerente.append(dictGer)
+            return listaGerente

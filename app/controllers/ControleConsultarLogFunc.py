@@ -15,7 +15,7 @@ class ControleConsultarLogFunc:
     @since - 16/08/2023
     """
 
-    def consultaLogFuncInsert(self) -> list[dict]:
+    def consultaLogFunc(self, acao: str) -> list[dict]:
         """
         Consulta e retorna uma lista de logs de inserção de funcionários de acordo com a data na tabela de parâmetros('PAR_LOG_MANT_FUNC').
 
@@ -31,7 +31,7 @@ class ControleConsultarLogFunc:
         dataDe = dataDe.strftime("%Y-%m-01")
 
         consultaLogDao = ConsultaLogFuncDao()
-        respDao = consultaLogDao.consultaLogsFuncInsert(dataDe)
+        respDao = consultaLogDao.consultaLogsFunc(dataDe, acao)
         listaLogs = []
 
         for log in respDao:
@@ -40,112 +40,13 @@ class ControleConsultarLogFunc:
                 "dataHora": filtroDataHora(log.lfu_dataHora),
                 "acao": log.lfu_acao,
                 "resp": log.nomeUser,
-                "func": js.loads(log.lfu_dadosNovos.decode("utf-8"))
+                "func": js.loads(log.lfu_dadosAntigos.decode("utf-8")) if acao in ["ACTIVE", "DELETE"] else js.loads(log.lfu_dadosNovos.decode("utf-8"))
             }
 
             listaLogs.append(dictLog)
 
         return listaLogs    
 
-
-    def consultaLogFuncUpdate(self) -> list[dict]:
-        """
-        Consulta e retorna uma lista de logs de alteração de funcionários de acordo com a data na tabela de parâmetros('PAR_LOG_MANT_FUNC').
-
-        :return: Uma lista de dicionários contendo informações sobre os logs de alteração de funcionários.
-            Cada dicionário possui chaves "id", "dataHora", "acao", "resp" e "func".
-        """
-
-        #Consulta a data na tabela de parametros para fazer a pesquisa apartir desta data
-        consultaParametro = ConsultaParametrosDao()
-        mesesAtras = consultaParametro.consultaParametros("PAR_LOG_MANT_FUNC")
-        dataDe = datetime.now()
-        dataDe = dataDe - relativedelta(months=mesesAtras)
-        dataDe = dataDe.strftime("%Y-%m-01")
-
-        consultaLogDao = ConsultaLogFuncDao()
-        respDao = consultaLogDao.consultaLogsFuncUpdate(dataDe)
-        listaLogs = []
-
-        for log in respDao:
-            dictLog = {
-                "id": log.id_logFunc,
-                "dataHora": filtroDataHora(log.lfu_dataHora),
-                "acao": log.lfu_acao,
-                "resp": log.nomeUser,
-                "func": js.loads(log.lfu_dadosNovos.decode("utf-8"))
-            }
-
-            listaLogs.append(dictLog)
-
-        return listaLogs 
-
-
-    def consultaLogFuncDelete(self) -> list[dict]:
-        """
-        Consulta e retorna uma lista de logs de exclusão de funcionários de acordo com a data na tabela de parâmetros('PAR_LOG_MANT_FUNC').
-
-        :return: Uma lista de dicionários contendo informações sobre os logs de exclusão de funcionários.
-            Cada dicionário possui chaves "id", "dataHora", "acao", "resp" e "func".
-        """
-
-        #Consulta a data na tabela de parametros para fazer a pesquisa apartir desta data
-        consultaParametro = ConsultaParametrosDao()
-        mesesAtras = consultaParametro.consultaParametros("PAR_LOG_MANT_FUNC")
-        dataDe = datetime.now()
-        dataDe = dataDe - relativedelta(months=mesesAtras)
-        dataDe = dataDe.strftime("%Y-%m-01")
-
-        consultaLogDao = ConsultaLogFuncDao()
-        respDao = consultaLogDao.consultaLogsFuncDelete(dataDe)
-        listaLogs = []
-
-        for log in respDao:
-            dictLog = {
-                "id": log.id_logFunc,
-                "dataHora": filtroDataHora(log.lfu_dataHora),
-                "acao": log.lfu_acao,
-                "resp": log.nomeUser,
-                "func": js.loads(log.lfu_dadosAntigos.decode("utf-8"))
-            }
-
-            listaLogs.append(dictLog)
-
-        return listaLogs  
-    
-
-    def consultaLogFuncActive(self) -> list[dict]:
-        """
-        Consulta e retorna uma lista de logs de ativação de funcionários de acordo com a data na tabela de parâmetros('PAR_LOG_MANT_FUNC').
-
-        :return: Uma lista de dicionários contendo informações sobre os logs de ativação de funcionários.
-            Cada dicionário possui chaves "id", "dataHora", "acao", "resp" e "func".
-        """
-
-        #Consulta a data na tabela de parametros para fazer a pesquisa apartir desta data
-        consultaParametro = ConsultaParametrosDao()
-        mesesAtras = consultaParametro.consultaParametros("PAR_LOG_MANT_FUNC")
-        dataDe = datetime.now()
-        dataDe = dataDe - relativedelta(months=mesesAtras)
-        dataDe = dataDe.strftime("%Y-%m-01")
-
-        consultaLogDao = ConsultaLogFuncDao()
-        respDao = consultaLogDao.consultaLogsFuncActive(dataDe)
-        listaLogs = []
-
-        for log in respDao:
-            dictLog = {
-                "id": log.id_logFunc,
-                "dataHora": filtroDataHora(log.lfu_dataHora),
-                "acao": log.lfu_acao,
-                "resp": log.nomeUser,
-                "func": js.loads(log.lfu_dadosAntigos.decode("utf-8"))
-            }
-
-            listaLogs.append(dictLog)
-
-        return listaLogs  
-        
         
     def consultaLogFuncInsertDetelhado(self, id: int):
         """

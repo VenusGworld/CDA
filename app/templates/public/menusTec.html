@@ -29,19 +29,19 @@
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="./index.html" class="nav-link">
+                        <a href="{{url_for('logControlGerTecBlue.listagemLogControlGer')}}" class="nav-link {% if context.active == 'logControlGere' %}active{% endif %}">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Controle Gerente</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{url_for('logControlTercTecBlue.listagemLogControlTerc')}}" class="nav-link">
+                        <a href="{{url_for('logControlTercTecBlue.listagemLogControlTerc')}}" class="nav-link {% if context.active == 'logControlTerc' %}active{% endif %}">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Controle Terceiros</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{url_for('logControlChavTecBlue.listagemLogControlChave')}}" class="nav-link">
+                        <a href="{{url_for('logControlChavTecBlue.listagemLogControlChave')}}" class="nav-link {% if context.active == 'logControlChav' %}active{% endif %}">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Controle Chaves</p>
                         </a>

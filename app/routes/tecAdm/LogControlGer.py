@@ -1,5 +1,5 @@
+from ...controllers.ControleConsultarLogControlGer import ControleConsultarLogControlGer
 from ...controllers.ControleConsultaParametros import ControleConsultaParametros
-from ...controllers.ControleConsultarLogChave import ControleConsultarLogChave
 from flask import Blueprint, render_template, request, abort
 from ...extensions.LogErro import LogErro
 from flask_login import login_required
@@ -7,21 +7,21 @@ import traceback
 import sys
 
 
-logChavTecBlue = Blueprint("logChavTecBlue", __name__)
+logControlGerTecBlue = Blueprint("logControlGerTecBlue", __name__)
 
 ##############################################################
-# Rotas relacionadas aos logs do CRUD de chave
+# Rotas relacionadas aos logs do controle de gerentes
 ##############################################################
 
-#Rota para tela de log de Chave
-@logChavTecBlue.route("/log/log-manter-chave", methods=["GET"])
+#Rota para tela de log do controle de gerentes
+@logControlGerTecBlue.route("/log/log-controle-gerente", methods=["GET"])
 @login_required
-def listagemLogChave():
+def listagemLogControlGer():
     try:
         constroleConsultaParametros = ControleConsultaParametros()
-        meses = constroleConsultaParametros.consultaParametros("PAR_LOG_MANT_CHAV")
-        context = {"titulo": "Logs Manter Chave", "active": "logChave", "meses": meses}
-        return render_template("tecAdm/cosultaLogChave.html", context=context)
+        meses = constroleConsultaParametros.consultaParametros("PAR_MANUT_CONTROL_GER")
+        context = {"titulo": "Logs Controle de Gerente", "active": "logControlGere", "meses": meses}
+        return render_template("tecAdm/consultaLogControlGer.html", context=context)
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()
@@ -30,21 +30,23 @@ def listagemLogChave():
         abort(500)
 
 
-#Rota para tela com modal para visualização detalhada dos logs de chaves
-@logChavTecBlue.route("/log/log-manter-chave/<id>", methods=["GET"])
+#Rota para tela com modal para visualização detalhada dos logs do controle de gerentes
+@logControlGerTecBlue.route("/log/log-controle-gerente/<id>", methods=["GET"])
 @login_required
 def vizualizarLog(id):
     try:
-        controleConsultarLogChave = ControleConsultarLogChave()
-        log = controleConsultarLogChave.consultaLogChaveDetelhado(int(id))
-        if log.acao == "INSERT":
+        controlerConsultaLogControlGer = ControleConsultarLogControlGer()
+        log = controlerConsultaLogControlGer.consultaLogControlGerDetelhado(int(id))
+        if log.acao == "ENTRADA":
             modal = 1
-        elif log.acao == "UPDATE":
+        elif log.acao == "SAIDA":
             modal = 2
-        elif log.acao in ["DELETE", "ACTIVE"]:
+        elif log.acao == "UPDATE":
             modal = 3
-        context = {"titulo": "Logs Manter Chave", "active": "logChave", "modal": modal, "log": log}
-        return render_template("tecAdm/cosultaLogChave.html", context=context)
+        elif log.acao == "DELETE":
+            modal = 4
+        context = {"titulo": "Logs Controle de Gerente", "active": "logControlGere", "modal": modal, "log": log}
+        return render_template("tecAdm/consultaLogControlGer.html", context=context)
     except:
         log = LogErro()
         tipoExcecao, valorExcecao, tb = sys.exc_info()

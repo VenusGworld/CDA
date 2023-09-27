@@ -4,9 +4,10 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/styleDashboard.css') }}">
 {% endblock %}
 {% include "public/header.html" %}
+{% include "public/modal/modalLogin.html" %}
 <section class="content">
     <div class="container-fluid">
-        <div class="row mb-4 justify-content-evenly">
+        <div class="row justify-content-evenly">
             <div class="col-auto">
                 <div class="card">
                     <div class="icon">
@@ -15,6 +16,21 @@
                     <div class="text">
                         <div class="titulo">
                             Visitas do Dia
+                        </div>
+                        <div class="valor">
+                            005
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="card">
+                    <div class="icon">
+                        <i class="fa-solid fa-key size"></i>
+                    </div>
+                    <div class="text">
+                        <div class="titulo">
+                            Chaves em uso
                         </div>
                         <div class="valor">
                             005
@@ -38,6 +54,56 @@
                 </div>
             </div>
         </div>
+        <div class="row mb-2 justify-content-evenly">
+            <div class="col-auto">
+                <div class="card">
+                    <div class="icon">
+                        <i class="fa-solid fa-user size"></i>
+                    </div>
+                    <div class="text">
+                        <div class="titulo">
+                            Visitantes
+                        </div>
+                        <div class="valor">
+                            005
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="card">
+                    <div class="icon">
+                        <i class="fa-solid fa-key size"></i>
+                    </div>
+                    <div class="text">
+                        <div class="titulo">
+                            Chaves
+                        </div>
+                        <div class="valor">
+                            005
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="card">
+                    <div class="icon">
+                        <i class="fa-solid fa-user size"></i>
+                    </div>
+                    <div class="text">
+                        <div class="titulo">
+                            Funcionários
+                        </div>
+                        <div class="valor">
+                            005
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div>
+            <canvas id="myChart"></canvas>
+        </div> -->
         <div class="row mb-4">
             <div class="card-table">
                 <div class="titulo-card-table">
@@ -46,40 +112,14 @@
                 <table class="table">
                     <thead class="table-header">
                         <tr>
-                            <th scope="col">Nome</th>
-                            <th scope="col">CPF</th>
+                            <th scope="col">Visitante</th>
                             <th scope="col">Entrada</th>
                             <th scope="col">Visitado</th>
-                            <th scope="col">Saída?</th>
+                            <th scope="col">Empresa</th>
+                            <th scope="col"><span style='display:flex; text-align: center; justify-content: center;align-items: center;'>Saída ?</span></th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td colspan="2">Larry the Bird</td>
-                            <td>@twitter</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td colspan="2">Larry the Bird</td>
-                            <td>@twitter</td>
-                            <td>@mdo</td>
-                        </tr>
+                    <tbody id="visitas">
                     </tbody>
                 </table>
             </div>
@@ -94,24 +134,10 @@
                         <tr>
                             <th scope="col">Nome</th>
                             <th scope="col">Entrada</th>
-                            <th scope="col">Saída?</th>
+                            <th scope="col"><span style='display:flex; text-align: center; justify-content: center;align-items: center;'>Saída ?</span></th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td colspan="2">Larry the Bird</td>
-                        </tr>
+                    <tbody id="gerentes">
                     </tbody>
                 </table>
             </div>
@@ -127,32 +153,107 @@
                             <th scope="col">Chave</th>
                             <th scope="col">Retirada</th>
                             <th scope="col">Responsavel</th>
-                            <th scope="col">Devolução?</th>
+                            <th scope="col"><span style='display:flex; text-align: center; justify-content: center;align-items: center;'>Devolução ?</span></th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>Otto</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>Otto</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td colspan="2">Larry the Bird</td>
-                            <td>Otto</td>
-                        </tr>
+                    <tbody id="chaves">
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-    </div>
 </section>
+{% endblock %}
+{% block script %}
+    <!-- <script>
+        const ctxBarras = document.getElementById('myChart');
+        const myChart = new Chart(ctxBarras, {
+                        type: 'line',
+                        data: {
+                        labels: ["1", "2", "3", "4", "5"],
+                        datasets: [{
+                            borderColor: "#36802d",
+                            backgroundColor: "#36802d",
+                            color: "#36802d",
+                            label: 'Títulos Recebidos',
+                            data: [1, 2, 3, 4, 5],
+                            borderWidth: 2.5
+                        }]
+                        },
+                        options: {
+                            width: 400,
+                            animation : {
+                                duration : 1500,
+                                easing : 'linear'
+                            },
+                            plugins: {
+                                legend: {
+                                    display: false,
+                                    position: "bottom",
+                                    labels: {
+                                        color: 'rgb(255, 99, 132)'
+                                    }
+                                },
+                                title: {
+                                    display: true,
+                                    text: "Títulos Recebidos",
+                                    position: 'top',
+                                },
+                                tooltips : {
+                                    enabled : true,
+                                    intersect : true,
+                                    backgroundColor : 'rgba(41, 128, 185,0.8)'
+                                }
+                            },
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    });
+
+    </script> -->
+
+    <script type="text/javascript" src="{{ url_for('static', filename='js/login/funcaoLogin.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='js/dashboardVigAdm/dataEntradaTercDash.js') }}"></script>
+    <script>
+        var tabela = document.getElementById("visitas");
+        tabela.innerHTML = "";
+        dadosTercEntrada.forEach(element => {
+        tabela.innerHTML += `<tr>
+                        <td>${element.nomeTerc}</td>
+                        <td>${element.entrada}</td>
+                        <td>${element.visitado}</td>
+                        <td>${element.empresa}</td>
+                        <td>${element.saida}</td>
+                    </tr>`
+        });
+    </script>
+
+    <script src="{{ url_for('static', filename='js/dashboardVigAdm/dataEntradaGerDash.js') }}"></script>
+    <script>
+        var tabela = document.getElementById("gerentes");
+        tabela.innerHTML = "";
+        dadosGerEntrada.forEach(element => {
+            tabela.innerHTML += `<tr>
+                            <td>${element.nome}</td>
+                            <td>${element.entrada}</td>
+                            <td>${element.saida}</td>
+                        </tr>`
+        });
+    </script>
+
+    <script src="{{ url_for('static', filename='js/dashboardVigAdm/dataRetiradaChavDash.js') }}"></script>
+    <script>
+        var tabela = document.getElementById("chaves");
+        tabela.innerHTML = "";
+        dadosChaveRet.forEach(element => {
+            tabela.innerHTML += `<tr>
+                            <td>${element.chave}</td>
+                            <td>${element.retirada}</td>
+                            <td>${element.responsavel}</td>
+                            <td>${element.devolucao}</td>
+                        </tr>`
+        });
+    </script>
 {% endblock %}

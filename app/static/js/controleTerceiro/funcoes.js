@@ -1,8 +1,9 @@
 let contadorInputs = 2;
 let contadorAcomp = 1;
+let qtdeAcomps = parseInt(document.getElementById("qtdeAcomps").value);
 
 function adicionarInput() {
-    if ( contadorInputs <= 6){
+    if ( contadorInputs <= qtdeAcomps+1){
         const inputsContainer = document.getElementById('inputs-container');
 
         const novoInput = document.createElement('div');
@@ -50,6 +51,16 @@ function adicionarInput() {
                 verificaCpfDiv(input);
             });
         });
+    }else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        let div = document.getElementById("alert");
+        let msg = document.querySelector(".msg-alert");
+        div.classList.remove('none');
+        msg.innerHTML = "";
+        msg.innerHTML = "<h6 class='msg-alert'>O número máximo de acompanhantes foi atingido.</h6>";
+        setTimeout(() =>{
+            div.classList.add('none');
+        }, 6000);
     }
 }
 

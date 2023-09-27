@@ -43,25 +43,21 @@
                         <div class="row mb-3">
                             <div class="col">
                                 <label for="recipient-name" class="col-form-label">Nome:</label>
+                                {% if context.log.dadosAntigos.nome != context.log.dadosNovos.nome %}
+                                    <span class="campo-alterado-label">* Campo Alterado</span>
+                                {% endif %}
                                 <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosAntigos.nome }}" readonly>
                             </div>
                         </div>
                     </div>
                     <label class="titulo-container">Dados Novos:</label>
                     <div class="container container-border">
-                        <div class="row">
-                            <div class="col-3">
-                                <label for="recipient-name" class="col-form-label">Código:</label>
-                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.codigo }}" readonly>
-                            </div>
-                            <div class="col">
-                                <label for="recipient-name" class="col-form-label">CPF:</label>
-                                <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.cpf | cpf  }}" readonly>
-                            </div>
-                        </div>
                         <div class="row mb-3">
                             <div class="col">
                                 <label for="recipient-name" class="col-form-label">Nome:</label>
+                                {% if context.log.dadosNovos.nome != context.log.dadosAntigos.nome %}
+                                    <span class="campo-alterado-label">* Campo Alterado</span>
+                                {% endif %}
                                 <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.nome }}" readonly>
                             </div>
                         </div>

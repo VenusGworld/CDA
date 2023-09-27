@@ -1,5 +1,6 @@
 from ..Tables import CDA005, CDA007, CDA002, CDA009, CDA003, SysUser
-from ldap3 import Server, Connection, SAFE_SYNC, SUBTREE
+from ldap3 import Server, Connection
+from typing import Optional
 
 class PesquisaDao:
     """
@@ -10,34 +11,44 @@ class PesquisaDao:
     @since - 05/06/2023
     """
 
-    def pesquisaChaveNomeDao(self, nome: str) -> CDA005:
+    def pesquisaChaveNomeDao(self, nome: str, considerarInativos: Optional[bool] = True) -> CDA005:
         """
         Esta função realiza uma pesquisa na tabela de chaves (CDA005) utilizando o nome fornecido como filtro.
         Ela utiliza o operador SQL 'LIKE' para buscar chaves cujo nome contenha a substring especificada.
-        Os resultados são filtrados para excluir chaves deletadas (ch_delete) e chaves inativas (ch_ativo).
+        Os resultados são filtrados para excluir chaves deletadas (ch_delete) e chaves inativas (ch_inativo).
         
         :param nome: O nome ou parte do nome da chave a ser pesquisada.
+        :param considerar_inativos: Indica se os registros inativos devem ser considerados na pesquisa. 
+                                    O padrão é True, o que significa que os inativos são considerados.
 
         :return: Uma lista de chaves que correspondem aos critérios de pesquisa.
         """
 
-        chaves = CDA005.query.filter(CDA005.ch_nome.like(f"%{nome}%"), CDA005.ch_delete!=True, CDA005.ch_ativo!=True)
+        if considerarInativos:
+            chaves = CDA005.query.filter(CDA005.ch_nome.like(f"%{nome}%"), CDA005.ch_delete!=True, CDA005.ch_inativo!=True)
+        else:
+            chaves = CDA005.query.filter(CDA005.ch_nome.like(f"%{nome}%"), CDA005.ch_delete!=True)
 
         return chaves
     
 
-    def pesquisaChaveCodigoDao(self, codigo: str) -> CDA005:
+    def pesquisaChaveCodigoDao(self, codigo: str, considerarInativos: Optional[bool] = True) -> CDA005:
         """
         Esta função realiza uma pesquisa na tabela de chaves (CDA005) utilizando o código fornecido como filtro.
         Ela utiliza o operador SQL 'LIKE' para buscar chaves cujo código contenha a substring especificada.
-        Os resultados são filtrados para excluir chaves deletadas (ch_delete) e chaves inativas (ch_ativo).
+        Os resultados são filtrados para excluir chaves deletadas (ch_delete) e chaves inativas (ch_inativo).
         
         :param codigo: O código ou parte do código da chave a ser pesquisada.
+        :param considerar_inativos: Indica se os registros inativos devem ser considerados na pesquisa. 
+                                    O padrão é True, o que significa que os inativos são considerados.
 
         :return: Uma lista de chaves que correspondem aos critérios de pesquisa.
         """
-        
-        chaves = CDA005.query.filter(CDA005.ch_codigo.like(f"%{codigo}%"), CDA005.ch_delete!=True, CDA005.ch_ativo!=True)
+
+        if considerarInativos:
+            chaves = CDA005.query.filter(CDA005.ch_codigo.like(f"%{codigo}%"), CDA005.ch_delete!=True, CDA005.ch_inativo!=True)
+        else:
+            chaves = CDA005.query.filter(CDA005.ch_codigo.like(f"%{codigo}%"), CDA005.ch_delete!=True)
 
         return chaves
     
@@ -46,14 +57,14 @@ class PesquisaDao:
         """
         Esta função realiza uma pesquisa na tabela de funcionários (CDA007) utilizando o nome fornecido como filtro.
         Ela utiliza o operador SQL 'LIKE' para buscar funcionários cujo nome contenha a substring especificada.
-        Os resultados são filtrados para excluir funcionários deletados (fu_delete) e funcionários inativos (fu_ativo).
+        Os resultados são filtrados para excluir funcionários deletados (fu_delete) e funcionários inativos (fu_inativo).
         
         :param nome: O nome ou parte do nome do funcionário a ser pesquisado.
 
         :return: Uma lista de funcionários que correspondem aos critérios de pesquisa.
         """
 
-        funcionarios = CDA007.query.filter(CDA007.fu_nome.like(f"%{nome}%"), CDA007.fu_delete!=True, CDA007.fu_ativo!=True)
+        funcionarios = CDA007.query.filter(CDA007.fu_nome.like(f"%{nome}%"), CDA007.fu_delete!=True, CDA007.fu_inativo!=True)
 
         return funcionarios
     
@@ -62,14 +73,14 @@ class PesquisaDao:
         """
         Esta função realiza uma pesquisa na tabela de funcionários (CDA007) utilizando o número do crachá fornecido como filtro.
         Ela utiliza o operador SQL 'LIKE' para buscar funcionários cujo número do crachá contenha a substring especificada.
-        Os resultados são filtrados para excluir funcionários deletados (fu_delete) e funcionários inativos (fu_ativo).
+        Os resultados são filtrados para excluir funcionários deletados (fu_delete) e funcionários inativos (fu_inativo).
         
         :param cracha: O número do crachá ou parte do número do crachá do funcionário a ser pesquisado.
 
         :return: Uma lista de funcionários que correspondem aos critérios de pesquisa.
         """
 
-        funcionarios = CDA007.query.filter(CDA007.fu_cracha.like(f"%{cracha}%"), CDA007.fu_delete!=True, CDA007.fu_ativo!=True)
+        funcionarios = CDA007.query.filter(CDA007.fu_cracha.like(f"%{cracha}%"), CDA007.fu_delete!=True, CDA007.fu_inativo!=True)
 
         return funcionarios
     
@@ -78,14 +89,14 @@ class PesquisaDao:
         """
         Esta função realiza uma pesquisa na tabela de terceiros (CDA009) utilizando o número de CPF fornecido como filtro.
         Ela utiliza o operador SQL 'LIKE' para buscar terceiros cujo número de CPF contenha a substring especificada.
-        Os resultados são filtrados para excluir terceiros deletados (te_delete) e terceiros inativos (te_ativo).
+        Os resultados são filtrados para excluir terceiros deletados (te_delete) e terceiros inativos (te_inativo).
         
         :param cpf: O número de CPF ou parte do número de CPF do terceiro a ser pesquisado.
 
         :return: Uma lista de terceiros que correspondem aos critérios de pesquisa.
         """
 
-        terceiros = CDA009.query.filter(CDA009.te_cpf.like(f"%{cpf}%"), CDA009.te_delete!=True, CDA009.te_ativo!=True)
+        terceiros = CDA009.query.filter(CDA009.te_cpf.like(f"%{cpf}%"), CDA009.te_delete!=True, CDA009.te_inativo!=True)
 
         return terceiros
     
@@ -152,7 +163,7 @@ class PesquisaDao:
         :return: A chave encontrada com o código de chave, ou None se o código de chave estiver disponível.
         """
 
-        chave = CDA005.query.filter(CDA005.ch_codigo==codigo, CDA005.ch_delete!=True, CDA005.ch_ativo!=True).first()
+        chave = CDA005.query.filter(CDA005.ch_codigo==codigo, CDA005.ch_delete!=True, CDA005.ch_inativo!=True).first()
 
         return chave
     
@@ -167,7 +178,7 @@ class PesquisaDao:
         :return: O funcionário encontrado com o número de crachá, ou None se o crachá estiver disponível.
         """
 
-        funcionario = CDA007.query.filter(CDA007.fu_cracha==cracha, CDA007.fu_delete!=True, CDA007.fu_ativo!=True).first()
+        funcionario = CDA007.query.filter(CDA007.fu_cracha==cracha, CDA007.fu_delete!=True, CDA007.fu_inativo!=True).first()
 
         return funcionario
     
@@ -198,37 +209,47 @@ class PesquisaDao:
         :return: O terceiro encontrado, ou None se não houver terceiro registrado com o CPF.
         """
 
-        terceiro = CDA009.query.filter(CDA009.te_cpf==cpf, CDA009.te_delete!=True, CDA009.te_ativo!=True).first()
+        terceiro = CDA009.query.filter(CDA009.te_cpf==cpf, CDA009.te_delete!=True, CDA009.te_inativo!=True).first()
 
         return terceiro
     
 
-    def pesquisaGerNomeMovDao(self, nome: str) -> CDA007:
+    def pesquisaGerNomeMovDao(self, nome: str, considerarInativos: Optional[bool] = True) -> CDA007:
         """
         Esta função consulta o banco de dados para verificar se há gerentes de funcionários registrados com o nome fornecido.
         Ela retorna uma lista de gerentes encontrados, se houver, ou uma lista vazia se não houver nenhum gerente registrado com o nome.
 
         :param nome: O nome do gerente de funcionários que se deseja pesquisar.
+        :param considerar_inativos: Indica se os registros inativos devem ser considerados na pesquisa. 
+                                    O padrão é True, o que significa que os inativos são considerados.
 
         :return: Uma lista de gerentes de funcionários encontrados, ou uma lista vazia se não houver gerentes com o nome especificado.
         """
 
-        gerentes = CDA007.query.filter(CDA007.fu_nome.like(f"%{nome}%"), CDA007.fu_delete!=True, CDA007.fu_ativo!=True, CDA007.fu_gerente==True)
+        if considerarInativos:
+            gerentes = CDA007.query.filter(CDA007.fu_nome.like(f"%{nome}%"), CDA007.fu_delete!=True, CDA007.fu_inativo!=True, CDA007.fu_gerente==True)
+        else:
+            gerentes = CDA007.query.filter(CDA007.fu_nome.like(f"%{nome}%"), CDA007.fu_delete!=True, CDA007.fu_gerente==True)
 
         return gerentes
     
     
-    def pesquisaGerCrachaMovDao(self, cracha: str) -> CDA007:
+    def pesquisaGerCrachaMovDao(self, cracha: str, considerarInativos: Optional[bool] = True) -> CDA007:
         """
         Esta função consulta o banco de dados para verificar se há gerentes de funcionários registrados com o número de crachá fornecido.
         Ela retorna uma lista de gerentes encontrados, se houver, ou uma lista vazia se não houver nenhum gerente registrado com o número de crachá.
 
         :param cracha: O número de crachá do gerente de funcionários que se deseja pesquisar.
+        :param considerar_inativos: Indica se os registros inativos devem ser considerados na pesquisa. 
+                                    O padrão é True, o que significa que os inativos são considerados.
         
         :return: Uma lista de gerentes de funcionários encontrados, ou uma lista vazia se não houver gerentes com o número de crachá especificado.
         """
 
-        gerentes = CDA007.query.filter(CDA007.fu_cracha.like(f"%{cracha}%"), CDA007.fu_delete!=True, CDA007.fu_ativo!=True, CDA007.fu_gerente==True)
+        if considerarInativos:
+            gerentes = CDA007.query.filter(CDA007.fu_cracha.like(f"%{cracha}%"), CDA007.fu_delete!=True, CDA007.fu_inativo!=True, CDA007.fu_gerente==True)
+        else:
+            gerentes = CDA007.query.filter(CDA007.fu_cracha.like(f"%{cracha}%"), CDA007.fu_delete!=True, CDA007.fu_gerente==True)
 
         return gerentes
     

@@ -41,13 +41,13 @@ class EsqueciSenhaDao:
         :return: Objeto do usuário com informações do banco de dados se encontrado, ou 0 se não encontrado.
         """
 
-        sysuser = SysUser.query.filter(SysUser.us_usuario==usuario.usuario, SysUser.us_email==usuario.email, SysUser.us_ativo==False, SysUser.us_delete==False).first()
+        sysuser = SysUser.query.filter(SysUser.us_usuario==usuario.usuario, SysUser.us_email==usuario.email, SysUser.us_inativo==False, SysUser.us_delete==False).first()
         if sysuser:
             usuario.id = sysuser.id
             usuario.nome = sysuser.us_nome
             usuario.grupo = sysuser.us_grupo
             usuario.complex = sysuser.us_complex
-            usuario.ativo = sysuser.us_ativo
+            usuario.ativo = sysuser.us_inativo
             usuario.delete = sysuser.us_delete
             usuario.senhaCompara = sysuser.us_senha
             usuario.hashSenhaNova = sysuser.us_hashNovaSenha

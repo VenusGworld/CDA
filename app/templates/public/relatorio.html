@@ -1,10 +1,16 @@
 {% extends "public/base.html" %}
-{% block content %}
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/styleUsuarios.css') }}">
 {% endblock %}
+{% block content %}
 {% include "public/header.html" %}
 <section class="content">
+    <div id="alert" class="alert alert-danger alert-dismissible d-flex align-items-center none" role="alert">
+        <i class="fa-solid fa-circle-exclamation icon-size"></i>
+        <div>
+            <h6 class="msg-alert"></h6>
+        </div>
+    </div>
     <div class="container-fluid p-0">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
@@ -25,17 +31,17 @@
                 <div class="tabela p-3 m-2">
                     <label for="">Parâmetros para o Controle de Chaves</label>
                     <div class="container-fluid">
-                        <form action="{{url_for('relatorioBlue.relatorioControleChaves')}}" method="POST" target="_blank">
+                        <form action="{{url_for('relatorioBlue.relatorioControleChaves')}}" method="POST" onsubmit="return verificaChav()" target="_blank">
                             <div class="row mb-2">
                                 <div class="col-3">
                                     <label for="">De:</label>
-                                    <input type="date" id="deControlChave" name="deControlChave" class="form-control">
+                                    <input type="date" id="deControlChave" name="deControlChave" class="form-control" required>
                                 </div>
                             </div>
                             <div class="row mb-2">
                                 <div class="col-3">
                                     <label for="">Até:</label>
-                                    <input type="date" id="ateControlChave" name="ateControlChave" class="form-control">
+                                    <input type="date" id="ateControlChave" name="ateControlChave" class="form-control" required>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -57,29 +63,31 @@
                 <div class="tabela p-3 m-2">
                     <label for="">Parâmetros para o Controle de Terceiros</label>
                     <div class="container">
-                        <div class="row mb-2">
-                            <div class="col-3">
-                                <label for="">De:</label>
-                                <input type="date" class="form-control">
+                        <form action="{{url_for('relatorioBlue.relatorioControleGerentes')}}" method="POST" target="_blank">
+                            <div class="row mb-2">
+                                <div class="col-3">
+                                    <label for="">De:</label>
+                                    <input type="date" id="deControlTerc" name="deControlTerc" class="form-control" required>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-3">
-                                <label for="">Até:</label>
-                                <input type="date" class="form-control">
+                            <div class="row mb-2">
+                                <div class="col-3">
+                                    <label for="">Até:</label>
+                                    <input type="date" id="ateControlTerc" name="ateControlTerc" class="form-control" required>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-6">
-                                <label for="">Terceiro:</label>
-                                <input type="text" class="form-control">
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <label for="">Terceiro:</label>
+                                    <input type="text" id="terceiro" name="terceiro" class="form-control">
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <button>Gerar</button>
+                            <div class="row">
+                                <div class="col">
+                                    <button type="submit" class="btn btn-outline-success">Gerar</button>
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -87,29 +95,31 @@
                 <div class="tabela p-3 m-2">
                     <label for="">Parâmetros para o Controle de Gerentes</label>
                     <div class="container">
-                        <div class="row mb-2">
-                            <div class="col-3">
-                                <label for="">De:</label>
-                                <input type="date" class="form-control">
+                        <form action="{{url_for('relatorioBlue.relatorioControleGerentes')}}" method="POST" onsubmit="return verificaGerente()" target="_blank">
+                            <div class="row mb-2">
+                                <div class="col-3">
+                                    <label for="">De:</label>
+                                    <input type="date" id="deControlGer" name="deControlGer" class="form-control" required>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-3">
-                                <label for="">Até:</label>
-                                <input type="date" class="form-control">
+                            <div class="row mb-2">
+                                <div class="col-3">
+                                    <label for="">Até:</label>
+                                    <input type="date" id="ateControlGer" name="ateControlGer" class="form-control" required>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-6">
-                                <label for="">Gerente:</label>
-                                <input type="text" id="gerente" name="gerente" class="form-control upper">
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <label for="">Gerente:</label>
+                                    <input type="text" id="gerente" name="gerente" class="form-control upper">
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <button>Gerar</button>
+                            <div class="row">
+                                <div class="col">
+                                    <button type="submit" class="btn btn-outline-success">Gerar</button>
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -118,6 +128,7 @@
 </section>
 {% endblock %}
 {% block script %}
+<script src="{{ url_for('static', filename='js/relatorio/funcoes.js') }}"></script>
 <script>
     $("#chave").keyup(function(){
         var nomeChave = this.value
@@ -125,7 +136,7 @@
             
             var chaves=[]
             function carregaChaves(){
-                $.getJSON(`/chave-pesquisa/${nomeChave}`, function(data, status, xhr){
+                $.getJSON(`/chave-pesquisa-relatorio/${nomeChave}`, function(data, status, xhr){
                     for (var i = 0; i < data.length; i++){
                         chaves.push(data[i].chave)
                     }
@@ -148,7 +159,7 @@
             
             var gerentes=[]
             function carregaGerentes(){
-                $.getJSON(`/gerente-pesquisa/${nomeGer}`, function(data, status, xhr){
+                $.getJSON(`/gerente-pesquisa-relatorio/${nomeGer}`, function(data, status, xhr){
                     for (var i = 0; i < data.length; i++){
                         gerentes.push(data[i].gerente)
                     }

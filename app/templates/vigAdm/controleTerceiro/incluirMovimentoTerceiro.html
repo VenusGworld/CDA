@@ -1,10 +1,11 @@
 {% extends "public/base.html" %}
-{% block content %}
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styleUsuarios.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styleControleTerceiro.css') }}">
 {% endblock %}
+{% block content %}
 {% include "public/header.html" %}
+<input class="d-none" type="text" id="qtdeAcomps" value="{{ context.qtdeAcomps }}">
 <section class="content">
     <div class="container-fluid p-2">
         <div id="alert" class="alert alert-danger alert-dismissible d-flex align-items-center none" role="alert">
@@ -13,7 +14,7 @@
                 <h6 class="msg-alert"></h6>
             </div>
         </div>
-        <form id="formMovTerc" onsubmit="return verificaCPFs()">
+        <form class="container-fluid" id="formMovTerc" onsubmit="return verificaCPFs()">
             <div class="row mb-2">
                 <div class="div-cpf col-3">
                     <label for="" class="cpf">CPF:</label>
@@ -76,6 +77,7 @@
         </form>
     </div>
 </section>
+{% endblock %}
 {% block script %}
 <script src="{{ url_for('static', filename='js/ControleTerceiro/funcoes.js') }}"></script>
 <script>
@@ -202,5 +204,4 @@
         });
     }, 500);
 </script>
-{% endblock %}
 {% endblock %}

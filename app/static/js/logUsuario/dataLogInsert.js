@@ -7,7 +7,7 @@ $.ajax({
     dataType: 'json',
     contentType: 'application/json',
     data:JSON.stringify({
-        tipo: "INSERT"
+        acao: "INSERT"
     }),
     success: function(resp){
         for(x in resp){

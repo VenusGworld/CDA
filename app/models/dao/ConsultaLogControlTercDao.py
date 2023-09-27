@@ -10,39 +10,12 @@ class ConsultaLogControlTercDao:
     @since - 18/09/2023
     """
 
-    def consultaLogsControlTercEntrada(self, data: str) -> CDA008:
-        logs = DB.session.query(CDA008.id_logTerc, CDA008.lmte_acao, CDA008.lmte_dataHora, CDA008.lmte_dadosNovos, SysUser.us_usuario.label("nomeUser"))\
+    def consultaLogsControlTerc(self, data: str, acao: str) -> CDA008:
+        logs = DB.session.query(CDA008.id_logTerc, CDA008.lmte_acao, CDA008.lmte_dataHora, CDA008.lmte_dadosNovos, CDA008.lmte_dadosAntigos, SysUser.us_usuario.label("nomeUser"))\
             .join(SysUser, CDA008.lmte_idUsua == SysUser.id)\
-                .filter(CDA008.lmte_acao=="ENTRADA", CDA008.lmte_dataHora>=data)\
+                .filter(CDA008.lmte_acao==acao, CDA008.lmte_dataHora>=data)\
                     .order_by(CDA008.lmte_dataHora)
 
-        return logs
-    
-
-    def consultaLogsControlTercSaida(self, data: str) -> CDA008:
-        logs = DB.session.query(CDA008.id_logTerc, CDA008.lmte_acao, CDA008.lmte_dataHora, CDA008.lmte_dadosNovos, SysUser.us_usuario.label("nomeUser"))\
-            .join(SysUser, CDA008.lmte_idUsua == SysUser.id)\
-                .filter(CDA008.lmte_acao=="SAIDA", CDA008.lmte_dataHora>=data)\
-                    .order_by(CDA008.lmte_dataHora)
-
-        return logs
-    
-
-    def consultaLogsControlTercUpdate(self, data: str) -> CDA008:
-        logs = DB.session.query(CDA008.id_logTerc, CDA008.lmte_acao, CDA008.lmte_dataHora, CDA008.lmte_dadosAntigos, SysUser.us_usuario.label("nomeUser"))\
-            .join(SysUser, CDA008.lmte_idUsua == SysUser.id)\
-                .filter(CDA008.lmte_acao=="UPDATE", CDA008.lmte_dataHora>=data)\
-                    .order_by(CDA008.lmte_dataHora)
-
-        return logs
-    
-
-    def consultaLogsControlTercDelete(self, data: str) -> CDA008:
-        logs = DB.session.query(CDA008.id_logTerc, CDA008.lmte_acao, CDA008.lmte_dataHora, CDA008.lmte_dadosAntigos, SysUser.us_usuario.label("nomeUser"))\
-            .join(SysUser, CDA008.lmte_idUsua == SysUser.id)\
-                .filter(CDA008.lmte_acao=="DELETE", CDA008.lmte_dataHora>=data)\
-                    .order_by(CDA008.lmte_dataHora)
-        
         return logs
     
 

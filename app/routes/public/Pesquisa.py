@@ -102,3 +102,19 @@ def pesquisaGerSaiFormMov(pesquisa):
     controlePesquisa = ControlePesquisa()
     respControle = controlePesquisa.pesquisaGerenteSaiFormMov(pesquisa.strip())
     return jsonify(respControle)
+
+
+#Rota para pesquisa de chaves no input para o relatório
+@pesquisaBlue.route('/chave-pesquisa-relatorio/<pesquisa>')
+def pesquisaChaveInputRelat(pesquisa):
+    controlePesquisa = ControlePesquisa()
+    respControle = controlePesquisa.pesquisaChaveRelat(pesquisa.upper().strip())
+    return jsonify(respControle)
+
+
+#Rota para pesquisa de gerente no input
+@pesquisaBlue.route('/gerente-pesquisa-relatorio/<pesquisa>')
+def pesquisaGerenteInputRelat(pesquisa):
+    controlePesquisa = ControlePesquisa()
+    respControle = controlePesquisa.pesquisaGerenteRelat(pesquisa.upper().strip())
+    return jsonify(respControle)

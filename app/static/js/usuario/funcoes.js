@@ -44,7 +44,7 @@ function validarUsuarioeSenha(campo1, campo2){
     }else{
         div.classList.remove('none');
         msg.innerHTML = "";
-        msg.innerHTML = "<h6 class='msg-alert'>As senhas não coincidem!</h6>";
+        msg.innerHTML = '<h6 class="msg-alert"><i class="fa-solid fa-circle-exclamation icon-size"></i>As senhas não coincidem!</h6>';
         document.getElementById(campo1).focus(); //Exibe mensagem de erro
         setTimeout(() =>{
             div.classList.add('none');
@@ -92,7 +92,7 @@ function verificaUsuario(){
         if (respUsuario){
             div.classList.remove('none');
             msg.innerHTML = "";
-            msg.innerHTML = "<h6 class='msg-alert'>O usuário informado já existe</h6>";
+            msg.innerHTML = '<h6 class="msg-alert"><i class="fa-solid fa-circle-exclamation icon-size"></i> O usuário informado já existe</h6>';
             setTimeout(() =>{
                 div.classList.add('none');
             }, 6000);
@@ -117,7 +117,7 @@ function verificaUsuario(){
         if (respUsuario){
             div.classList.remove('none');
             msg.innerHTML = "";
-            msg.innerHTML = "<h6 class='msg-alert'>O usuário informado já existe</h6>";
+            msg.innerHTML = '<h6 class="msg-alert"><i class="fa-solid fa-circle-exclamation icon-size"></i> O usuário informado já existe</h6>';
             setTimeout(() =>{
                 div.classList.add('none');
             }, 6000);

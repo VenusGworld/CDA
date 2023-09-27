@@ -4,7 +4,7 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Saída de Gerente</h5>
             </div>
-            <div class="alert" id="alert-modal" style="display: none; margin-left: 1rem; margin-right: 1rem; margin-top: 1rem;" role="alert">
+            <div class="alert d-none" id="alert-modal" style="margin-left: 0.5rem; margin-right: 0.5rem; margin-top: 0.5rem;" role="alert">
             </div>
             <div class="modal-body overflow-scroll">
                 <div class="container">
@@ -109,7 +109,7 @@
                 $("#alert-modal").prop("style").removeProperty("opacity");
                 $("#alert-modal").empty();
                 $("#alert-modal").removeClass();
-                $("#alert-modal").append("Data de saída menor que a data de entrada!");
+                $("#alert-modal").append('<i class="fa-solid fa-circle-exclamation icon-size"></i><h6>Data de saída menor que a data de entrada!</h6>');
                 $("#alert-modal").addClass("alert alert-danger alert-dismissible fade show");
                 $("#alert-modal").show();
                 window.setTimeout(() => {
@@ -120,7 +120,7 @@
                 $("#alert-modal").prop("style").removeProperty("opacity");
                 $("#alert-modal").empty();
                 $("#alert-modal").removeClass();
-                $("#alert-modal").append("Hora de saída menor que a hora de entrada!");
+                $("#alert-modal").append('<i class="fa-solid fa-circle-exclamation icon-size"></i><h6>Hora de saída menor que a hora de entrada!</h6>');
                 $("#alert-modal").addClass("alert alert-danger alert-dismissible fade show");
                 $("#alert-modal").show();
                 window.setTimeout(() => {
@@ -143,15 +143,14 @@
                         window.location=dest
                     },
                     error: function(data, status){
-                        var h6 = data.responseJSON.msg;
-                        $("#alert").prop("style").removeProperty("opacity");
-                        $("#alert").empty();
-                        $("#alert").removeClass();
-                        $("#alert").append(h6);
-                        $("#alert").addClass("alert alert-danger alert-dismissible fade show");
-                        $("#alert").show();
+                        $("#alert-modal").prop("style").removeProperty("opacity");
+                        $("#alert-modal").empty();
+                        $("#alert-modal").removeClass();
+                        $("#alert-modal").append(`<i class="fa-solid fa-circle-exclamation icon-size"></i><h6>${data.responseJSON.msg}</h6>`);
+                        $("#alert-modal").addClass("alert alert-danger alert-dismissible fade show");
+                        $("#alert-modal").show();
                         window.setTimeout(function() {
-                            $("#alert").fadeTo(500, 0).slideUp(500, function(){});
+                            $("#alert-modal").fadeTo(500, 0).slideUp(500, function(){});
                         }, 15000);
                     },
                 });

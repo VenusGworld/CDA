@@ -332,6 +332,7 @@ class ControleTerceiro:
             nometerc = manterTerceiroDao.consultaTerceiro(movimento.id_movTerc)
             dicMovimento = {
                 "id": movimento.id_movTerc,
+                "cpf": nometerc[1],
                 "nomeTerc": filtroNome(nometerc[0]),
                 "entrada": f"{filtroData(movimento.mte_dataEntra)} {movimento.mte_horaEntra}",
                 "saida": f"{filtroData(movimento.mte_dataSaid)} {movimento.mte_horaSaid}",

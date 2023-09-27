@@ -11,6 +11,29 @@
 {% elif context.modal == 3 %}
     {% include "public/modalLogManter/modalLogActiveDeleteTerc.html" %}
 {% endif %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <script>
+                window.setTimeout(function() {
+                    $("#alert-list").fadeTo(500, 0).slideUp(500, function(){
+                        $(this).remove(); 
+                    });
+                }, 10000);
+            </script>
+            <div class="alert alert-{{ category }} d-flex align-items-center alert-margin" role="alert" id="alert-list">
+                {% if category == "success" %}
+                    <i class="fa-solid fa-circle-check icon-size"></i>
+                {% else %}
+                    <i class="fa-solid fa-circle-exclamation icon-size"></i>
+                {% endif %}
+                <div>
+                    <h6 class="msg-alert">{{ message }}</h6>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
 <section class="content">
     <div class="container-fluid p-0">
         <div class="acoes" >
@@ -21,12 +44,13 @@
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <div class="container">
-                        <div class="row">
+                        <div class="row" style="width: 20rem;">
                             <div class="col">
-                                <label for="">Meses Select:</label>
-                                <input type="text" class="form-control" id="PAR_LOG_MANT_TERC"
-                                    value="{{ context.meses }}">
-                                <button class="btnConfirmMeses btn btn-primary btn-sm ml-4 mt-2">Confirmar</button>
+                                <label for="">Parâmetro para consulta da tabela:</label>
+                                <input type="text" class="form-control" id="PAR_LOG_MANT_TERC" value="{{ context.meses }}">
+                            </div>
+                            <div class="botaoParm">
+                                <button class="btnConfirmParms btn btn-primary btn-sm mt-2">Confirmar</button>
                             </div>
                         </div>
                     </div>

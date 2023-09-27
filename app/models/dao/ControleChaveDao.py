@@ -143,8 +143,9 @@ class ControleChaveDao:
         :return: Uma lista contendo as informações da cada movimento.
         """
 
-        movimentos = CDA002.query.filter(CDA002.mch_dataRet>=dataDe, CDA002.mch_dataRet<=dataAte, CDA002.mch_idChav==idChave)\
-            .order_by(CDA002.mch_dataRet)
+        movimentos = CDA002.query.filter(CDA002.mch_dataRet>=dataDe, CDA002.mch_dataRet<=dataAte, CDA002.mch_horaDev!=None, CDA002.mch_dataDev!=None, CDA002.mch_idChav==idChave)\
+            .join(CDA005, CDA005.id_chave==CDA002.mch_idChav)\
+                .order_by(CDA002.mch_dataRet, CDA005.ch_nome, CDA002.mch_horaRet)
 
         return movimentos
     
@@ -160,7 +161,8 @@ class ControleChaveDao:
         """
 
         movimentos = CDA002.query.filter(CDA002.mch_dataRet>=dataDe, CDA002.mch_dataRet<=dataAte, CDA002.mch_horaDev!=None, CDA002.mch_dataDev!=None)\
-            .order_by(CDA002.mch_dataRet)
+            .join(CDA005, CDA005.id_chave==CDA002.mch_idChav)\
+                .order_by(CDA002.mch_dataRet, CDA005.ch_nome, CDA002.mch_horaRet)
 
         return movimentos
     

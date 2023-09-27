@@ -10,39 +10,12 @@ class ConsultaLogTercDao:
     @since - 05/09/2023
     """
 
-    def consultaLogsTercInsert(self, data: str) -> CDA012:
-        logs = DB.session.query(CDA012.id_logTerc, CDA012.lte_acao, CDA012.lte_dataHora, CDA012.lte_dadosNovos, SysUser.us_usuario.label("nomeUser"))\
+    def consultaLogsTerc(self, data: str, acao: str) -> CDA012:
+        logs = DB.session.query(CDA012.id_logTerc, CDA012.lte_acao, CDA012.lte_dataHora, CDA012.lte_dadosNovos, CDA012.lte_dadosAntigos, SysUser.us_usuario.label("nomeUser"))\
             .join(SysUser, CDA012.lte_idUsua == SysUser.id)\
-                .filter(CDA012.lte_acao=="INSERT", CDA012.lte_dataHora>=data)\
+                .filter(CDA012.lte_acao==acao, CDA012.lte_dataHora>=data)\
                     .order_by(CDA012.lte_dataHora)
 
-        return logs
-    
-
-    def consultaLogsTercUpdate(self, data: str) -> CDA012:
-        logs = DB.session.query(CDA012.id_logTerc, CDA012.lte_acao, CDA012.lte_dataHora, CDA012.lte_dadosNovos, SysUser.us_usuario.label("nomeUser"))\
-            .join(SysUser, CDA012.lte_idUsua == SysUser.id)\
-                .filter(CDA012.lte_acao=="UPDATE", CDA012.lte_dataHora>=data)\
-                    .order_by(CDA012.lte_dataHora)
-
-        return logs
-    
-
-    def consultaLogsTercDelete(self, data: str) -> CDA012:
-        logs = DB.session.query(CDA012.id_logTerc, CDA012.lte_acao, CDA012.lte_dataHora, CDA012.lte_dadosAntigos, SysUser.us_usuario.label("nomeUser"))\
-            .join(SysUser, CDA012.lte_idUsua == SysUser.id)\
-                .filter(CDA012.lte_acao=="DELETE", CDA012.lte_dataHora>=data)\
-                    .order_by(CDA012.lte_dataHora)
-
-        return logs
-    
-
-    def consultaLogsTercActive(self, data: str) -> CDA012:
-        logs = DB.session.query(CDA012.id_logTerc, CDA012.lte_acao, CDA012.lte_dataHora, CDA012.lte_dadosAntigos, SysUser.us_usuario.label("nomeUser"))\
-            .join(SysUser, CDA012.lte_idUsua == SysUser.id)\
-                .filter(CDA012.lte_acao=="ACTIVE", CDA012.lte_dataHora>=data)\
-                    .order_by(CDA012.lte_dataHora)
-        
         return logs
     
 

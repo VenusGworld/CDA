@@ -27,20 +27,32 @@
                         <div class="row">
                             <div class="col-3">
                                 <label for="recipient-name" class="col-form-label">Crachá:</label>
+                                {% if context.log.dadosAntigos.cracha != context.log.dadosNovos.cracha %}
+                                    <span class="campo-alterado-label">* Campo Alterado</span>
+                                {% endif %}
                                 <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosAntigos.cracha }}" readonly>
                             </div>
                             <div class="col">
                                 <label for="recipient-name" class="col-form-label">Nome:</label>
+                                {% if context.log.dadosAntigos.nome != context.log.dadosNovos.nome %}
+                                    <span class="campo-alterado-label">* Campo Alterado</span>
+                                {% endif %}
                                 <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosAntigos.nome }}" readonly>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col">
                                 <label for="recipient-name" class="col-form-label">Gerente:</label>
+                                {% if context.log.dadosAntigos.gerente != context.log.dadosNovos.gerente %}
+                                    <span class="campo-alterado-label">* Campo Alterado</span>
+                                {% endif %}
                                 <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosAntigos.gerente | filtroBoleano }}" readonly>
                             </div>
                             <div class="col">
                                 <label for="recipient-name" class="col-form-label">Máquina:</label>
+                                {% if context.log.dadosAntigos.maquina != context.log.dadosNovos.maquina %}
+                                    <span class="campo-alterado-label">* Campo Alterado</span>
+                                {% endif %}
                                 <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosAntigos.maquina }}" readonly>
                             </div>
                         </div>
@@ -50,20 +62,32 @@
                         <div class="row">
                             <div class="col-3">
                                 <label for="recipient-name" class="col-form-label">Crachá:</label>
+                                {% if context.log.dadosNovos.cracha != context.log.dadosAntigos.cracha %}
+                                    <span class="campo-alterado-label">* Campo Alterado</span>
+                                {% endif %}
                                 <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.cracha }}" readonly>
                             </div>
                             <div class="col">
                                 <label for="recipient-name" class="col-form-label">Nome:</label>
+                                {% if context.log.dadosNovos.nome != context.log.dadosAntigos.nome %}
+                                    <span class="campo-alterado-label">* Campo Alterado</span>
+                                {% endif %}
                                 <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.nome }}" readonly>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col">
                                 <label for="recipient-name" class="col-form-label">Gerente:</label>
+                                {% if context.log.dadosNovos.gerente != context.log.dadosAntigos.gerente %}
+                                    <span class="campo-alterado-label">* Campo Alterado</span>
+                                {% endif %}
                                 <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.gerente | filtroBoleano }}" readonly>
                             </div>
                             <div class="col">
                                 <label for="recipient-name" class="col-form-label">Máquina:</label>
+                                {% if context.log.dadosNovos.maquina != context.log.dadosAntigos.maquina %}
+                                    <span class="campo-alterado-label">* Campo Alterado</span>
+                                {% endif %}
                                 <input type="text" name="dataSai" id="dataSai" class="form-control" value="{{ context.log.dadosNovos.maquina }}" readonly>
                             </div>
                         </div>

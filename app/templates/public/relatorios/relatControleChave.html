@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,44 +8,91 @@
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styleRelatorio.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='plugins/bootstrap/css/bootstrap.min.css') }}">
+
+    <style>
+        page-number::after {
+            content: counter(page);
+        }
+    </style>
 </head>
+
 <body>
     <header>
         <div class="hearder">
             <div class="img">
-                
+                <img class="" src="{{ url_for('static', filename='img/logo6.png') }}" id="icon" alt="User Icon" />
             </div>
             <div class="titulo">
-                <label for="">Controle de Chaves</label>
-                de {{ context.de | dataLimite }} até {{ context.ate | dataLimite }}
+                <label>Controle de Chaves</label>
+                <label>de {{ context.de | dataLimite }} até {{ context.ate | dataLimite }}</label>
             </div>
             <div class="hora">
-                <label for="">15:06</label>
-                28/08/2023
+                <label>{{ context.hora }}</label>
+                <label>{{ context.ano }}</label>
             </div>
         </div>
     </header>
+    <!-- <header>
+        <div class="hearder">
+            <table class="table">
+                <tr style="border-bottom: none; height: 88px;">
+                    <th style="border-bottom: none; height: 88px;">
+                        <div class="img">
+                            <img src="{{ url_for('static', filename='img/logo6.png') }}" id="icon" alt="User Icon" />
+                        </div>
+                    </th>
+                    <th style="border-bottom: none; height: 88px;">
+                        <div class="titulo">
+                            <label style="font-size: 18px;">Controle de Chaves</label><br>
+                            <label style="font-size: 18px;">de {{ context.de | dataLimite }} até {{ context.ate | dataLimite }}</label>
+                        </div>
+                    </th>
+                    <th style="border-bottom: none; height: 88px;">
+                        <div class="hora">
+                            <label style="font-size: 18px;">{{ context.hora }}</label><br>
+                            <label style="font-size: 18px;">{{ context.ano }}</label>
+                        </div>
+                    </th>
+                </tr>
+            </table>
+        </div>
+    </header> -->
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Retirada</th>
-                <th>Responsavel Ret.</th>
-                <th>Devolução</th>
-                <th>Responsavel Dev.</th>
-                <th>Chave</th>
+                <th style="text-align: start;">Chave</th>
+                <th style="text-align: start;">Retirada</th>
+                <th style="text-align: start;">Responsavel Ret.</th>
+                <th style="text-align: start;">Devolução</th>
+                <th style="text-align: start;">Responsavel Dev.</th>
             </tr>
         </thead>
         <tbody>
             {% for movimento in context.movimentos %}
-                <tr>
-                    <td>{{ movimento.dataRet | dataLimite }} {{ movimento.horaRet }}</td>
-                    <td>{{ movimento.respRet.nome }}</td>
-                    <td>{{ movimento.dataDev | dataLimite }} {{ movimento.horaDev }}</td>
-                    <td>{{ movimento.respRet.nome }}</td>
-                    <td>{{ movimento.chave.nome }}</td>
-                </tr>
+                {% if loop.index0 < 18 %}
+                    {% if movimento.chave.nome == context.movimentos[loop.index0 + 1].chave.nome %}
+                        <tr>
+                    {% else %}
+                        <tr style="border-bottom: 1.5px solid #000000;">
+                    {% endif %}
+                            <td>{{ movimento.chave.nome | nome }}</td>
+                            <td>{{ movimento.dataRet | dataLimite }} {{ movimento.horaRet }}</td>
+                            <td>{{ movimento.respRet.nome | nome }}</td>
+                            <td>{{ movimento.dataDev | dataLimite }} {{ movimento.horaDev }}</td>
+                            <td>{{ movimento.respDev.nome | nome }}</td>
+                        </tr>
+                {% endif %}
             {% endfor %}
         </tbody>
+    </table>
+    <table class="table footer">
+        <tr>
+            <td colspan="2">Emitido por: {{ session.nome }}</td>
+            <td colspan="2">Conferido por:________________</td>
+            <td>
+                <div class="page-number"></div>
+            </td>
+        </tr>
     </table>
 </body>
 </html>
